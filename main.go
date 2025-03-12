@@ -1,9 +1,14 @@
 package main
 
 import (
+	"bytes"
+	"image/color"
 	"log"
+	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 const (
@@ -34,6 +39,10 @@ type Game struct {
 	highScore int
 }
 
+// go:embed PressStart2P-Regular.ttf
+var pressStart2P []byte
+var pressStart2PFaceSource *text.GoTextFaceSource
+
 func main() {
 	ebiten.SetWindowTitle("Pong in Go")
 	ebiten.SetWindowSize(screenWidth, screenHeight)
@@ -50,6 +59,44 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	vector.DrawFilledRect(screen,
+		float32(g.paddle.X), float32(g.paddle.Y),
+		float32(g.paddle.W), float32(g.paddle.H),
+		color.White, false,
+	) // Draw the paddle
+	vector.DrawFilledRect(screen,
+		float32(g.ball.X), float32(g.ball.Y),
+		float32(g.ball.W), float32(g.ball.H),
+		color.White, false,
+	) // Draw the ball
+
+	// Text Options
+	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
+	if err != nil {
+		log.Fatal(err)
+	}
+	pressStart2PFaceSource = s
+
+	scoreTextOptions := &text.DrawOptions{}
+	scoreTextOptions.GeoM.Translate(10, 10)
+	scoreTextOptions.ColorScale.Scale(1, 1, 1, 1)
+	scoreTextOptions.LineSpacing = 1.5
+
+	highScoreTextOptions := &text.DrawOptions{}
+	highScoreTextOptions.GeoM.Translate(10, 30)
+	highScoreTextOptions.ColorScale.Scale(1, 1, 1, 1)
+	highScoreTextOptions.LineSpacing = 1.5
+
+	textFace := &text.GoTextFace{
+		Source: pressStart2PFaceSource,
+		Size:   13,
+	}
+
+	scoreStr := "Score: " + strconv.Itoa(g.score)
+	text.Draw(screen, scoreStr, textFace, scoreTextOptions)
+
+	HighScoreStr := "High Score: " + strconv.Itoa(g.highScore)
+	text.Draw(screen, HighScoreStr, textFace, highScoreTextOptions)
 
 }
 
