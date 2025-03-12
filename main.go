@@ -131,10 +131,10 @@ func (g *Game) Update() error {
 }
 
 func (p *Paddle) MoveOnKeyPress() { // Move the paddle based on keypress
-	if ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
+	if ebiten.IsKeyPressed(ebiten.KeyArrowDown) && p.Y+p.H < screenHeight { // can't go below the screen
 		p.Y += paddleSpeed
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
+	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) && p.Y > 0 { // can't go above the screen
 		p.Y -= paddleSpeed
 	}
 }
@@ -165,9 +165,13 @@ func (g *Game) CollideWithWall() { // Check if the ball collides with the wall
 func (g *Game) CollideWithPaddle() { // Check if the ball collides with the paddle
 	if g.ball.X >= g.paddle.X && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H {
 		g.ball.dxdt = -g.ball.dxdt
-		g.score++
+		g.IncreaseScore()
 		if g.score > g.highScore {
 			g.highScore = g.score
 		}
 	}
+}
+
+func (g *Game) IncreaseScore() {
+	g.score++
 }
