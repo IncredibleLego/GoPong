@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	_ "embed"
 	"image/color"
 	"log"
 	"strconv"
@@ -39,7 +40,7 @@ type Game struct {
 	highScore int
 }
 
-// go:embed PressStart2P-Regular.ttf
+//go:embed PressStart2P-Regular.ttf
 var pressStart2P []byte
 var pressStart2PFaceSource *text.GoTextFaceSource
 
@@ -47,7 +48,28 @@ func main() {
 	ebiten.SetWindowTitle("Pong in Go")
 	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
-	g := &Game{}
+	paddle := Paddle{
+		Ojbect: Ojbect{
+			X: 600,
+			Y: 200,
+			W: 15,
+			H: 100,
+		},
+	}
+	ball := Ball{
+		Ojbect: Ojbect{
+			X: 0,
+			Y: 0,
+			W: 15,
+			H: 15,
+		},
+		dxdt: ballSpeed,
+		dydt: ballSpeed,
+	}
+	g := &Game{
+		paddle: paddle,
+		ball:   ball,
+	}
 
 	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
@@ -101,5 +123,51 @@ func (g *Game) Draw(screen *ebiten.Image) {
 }
 
 func (g *Game) Update() error {
+	g.paddle.MoveOnKeyPress()
+	g.ball.Move()
+	g.CollideWithWall()
+	g.CollideWithPaddle()
 	return nil
+}
+
+func (p *Paddle) MoveOnKeyPress() { // Move the paddle based on keypress
+	if ebiten.IsKeyPressed(ebiten.KeyArrowDown) {
+		p.Y += paddleSpeed
+	}
+	if ebiten.IsKeyPressed(ebiten.KeyArrowUp) {
+		p.Y -= paddleSpeed
+	}
+}
+
+func (b *Ball) Move() { // Move the ball
+	b.X += b.dxdt
+	b.Y += b.dydt
+}
+
+func (g *Game) Reset() { // Reset the game
+	g.ball.X = 0
+	g.ball.Y = 0
+	g.score = 0
+}
+
+func (g *Game) CollideWithWall() { // Check if the ball collides with the wall
+	if g.ball.X >= screenWidth {
+		g.Reset()
+	} else if g.ball.X <= 0 {
+		g.ball.dxdt = ballSpeed
+	} else if g.ball.Y <= 0 {
+		g.ball.dydt = ballSpeed
+	} else if g.ball.Y >= screenHeight {
+		g.ball.dydt = -ballSpeed
+	}
+}
+
+func (g *Game) CollideWithPaddle() { // Check if the ball collides with the paddle
+	if g.ball.X >= g.paddle.X && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H {
+		g.ball.dxdt = -g.ball.dxdt
+		g.score++
+		if g.score > g.highScore {
+			g.highScore = g.score
+		}
+	}
 }
