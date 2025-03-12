@@ -34,10 +34,11 @@ type Ball struct {
 }
 
 type Game struct {
-	paddle    Paddle
-	ball      Ball
-	score     int
-	highScore int
+	paddle      Paddle
+	enemyPaddle Paddle
+	ball        Ball
+	score       int
+	highScore   int
 }
 
 //go:embed PressStart2P-Regular.ttf
@@ -56,6 +57,14 @@ func main() {
 			H: 100,
 		},
 	}
+	enemypaddle := Paddle{
+		Ojbect: Ojbect{
+			X: 40,
+			Y: 200,
+			W: 15,
+			H: 100,
+		},
+	}
 	ball := Ball{
 		Ojbect: Ojbect{
 			X: 0,
@@ -67,8 +76,9 @@ func main() {
 		dydt: ballSpeed,
 	}
 	g := &Game{
-		paddle: paddle,
-		ball:   ball,
+		paddle:      paddle,
+		enemyPaddle: enemypaddle,
+		ball:        ball,
 	}
 
 	if err := ebiten.RunGame(g); err != nil {
@@ -86,6 +96,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 		float32(g.paddle.W), float32(g.paddle.H),
 		color.White, false,
 	) // Draw the paddle
+	vector.DrawFilledRect(screen,
+		float32(g.enemyPaddle.X), float32(g.enemyPaddle.Y),
+		float32(g.enemyPaddle.W), float32(g.enemyPaddle.H),
+		color.White, false,
+	) // Draw enemy paddle
 	vector.DrawFilledRect(screen,
 		float32(g.ball.X), float32(g.ball.Y),
 		float32(g.ball.W), float32(g.ball.H),
@@ -166,12 +181,13 @@ func (g *Game) CollideWithPaddle() { // Check if the ball collides with the padd
 	if g.ball.X >= g.paddle.X && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H {
 		g.ball.dxdt = -g.ball.dxdt
 		g.IncreaseScore()
-		if g.score > g.highScore {
-			g.highScore = g.score
-		}
+
 	}
 }
 
 func (g *Game) IncreaseScore() {
 	g.score++
+	if g.score > g.highScore {
+		g.highScore = g.score
+	}
 }
