@@ -2,6 +2,7 @@ package scenes
 
 import (
 	"bytes"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -20,6 +21,8 @@ func NewPauseScene() *PauseScene {
 }
 
 func (g *PauseScene) Draw(screen *ebiten.Image) {
+
+	screen.Fill(color.RGBA{0, 255, 0, 255})
 	// Text Options
 	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
 	if err != nil {
