@@ -9,3 +9,6 @@ TODO:
 - Computer playing pong
 - Sounds
 - Scenes
+- Random ball direction at start
+- Speed increase
+- Timer after ball hits

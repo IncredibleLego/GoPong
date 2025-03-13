@@ -56,6 +56,16 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		color.White, false,
 	) // Draw the ball
 
+	// Draw center lines
+
+	for i := 0; i < constants.ScreenHeight; i += 24 {
+		vector.DrawFilledRect(screen,
+			float32(constants.ScreenWidth/2), float32(i),
+			float32(3), float32(12),
+			color.White, false,
+		)
+	}
+
 	// Text Options
 	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
 	if err != nil {
@@ -106,8 +116,8 @@ func (g *GameScene) FirstLoad() {
 	}
 	g.ball = &objects.Ball{
 		Ojbect: &objects.Ojbect{
-			X: 0,
-			Y: 0,
+			X: constants.ScreenWidth / 2,
+			Y: constants.ScreenHeight / 2,
 			W: 15,
 			H: 15,
 		},
@@ -150,10 +160,9 @@ func (g *GameScene) CollideWithWall() { // Check if the ball collides with the w
 }
 
 func (g *GameScene) CollideWithPaddle() { // Check if the ball collides with the paddle
-	if g.ball.X >= g.paddle.X && g.ball.Y >= g.paddle.Y && g.ball.Y <= g.paddle.Y+g.paddle.H {
+	if g.ball.X+g.ball.W >= g.paddle.X && g.ball.Y+g.ball.W >= g.paddle.Y && g.ball.Y+g.ball.W <= g.paddle.Y+g.paddle.H {
 		g.ball.Dxdt = -g.ball.Dxdt
 		g.IncreaseScore()
-
 	}
 }
 
@@ -165,7 +174,7 @@ func (g *GameScene) IncreaseScore() {
 }
 
 func (g *GameScene) Reset() { // Reset the game
-	g.ball.X = 0
-	g.ball.Y = 0
+	g.ball.X = constants.ScreenWidth / 2
+	g.ball.Y = constants.ScreenHeight / 2
 	g.score = 0
 }
