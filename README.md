@@ -7,3 +7,5 @@ TODO:
 
 - Highscore saved to file
 - Computer playing pong
+- Sounds
+- Scenes
