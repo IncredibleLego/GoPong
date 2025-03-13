@@ -1,6 +1,11 @@
 package scenes
 
-import "github.com/hajimehoshi/ebiten/v2"
+import (
+	_ "embed"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
+)
 
 type SceneId uint
 
@@ -10,6 +15,10 @@ const (
 	ExitSceneId
 	PauseSceneId
 )
+
+//go:embed PressStart2P-Regular.ttf
+var pressStart2P []byte
+var pressStart2PFaceSource *text.GoTextFaceSource
 
 type Scene interface {
 	Update() SceneId

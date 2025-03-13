@@ -1,10 +1,12 @@
 package scenes
 
 import (
+	"bytes"
 	"image/color"
+	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
 type StartScene struct { // is the scene loaded now
@@ -19,7 +21,36 @@ func NewStartScene() *StartScene {
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
 	screen.Fill(color.RGBA{255, 0, 0, 255})
-	ebitenutil.DebugPrint(screen, "Pong in Go by IncredibleLego. Press enter to start.")
+
+	// Text Options
+	f, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
+	if err != nil {
+		log.Fatal(err)
+	}
+	pressStart2PFaceSource = f
+
+	textFace := &text.GoTextFace{
+		Source: pressStart2PFaceSource,
+		Size:   13,
+	}
+
+	textOptions := &text.DrawOptions{}
+	textOptions.GeoM.Translate(250, 180)
+	textOptions.ColorScale.Scale(1, 1, 1, 1)
+	textOptions.LineSpacing = 1.5
+
+	row := "Pong in Go"
+	text.Draw(screen, row, textFace, textOptions)
+
+	textOptions.GeoM.Translate(-40, 20)
+
+	row = "by IncredibleLego"
+	text.Draw(screen, row, textFace, textOptions)
+
+	textOptions.GeoM.Translate(-20, 20)
+
+	row = "Press Enter to start"
+	text.Draw(screen, row, textFace, textOptions)
 
 }
 

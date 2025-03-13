@@ -39,10 +39,6 @@ func NewGameScene() *GameScene {
 	}
 }
 
-//go:embed PressStart2P-Regular.ttf
-var pressStart2P []byte
-var pressStart2PFaceSource *text.GoTextFaceSource
-
 func (g *GameScene) Draw(screen *ebiten.Image) {
 	vector.DrawFilledRect(screen,
 		float32(g.paddle.X), float32(g.paddle.Y),
@@ -129,9 +125,6 @@ func (g *GameScene) OnExit() {
 }
 
 func (g *GameScene) Update() SceneId {
-	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
-		return ExitSceneId
-	}
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return PauseSceneId
 	}
