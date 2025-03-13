@@ -7,7 +7,7 @@ import (
 )
 
 type Paddle struct {
-	Ojbect
+	*Ojbect
 }
 
 func (p *Paddle) MoveOnKeyPress() { // Move the paddle based on keypress
