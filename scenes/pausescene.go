@@ -22,7 +22,7 @@ func NewPauseScene() *PauseScene {
 
 func (g *PauseScene) Draw(screen *ebiten.Image) {
 
-	screen.Fill(color.RGBA{0, 255, 0, 255})
+	screen.Fill(color.RGBA{200, 200, 0, 200})
 	// Text Options
 	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
 	if err != nil {

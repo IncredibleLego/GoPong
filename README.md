@@ -12,3 +12,11 @@ TODO:
 - Random ball direction at start
 - Speed increase
 - Timer after ball hits
+
+- Make collideWithPaddle a paddle method
+- New color for menu
+
+3 modalità:
+- da solo
+- con IA
+- due giocatori
