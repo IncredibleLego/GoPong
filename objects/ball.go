@@ -1,7 +1,7 @@
 package objects
 
 type Ball struct {
-	*Ojbect
+	*Object
 	Dxdt int // x velocity per tick
 	Dydt int // y velocity per tick
 }

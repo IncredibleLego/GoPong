@@ -72,7 +72,7 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 // FirstLoad implements Scene.
 func (g *GameScene) FirstLoad() {
 	g.paddle = &objects.Paddle{
-		Ojbect: &objects.Ojbect{
+		Object: &objects.Object{
 			X: 600,
 			Y: 200,
 			W: 15,
@@ -80,7 +80,7 @@ func (g *GameScene) FirstLoad() {
 		},
 	}
 	g.enemyPaddle = &objects.Paddle{
-		Ojbect: &objects.Ojbect{
+		Object: &objects.Object{
 			X: 40,
 			Y: 200,
 			W: 15,
@@ -88,7 +88,7 @@ func (g *GameScene) FirstLoad() {
 		},
 	}
 	g.ball = &objects.Ball{
-		Ojbect: &objects.Ojbect{
+		Object: &objects.Object{
 			X: constants.ScreenWidth / 2,
 			Y: constants.ScreenHeight / 2,
 			W: 15,
