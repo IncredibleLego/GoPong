@@ -6,4 +6,5 @@ const (
 	BallSpeed            = 3
 	PaddleSpeed          = 6
 	MenuOptionsPerSecond = 5
+	TextDimension        = 13
 )

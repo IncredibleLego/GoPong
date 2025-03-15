@@ -1,6 +1,7 @@
 package scenes
 
 import (
+	"goPong/constants"
 	"goPong/menu"
 	"image/color"
 
@@ -22,9 +23,9 @@ func (g *PauseScene) Draw(screen *ebiten.Image) {
 
 	screen.Fill(color.RGBA{200, 200, 0, 200})
 
-	menu.ScreenDraw(13, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pause menu")
-	menu.ScreenDraw(13, 180, 200, 1, 1, 1, 1, 1.5, screen, "Press Enter to unpause")
-	menu.ScreenDraw(13, 200, 220, 1, 1, 1, 1, 1.5, screen, "Press 'q' to quit")
+	menu.ScreenDraw(constants.TextDimension, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pause menu")
+	menu.ScreenDraw(constants.TextDimension, 180, 200, 1, 1, 1, 1, 1.5, screen, "Press Enter to unpause")
+	menu.ScreenDraw(constants.TextDimension, 200, 220, 1, 1, 1, 1, 1.5, screen, "Press 'q' to quit")
 
 }
 

@@ -64,8 +64,8 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(13, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(g.score))
-	menu.ScreenDraw(13, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
+	menu.ScreenDraw(constants.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(g.score))
+	menu.ScreenDraw(constants.TextDimension, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
 
 }
 

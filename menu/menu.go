@@ -65,9 +65,9 @@ func (m *Menu) Update() {
 func (m *Menu) Draw(screen *ebiten.Image) {
 	for i, option := range m.Options {
 		if i == m.Selected {
-			ScreenDraw(13, 100, float64(100+(i*30)), 1, 1, 1, 1, 1.5, screen, option)
+			ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 1, 1, 1, 1, 1.5, screen, option)
 		} else {
-			ScreenDraw(13, 100, float64(100+(i*30)), 0, 0, 0, 1, 1.5, screen, option)
+			ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 0, 0, 0, 1, 1.5, screen, option)
 		}
 	}
 }
