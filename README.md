@@ -5,8 +5,6 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 TODO:
 
-
-
 GAMEPLAY:
 
 - Ball positioning at beginning (random)
@@ -26,7 +24,6 @@ MENU:
 - Import pictures?
 - Center and manage menu
 - Mouse selection full implementation
-- constant textDimension to pass to all draw function to have default text value
 
 
 

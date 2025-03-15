@@ -23,10 +23,10 @@ func NewStartScene() *StartScene {
 func (s *StartScene) Draw(screen *ebiten.Image) {
 
 	screen.Fill(color.RGBA{255, 0, 0, 255})
-
-	menu.ScreenDraw(13, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pong in Go")
-	menu.ScreenDraw(13, 210, 200, 1, 1, 1, 1, 1.5, screen, "by IncredibleLego")
-	menu.ScreenDraw(13, 250, 220, 1, 1, 1, 1, 1.5, screen, "Press Enter to start")
+	/*
+		menu.ScreenDraw(13, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pong in Go")
+		menu.ScreenDraw(13, 210, 200, 1, 1, 1, 1, 1.5, screen, "by IncredibleLego")
+		menu.ScreenDraw(13, 250, 220, 1, 1, 1, 1, 1.5, screen, "Press Enter to start") */
 
 	s.menu.Draw(screen)
 

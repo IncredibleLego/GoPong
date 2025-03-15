@@ -64,11 +64,24 @@ func (m *Menu) Update() {
 
 func (m *Menu) Draw(screen *ebiten.Image) {
 	for i, option := range m.Options {
+
+		textWidth, textHeight := MeasureText(option, 1.5)
+
+		x := (constants.ScreenWidth - textWidth) / 2   // Centra orizzontalmente
+		y := (constants.ScreenHeight - textHeight) / 3 // Centra verticalmente
+
 		if i == m.Selected {
-			ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 1, 1, 1, 1, 1.5, screen, option)
+			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option)
 		} else {
-			ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 0, 0, 0, 1, 1.5, screen, option)
+			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 0, 0, 0, 1, 1.5, screen, option)
 		}
+
+		/*
+			if i == m.Selected {
+				ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 1, 1, 1, 1, 1.5, screen, option)
+			} else {
+				ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 0, 0, 0, 1, 1.5, screen, option)
+			} */
 	}
 }
 
