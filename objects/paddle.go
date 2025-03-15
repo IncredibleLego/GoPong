@@ -1,7 +1,7 @@
 package objects
 
 import (
-	"main/constants"
+	"goPong/constants"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )

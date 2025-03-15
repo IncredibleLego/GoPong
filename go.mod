@@ -1,4 +1,4 @@
-module main
+module goPong
 
 go 1.23.6
 

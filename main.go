@@ -1,8 +1,8 @@
 package main
 
 import (
+	"goPong/constants"
 	"log"
-	"main/constants"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )

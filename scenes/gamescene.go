@@ -3,10 +3,10 @@ package scenes
 import (
 	"bytes"
 	_ "embed"
+	"goPong/constants"
+	"goPong/objects"
 	"image/color"
 	"log"
-	"main/constants"
-	"main/objects"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
