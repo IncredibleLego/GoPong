@@ -18,3 +18,10 @@ func (p *Paddle) MoveOnKeyPress() { // Move the paddle based on keypress
 		p.Y -= constants.PaddleSpeed
 	}
 }
+
+func (p *Paddle) CollideWithPaddle(b *Ball) bool { // Check if the ball collides with the paddle
+	if b.X+b.W >= p.X && b.Y+b.W >= p.Y && b.Y+b.W <= p.Y+p.H {
+		return true
+	}
+	return false
+}

@@ -2,6 +2,7 @@ package scenes
 
 import (
 	"bytes"
+	"goPong/menu"
 	"image/color"
 	"log"
 
@@ -10,16 +11,19 @@ import (
 )
 
 type StartScene struct { // is the scene loaded now
+	menu   *menu.Menu
 	loaded bool
 }
 
 func NewStartScene() *StartScene {
 	return &StartScene{
+		menu:   nil,
 		loaded: false,
 	}
 }
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
+
 	screen.Fill(color.RGBA{255, 0, 0, 255})
 
 	// Text Options
@@ -52,9 +56,19 @@ func (s *StartScene) Draw(screen *ebiten.Image) {
 	row = "Press Enter to start"
 	text.Draw(screen, row, textFace, textOptions)
 
+	s.menu.Draw(screen)
+
 }
 
 func (s *StartScene) FirstLoad() {
+	s.menu = &menu.Menu{
+		Options: []string{
+			"Solo",
+			"Contro IA",
+			"Multiplayer",
+		},
+		Selected: 0,
+	}
 	s.loaded = true
 }
 
@@ -71,6 +85,8 @@ func (s *StartScene) OnExit() {
 }
 
 func (s *StartScene) Update() SceneId {
+	s.menu.Update()
+
 	if ebiten.IsKeyPressed(ebiten.KeyEnter) {
 		return GameSceneId
 	}
