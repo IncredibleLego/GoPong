@@ -43,3 +43,5 @@ highScoreMulti = 6
 update in menu use of deprecated text.Draw function
 
 UPDATE AND DRAW CORRECT MENU
+
+POTER SELEZIONARE OPZIONI MENù CON MOUSE

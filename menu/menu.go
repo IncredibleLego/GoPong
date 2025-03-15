@@ -1,13 +1,11 @@
 package menu
 
 import (
+	_ "embed"
 	"fmt"
-	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/text"
-	"golang.org/x/image/font/basicfont"
 )
 
 type Menu struct {
@@ -36,15 +34,11 @@ func (m *Menu) Update() {
 
 func (m *Menu) Draw(screen *ebiten.Image) {
 	for i, option := range m.Options {
-		col := color.White
 		if i == m.Selected {
-			//color = color.NRGBA{255, 255, 0, 255} // Evidenzia l'opzione selezionata in giallo
-			col = color.Black
-			text.Draw(screen, option, basicfont.Face7x13, 100, 100+(i*30), col)
+			ScreenDraw(13, 100, float64(100+(i*30)), 1, 1, 1, 1, 1.5, screen, option)
 		} else {
-			text.Draw(screen, option, basicfont.Face7x13, 100, 100+(i*30), col)
+			ScreenDraw(13, 100, float64(100+(i*30)), 0, 0, 0, 1, 1.5, screen, option)
 		}
-
 	}
 }
 

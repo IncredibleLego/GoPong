@@ -1,17 +1,15 @@
 package scenes
 
 import (
-	"bytes"
 	_ "embed"
 	"goPong/constants"
+	"goPong/menu"
 	"goPong/objects"
 	"image/color"
-	"log"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/text/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
@@ -66,33 +64,8 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	// Text Options
-	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
-	if err != nil {
-		log.Fatal(err)
-	}
-	pressStart2PFaceSource = s
-
-	scoreTextOptions := &text.DrawOptions{}
-	scoreTextOptions.GeoM.Translate(10, 10)
-	scoreTextOptions.ColorScale.Scale(1, 1, 1, 1)
-	scoreTextOptions.LineSpacing = 1.5
-
-	highScoreTextOptions := &text.DrawOptions{}
-	highScoreTextOptions.GeoM.Translate(10, 30)
-	highScoreTextOptions.ColorScale.Scale(1, 1, 1, 1)
-	highScoreTextOptions.LineSpacing = 1.5
-
-	textFace := &text.GoTextFace{
-		Source: pressStart2PFaceSource,
-		Size:   13,
-	}
-
-	scoreStr := "Score: " + strconv.Itoa(g.score)
-	text.Draw(screen, scoreStr, textFace, scoreTextOptions)
-
-	HighScoreStr := "High Score: " + strconv.Itoa(g.highScore)
-	text.Draw(screen, HighScoreStr, textFace, highScoreTextOptions)
+	menu.ScreenDraw(13, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(g.score))
+	menu.ScreenDraw(13, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
 
 }
 

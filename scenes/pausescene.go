@@ -1,13 +1,11 @@
 package scenes
 
 import (
-	"bytes"
+	"goPong/menu"
 	"image/color"
-	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
 type PauseScene struct {
@@ -23,35 +21,10 @@ func NewPauseScene() *PauseScene {
 func (g *PauseScene) Draw(screen *ebiten.Image) {
 
 	screen.Fill(color.RGBA{200, 200, 0, 200})
-	// Text Options
-	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
-	if err != nil {
-		log.Fatal(err)
-	}
-	pressStart2PFaceSource = s
 
-	textFace := &text.GoTextFace{
-		Source: pressStart2PFaceSource,
-		Size:   13,
-	}
-
-	textOptions := &text.DrawOptions{}
-	textOptions.GeoM.Translate(250, 180)
-	textOptions.ColorScale.Scale(1, 1, 1, 1)
-	textOptions.LineSpacing = 1.5
-
-	row := "Pause menu"
-	text.Draw(screen, row, textFace, textOptions)
-
-	textOptions.GeoM.Translate(-70, 20)
-
-	row = "Press Enter to unpause"
-	text.Draw(screen, row, textFace, textOptions)
-
-	textOptions.GeoM.Translate(20, 20)
-
-	row = "Press 'q' to quit"
-	text.Draw(screen, row, textFace, textOptions)
+	menu.ScreenDraw(13, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pause menu")
+	menu.ScreenDraw(13, 180, 200, 1, 1, 1, 1, 1.5, screen, "Press Enter to unpause")
+	menu.ScreenDraw(13, 200, 220, 1, 1, 1, 1, 1.5, screen, "Press 'q' to quit")
 
 }
 

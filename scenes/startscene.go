@@ -1,13 +1,10 @@
 package scenes
 
 import (
-	"bytes"
 	"goPong/menu"
 	"image/color"
-	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
 type StartScene struct { // is the scene loaded now
@@ -26,35 +23,9 @@ func (s *StartScene) Draw(screen *ebiten.Image) {
 
 	screen.Fill(color.RGBA{255, 0, 0, 255})
 
-	// Text Options
-	f, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
-	if err != nil {
-		log.Fatal(err)
-	}
-	pressStart2PFaceSource = f
-
-	textFace := &text.GoTextFace{
-		Source: pressStart2PFaceSource,
-		Size:   13,
-	}
-
-	textOptions := &text.DrawOptions{}
-	textOptions.GeoM.Translate(250, 180)
-	textOptions.ColorScale.Scale(1, 1, 1, 1)
-	textOptions.LineSpacing = 1.5
-
-	row := "Pong in Go"
-	text.Draw(screen, row, textFace, textOptions)
-
-	textOptions.GeoM.Translate(-40, 20)
-
-	row = "by IncredibleLego"
-	text.Draw(screen, row, textFace, textOptions)
-
-	textOptions.GeoM.Translate(-20, 20)
-
-	row = "Press Enter to start"
-	text.Draw(screen, row, textFace, textOptions)
+	menu.ScreenDraw(13, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pong in Go")
+	menu.ScreenDraw(13, 210, 200, 1, 1, 1, 1, 1.5, screen, "by IncredibleLego")
+	menu.ScreenDraw(13, 250, 220, 1, 1, 1, 1, 1.5, screen, "Press Enter to start")
 
 	s.menu.Draw(screen)
 
