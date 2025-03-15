@@ -20,8 +20,8 @@ func (p *Paddle) MoveOnKeyPress() { // Move the paddle based on keypress
 }
 
 func (p *Paddle) CollideWithPaddle(b *Ball) bool { // Check if the ball collides with the paddle
-	if b.X+b.W >= p.X && b.Y+b.W >= p.Y && b.Y+b.W <= p.Y+p.H {
-		return true
-	}
-	return false
+	return p.X < b.X+b.W &&
+		p.X+p.W > b.X &&
+		p.Y < b.Y+b.H &&
+		p.Y+p.H > b.Y
 }

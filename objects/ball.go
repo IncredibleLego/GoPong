@@ -10,3 +10,8 @@ func (b *Ball) Move() { // Move the ball
 	b.X += b.Dxdt
 	b.Y += b.Dydt
 }
+
+func (b *Ball) IncreaseSpeed(increase int) { // Increase the speed of the ball
+	b.Dxdt += increase
+	b.Dydt += increase
+}
