@@ -1,1 +1,6 @@
+# Ignore all compiled ELF files
+*.out
+*.exe
+*.elf
+
 goPong
