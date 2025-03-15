@@ -32,3 +32,18 @@ func ScreenDraw(size, x, y float64, r, g, b, a float32, spacing float64, screen 
 
 	text.Draw(screen, line, textFace, textOptions)
 }
+
+func MeasureText(line string, spacing float64) (float64, float64) {
+	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
+	if err != nil {
+		log.Fatal(err)
+	}
+	pressStart2PFaceSource = s
+
+	textFace := &text.GoTextFace{
+		Source: pressStart2PFaceSource,
+		Size:   13,
+	}
+
+	return text.Measure(line, textFace, spacing)
+}

@@ -3,6 +3,7 @@ package scenes
 import (
 	"goPong/menu"
 	"image/color"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -38,7 +39,8 @@ func (s *StartScene) FirstLoad() {
 			"Contro IA",
 			"Multiplayer",
 		},
-		Selected: 0,
+		Selected:     0,
+		LastMoveTime: time.Now(),
 	}
 	s.loaded = true
 }
