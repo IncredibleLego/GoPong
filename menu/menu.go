@@ -21,16 +21,19 @@ func (m *Menu) Update() {
 	moveInterval := time.Duration(time.Second / constants.MenuOptionsPerSecond)
 
 	arrowUp := inpututil.KeyPressDuration(ebiten.KeyArrowUp)
-	arrowDown := inpututil.KeyPressDuration(ebiten.KeyArrowDown)
+	keyW := inpututil.KeyPressDuration(ebiten.KeyW)
 
-	if arrowUp > 0 && time.Since(m.LastMoveTime) >= moveInterval {
+	arrowDown := inpututil.KeyPressDuration(ebiten.KeyArrowDown)
+	keyS := inpututil.KeyPressDuration(ebiten.KeyS)
+
+	if (arrowUp > 0 || keyW > 0) && time.Since(m.LastMoveTime) >= moveInterval {
 		m.Selected--
 		if m.Selected < 0 {
 			m.Selected = len(m.Options) - 1
 		}
 		m.LastMoveTime = time.Now()
 	}
-	if arrowDown > 0 && time.Since(m.LastMoveTime) >= moveInterval {
+	if (arrowDown > 0 || keyS > 0) && time.Since(m.LastMoveTime) >= moveInterval {
 		m.Selected++
 		if m.Selected >= len(m.Options) {
 			m.Selected = 0

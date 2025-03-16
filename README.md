@@ -20,6 +20,9 @@ SCENE:
 
 MENU:
 
+- Menu uses W and S too
+- Double main menu: PLAY OPTIONS CREDITS
+- Menu option to center in screen where you want
 - New colors
 - Import pictures?
 - Center and manage menu
