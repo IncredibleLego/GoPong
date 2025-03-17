@@ -12,6 +12,7 @@ GAMEPLAY:
 - Ball position at pause scene
 - Ball bumping mechanic based on paddle hitpoint (angolo diverso in base a punto colpito diverso)
 - 2 players and computer mode
+- ball must go thowards player that just got scored
 
 SCENE:
 
@@ -29,6 +30,23 @@ MENU:
 - Import pictures?
 - Center and manage menu
 - Mouse selection full implementation
+
+- OnEnter() OnExit in scenes: remove?
+
+STAMPA VALORI:
+due sprite 
+
+serie di numeri
+
+vuoto 1 2 3 4 5 6 7 8 9
+
+al'inizio due sprite
+
+vuoto 0
+vuoto 1 ecc.
+vuoto 9
+1 0
+1 1 ecc
 
 
 

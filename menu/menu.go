@@ -52,21 +52,27 @@ func (m *Menu) Update() *Menu {
 		}
 	}
 
-	// Controllo posizione mouse
+	// **Gestione del mouse**
 	mouseX, mouseY := ebiten.CursorPosition()
-	baseY := 100  // Posizione Y di partenza delle opzioni
-	spacing := 30 // Spazio tra le opzioni
 
-	for i := range m.Options {
-		optionY := baseY + i*spacing
-		textWidth, textHeight := MeasureText(m.Options[i], 1.5)
-		textX := 100.0
+	baseY := constants.ScreenHeight / 3 // Punto di partenza delle opzioni (centrato)
+	spacing := 30                       // Spazio tra le opzioni
 
-		if float64(mouseX) >= textX && float64(mouseX) <= textX+textWidth && float64(mouseY) >= float64(optionY)-textHeight && float64(mouseY) <= float64(optionY) {
+	for i, option := range m.Options {
+		textWidth, textHeight := MeasureText(option, 1.5)
+		x := (constants.ScreenWidth - textWidth) / 2
+		y := baseY + i*spacing
+
+		// Controllo se il mouse è sopra il testo
+		if float64(mouseX) >= x && float64(mouseX) <= x+textWidth &&
+			float64(mouseY) >= float64(y)-textHeight && float64(mouseY) <= float64(y) {
+
 			m.Selected = i // Evidenzia l'opzione sotto il mouse
+
+			// Se il tasto sinistro viene premuto, cambia menu o esegui azione
 			if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-				if m.Options[m.Selected].SubMenu != nil {
-					return m.Options[m.Selected].SubMenu
+				if option.SubMenu != nil {
+					return option.SubMenu
 				}
 			}
 		}

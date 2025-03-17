@@ -45,5 +45,6 @@ func MeasureText(option MenuOption, spacing float64) (float64, float64) {
 		Size:   13,
 	}
 
-	return text.Measure(option.Label, textFace, spacing)
+	boundsX, boundsY := text.Measure(option.Label, textFace, spacing)
+	return boundsX, boundsY
 }
