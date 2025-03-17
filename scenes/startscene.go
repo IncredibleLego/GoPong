@@ -1,48 +1,69 @@
 package scenes
 
 import (
+	"fmt"
 	"goPong/menu"
 	"image/color"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type StartScene struct { // is the scene loaded now
-	menu   *menu.Menu
-	loaded bool
+	currentMenu        *menu.Menu
+	mainMenu           *menu.Menu
+	playMenu           *menu.Menu
+	loaded             bool
+	lastEnterPressTime time.Time
+	actionExecuted     bool
 }
 
 func NewStartScene() *StartScene {
 	return &StartScene{
-		menu:   nil,
-		loaded: false,
+		currentMenu: nil,
+		mainMenu:    nil,
+		playMenu:    nil,
+		loaded:      false,
 	}
 }
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
 
-	screen.Fill(color.RGBA{255, 0, 0, 255})
-	/*
-		menu.ScreenDraw(13, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pong in Go")
-		menu.ScreenDraw(13, 210, 200, 1, 1, 1, 1, 1.5, screen, "by IncredibleLego")
-		menu.ScreenDraw(13, 250, 220, 1, 1, 1, 1, 1.5, screen, "Press Enter to start") */
+	screen.Fill(color.RGBA{0, 0, 0, 1})
 
-	s.menu.Draw(screen)
+	menu.ScreenDraw(13, 250, 60, 1, 1, 1, 1, 1.5, screen, "Pong in Go")
+	menu.ScreenDraw(13, 210, 80, 1, 1, 1, 1, 1.5, screen, "by IncredibleLego")
+
+	s.currentMenu.Draw(screen)
 
 }
 
 func (s *StartScene) FirstLoad() {
-	s.menu = &menu.Menu{
-		Options: []string{
-			"Solo",
-			"Contro IA",
-			"Multiplayer",
+	s.mainMenu = &menu.Menu{
+		Options: []menu.MenuOption{
+			{Label: "PLAY"},
+			{Label: "OPTIONS"},
+			{Label: "CREDITS"},
+			{Label: "EXIT"},
 		},
 		Selected:     0,
 		LastMoveTime: time.Now(),
 	}
+	s.playMenu = &menu.Menu{
+		Options: []menu.MenuOption{
+			{Label: "SOLO MODE"},
+			{Label: "COMPUTER MODE"},
+			{Label: "MULTIPLAYER MODE"},
+			{Label: "BACK"},
+		},
+		Selected:     0,
+		LastMoveTime: time.Now(),
+	}
+	s.currentMenu = s.mainMenu
 	s.loaded = true
+	s.lastEnterPressTime = time.Now()
+	s.actionExecuted = false
 }
 
 func (s *StartScene) IsLoaded() bool {
@@ -58,12 +79,53 @@ func (s *StartScene) OnExit() {
 }
 
 func (s *StartScene) Update() SceneId {
-	s.menu.Update()
-
-	if ebiten.IsKeyPressed(ebiten.KeyEnter) {
-		return GameSceneId
+	nextMenu := s.currentMenu.Update()
+	if nextMenu != nil {
+		s.currentMenu = nextMenu
+		s.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
+		s.actionExecuted = false
+	} else {
+		// Evita l'esecuzione immediata dopo il cambio menu
+		if time.Since(s.lastEnterPressTime) > 200*time.Millisecond {
+			// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
+			if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !s.actionExecuted {
+				id := s.handleMenuSelection()
+				s.actionExecuted = true // Evita che venga eseguito più volte
+				if id != StartSceneId {
+					return id
+				}
+			}
+		}
 	}
+
+	// Se Enter viene rilasciato, permetti nuove azioni
+	if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		s.actionExecuted = false
+	}
+
 	return StartSceneId
 }
 
 var _ Scene = (*StartScene)(nil)
+
+func (s *StartScene) handleMenuSelection() SceneId {
+	selectedOption := s.currentMenu.Options[s.currentMenu.Selected].Label
+
+	switch selectedOption {
+	case "PLAY":
+		s.currentMenu = s.playMenu
+		s.playMenu.Selected = 0
+	case "OPTIONS":
+		fmt.Println("OPTIONS NOT YET IMPLEMENTED")
+	case "CREDITS":
+		fmt.Println("CREDITS NOT YET IMPLEMENTED")
+	case "EXIT":
+		return ExitSceneId
+	case "SOLO MODE", "COMPUTER MODE", "MULTIPLAYER MODE":
+		return GameSceneId
+	case "BACK":
+		s.currentMenu = s.mainMenu
+	}
+
+	return StartSceneId
+}

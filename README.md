@@ -20,9 +20,11 @@ SCENE:
 
 MENU:
 
-- Menu uses W and S too
-- Double main menu: PLAY OPTIONS CREDITS
+- PAUSE menu that really pauses game and don't stop
+- PAUSE menu with gamescene blurred in background
 - Menu option to center in screen where you want
+- STARTMENU with black background, selected option in menu flashes, default options are white
+- STARTMENU: HIGHSCORES option to show the best highScores (ask player name and save?)
 - New colors
 - Import pictures?
 - Center and manage menu

@@ -5,6 +5,6 @@ const (
 	ScreenHeight         = 480
 	BallSpeed            = 3
 	PaddleSpeed          = 6
-	MenuOptionsPerSecond = 5
+	MenuOptionsPerSecond = 4
 	TextDimension        = 13
 )

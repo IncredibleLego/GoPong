@@ -2,7 +2,6 @@ package menu
 
 import (
 	_ "embed"
-	"fmt"
 	"goPong/constants"
 	"time"
 
@@ -10,14 +9,20 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
+type MenuOption struct {
+	Label   string
+	SubMenu *Menu
+}
+
 type Menu struct {
-	Options      []string
+	Options      []MenuOption
 	Selected     int
 	LastMoveTime time.Time
 }
 
-func (m *Menu) Update() {
+func (m *Menu) Update() *Menu {
 
+	// moveInterval could be a constant
 	moveInterval := time.Duration(time.Second / constants.MenuOptionsPerSecond)
 
 	arrowUp := inpututil.KeyPressDuration(ebiten.KeyArrowUp)
@@ -42,8 +47,9 @@ func (m *Menu) Update() {
 	}
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		// Avvia la modalità selezionata
-		startGame(m.Selected)
+		if m.Options[m.Selected].SubMenu != nil {
+			return m.Options[m.Selected].SubMenu
+		}
 	}
 
 	// Controllo posizione mouse
@@ -59,42 +65,27 @@ func (m *Menu) Update() {
 		if float64(mouseX) >= textX && float64(mouseX) <= textX+textWidth && float64(mouseY) >= float64(optionY)-textHeight && float64(mouseY) <= float64(optionY) {
 			m.Selected = i // Evidenzia l'opzione sotto il mouse
 			if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-				startGame(m.Selected)
+				if m.Options[m.Selected].SubMenu != nil {
+					return m.Options[m.Selected].SubMenu
+				}
 			}
 		}
 	}
+	return nil
 }
 
 func (m *Menu) Draw(screen *ebiten.Image) {
 	for i, option := range m.Options {
 
-		textWidth, textHeight := MeasureText(option, 1.5)
+		textWidth, textHeight := MeasureText(m.Options[i], 1.5)
 
 		x := (constants.ScreenWidth - textWidth) / 2   // Centra orizzontalmente
 		y := (constants.ScreenHeight - textHeight) / 3 // Centra verticalmente
 
 		if i == m.Selected {
-			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option)
+			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, option.Label)
 		} else {
-			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 0, 0, 0, 1, 1.5, screen, option)
+			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option.Label)
 		}
-
-		/*
-			if i == m.Selected {
-				ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 1, 1, 1, 1, 1.5, screen, option)
-			} else {
-				ScreenDraw(constants.TextDimension, 100, float64(100+(i*30)), 0, 0, 0, 1, 1.5, screen, option)
-			} */
-	}
-}
-
-func startGame(mode int) {
-	switch mode {
-	case 0:
-		fmt.Println("Avvio modalità Solo")
-	case 1:
-		fmt.Println("Avvio modalità Contro IA")
-	case 2:
-		fmt.Println("Avvio modalità Multiplayer")
 	}
 }
