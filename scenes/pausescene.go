@@ -1,59 +1,91 @@
 package scenes
 
 import (
-	"goPong/constants"
+	"fmt"
 	"goPong/menu"
-	"image/color"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type PauseScene struct {
-	loaded bool
+	pauseMenu      *menu.Menu
+	loaded         bool
+	actionExecuted bool
 }
 
 func NewPauseScene() *PauseScene {
 	return &PauseScene{
-		loaded: false,
+		pauseMenu: nil,
+		loaded:    false,
 	}
 }
 
-func (g *PauseScene) Draw(screen *ebiten.Image) {
+func (p *PauseScene) Draw(screen *ebiten.Image) {
 
-	screen.Fill(color.RGBA{200, 200, 0, 200})
+	//screen.Fill(color.RGBA{0, 0, 0, 1})
 
-	menu.ScreenDraw(constants.TextDimension, 250, 180, 1, 1, 1, 1, 1.5, screen, "Pause menu")
-	menu.ScreenDraw(constants.TextDimension, 180, 200, 1, 1, 1, 1, 1.5, screen, "Press Enter to unpause")
-	menu.ScreenDraw(constants.TextDimension, 200, 220, 1, 1, 1, 1, 1.5, screen, "Press 'q' to quit")
-
+	p.pauseMenu.Draw(screen)
 }
 
-func (s *PauseScene) FirstLoad() {
-	s.loaded = true
-}
-
-func (s *PauseScene) IsLoaded() bool {
-	return s.loaded
-}
-
-func (s *PauseScene) OnEnter() {
-
-}
-
-func (s *PauseScene) OnExit() {
-
-}
-
-func (s *PauseScene) Update() SceneId {
-	if inpututil.IsKeyJustPressed(ebiten.KeyQ) {
-		return ExitSceneId
+func (p *PauseScene) FirstLoad() {
+	p.pauseMenu = &menu.Menu{
+		Options: []menu.MenuOption{
+			{Label: "UNPAUSE"},
+			{Label: "OPTIONS"},
+			{Label: "EXIT"},
+		},
+		Selected:     0,
+		LastMoveTime: time.Now(),
 	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		return GameSceneId
+	p.loaded = true
+}
+
+func (p *PauseScene) IsLoaded() bool {
+	return p.loaded
+}
+
+func (p *PauseScene) OnEnter() {
+
+}
+
+func (p *PauseScene) OnExit() {
+
+}
+
+func (p *PauseScene) Update() SceneId {
+
+	p.pauseMenu.Update()
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) && !p.actionExecuted {
+		id := p.handleMenuSelection()
+		p.actionExecuted = true
+		if id != PauseSceneId {
+			return id
+		}
+	}
+
+	if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		p.actionExecuted = false
 	}
 
 	return PauseSceneId
 }
 
 var _ Scene = (*PauseScene)(nil)
+
+func (p *PauseScene) handleMenuSelection() SceneId {
+	selectedOption := p.pauseMenu.Options[p.pauseMenu.Selected].Label
+
+	switch selectedOption {
+	case "UNPAUSE":
+		return GameSceneId
+	case "OPTIONS":
+		fmt.Println("OPTIONS NOT YET IMPLEMENTED")
+	case "EXIT":
+		return StartSceneId
+	}
+
+	return PauseSceneId
+}

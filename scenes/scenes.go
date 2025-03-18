@@ -1,8 +1,6 @@
 package scenes
 
 import (
-	_ "embed"
-
 	"github.com/hajimehoshi/ebiten/v2"
 )
 

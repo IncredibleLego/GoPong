@@ -73,16 +73,16 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 func (g *GameScene) FirstLoad() {
 	g.paddle = &objects.Paddle{
 		Object: &objects.Object{
-			X: 600,
-			Y: 200,
+			X: constants.ScreenWidth - constants.PaddleDistanceFromWall,
+			Y: constants.ScreenHeight / 2,
 			W: 15,
 			H: 100,
 		},
 	}
 	g.enemyPaddle = &objects.Paddle{
 		Object: &objects.Object{
-			X: 40,
-			Y: 200,
+			X: constants.PaddleDistanceFromWall,
+			Y: constants.ScreenHeight / 2,
 			W: 15,
 			H: 100,
 		},

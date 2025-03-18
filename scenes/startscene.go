@@ -92,6 +92,7 @@ func (s *StartScene) Update() SceneId {
 				id := s.handleMenuSelection()
 				s.actionExecuted = true // Evita che venga eseguito più volte
 				if id != StartSceneId {
+					s.currentMenu = s.mainMenu
 					return id
 				}
 			}

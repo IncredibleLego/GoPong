@@ -5,6 +5,11 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 TODO:
 
+CONSTANTS:
+
+- Make screen adaptable to bigger dimensions
+- Make menu adaptable to bigger dimensions (spacing between options based on screen dimension)
+
 GAMEPLAY:
 
 - Ball positioning at beginning (random)
