@@ -45,7 +45,7 @@ func (s *StartScene) FirstLoad() {
 			{Label: "PLAY"},
 			{Label: "OPTIONS"},
 			{Label: "CREDITS"},
-			{Label: "EXIT"},
+			{Label: "QUIT"},
 		},
 		Selected:     0,
 		LastMoveTime: time.Now(),
@@ -120,9 +120,13 @@ func (s *StartScene) handleMenuSelection() SceneId {
 		fmt.Println("OPTIONS NOT YET IMPLEMENTED")
 	case "CREDITS":
 		fmt.Println("CREDITS NOT YET IMPLEMENTED")
-	case "EXIT":
+	case "QUIT":
 		return ExitSceneId
-	case "SOLO MODE", "COMPUTER MODE", "MULTIPLAYER MODE":
+	case "SOLO MODE":
+		return GameSceneId
+	case "COMPUTER MODE":
+		return ComputerSceneId
+	case "MULTIPLAYER MODE":
 		return GameSceneId
 	case "BACK":
 		s.currentMenu = s.mainMenu

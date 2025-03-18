@@ -10,15 +10,17 @@ import (
 )
 
 type PauseScene struct {
-	pauseMenu      *menu.Menu
-	loaded         bool
-	actionExecuted bool
+	pauseMenu       *menu.Menu
+	loaded          bool
+	actionExecuted  bool
+	previousSceneId SceneId
 }
 
-func NewPauseScene() *PauseScene {
+func NewPauseScene(previous SceneId) *PauseScene {
 	return &PauseScene{
-		pauseMenu: nil,
-		loaded:    false,
+		pauseMenu:       nil,
+		loaded:          false,
+		previousSceneId: previous,
 	}
 }
 
@@ -80,10 +82,12 @@ func (p *PauseScene) handleMenuSelection() SceneId {
 
 	switch selectedOption {
 	case "UNPAUSE":
-		return GameSceneId
+		p.pauseMenu.Selected = 0
+		return p.previousSceneId
 	case "OPTIONS":
 		fmt.Println("OPTIONS NOT YET IMPLEMENTED")
 	case "EXIT":
+		p.pauseMenu.Selected = 0
 		return StartSceneId
 	}
 

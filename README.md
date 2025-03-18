@@ -21,8 +21,15 @@ GAMEPLAY:
 
 SCENE:
 
-- Highscores saved to file
+- Highscores saved to file, settings saved to file
 - Sounds
+
+SETTINGS:
+- settings saved to file
+- "reset options"
+
+TIMING:
+- aggiungi timing quando entri una sezione o viene sengato punto
 
 MENU:
 
@@ -35,6 +42,9 @@ MENU:
 - Import pictures?
 - Center and manage menu
 - Mouse selection full implementation
+
+- PAUSESCENE must return in the function where is called and not in GameScene by default
+- PAUSESCENE must return to option "RESUME" when exiting
 
 - OnEnter() OnExit in scenes: remove?
 

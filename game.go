@@ -14,9 +14,10 @@ type Game struct {
 
 func NewGame() *Game {
 	sceneMap := map[scenes.SceneId]scenes.Scene{
-		scenes.GameSceneId:  scenes.NewGameScene(),
-		scenes.StartSceneId: scenes.NewStartScene(),
-		scenes.PauseSceneId: scenes.NewPauseScene(),
+		scenes.GameSceneId:     scenes.NewGameScene(),
+		scenes.StartSceneId:    scenes.NewStartScene(),
+		scenes.PauseSceneId:    nil,
+		scenes.ComputerSceneId: scenes.NewComputerScene(),
 	}
 	activeSceneId := scenes.StartSceneId
 	sceneMap[activeSceneId].FirstLoad()
@@ -33,6 +34,11 @@ func (g *Game) Update() error {
 		return ebiten.Termination
 	}
 	if nextSceneId != g.activeSceneId {
+
+		if nextSceneId == scenes.PauseSceneId {
+			g.sceneMap[scenes.PauseSceneId] = scenes.NewPauseScene(g.activeSceneId)
+		}
+
 		nextScene := g.sceneMap[nextSceneId] // if the scene is different from the current scene, the current scene is exited and the new scene is entered
 		if !nextScene.IsLoaded() {
 			nextScene.FirstLoad() // if the scene is not loaded, it is loaded
