@@ -45,6 +45,7 @@ MENU:
 
 - PAUSESCENE must return in the function where is called and not in GameScene by default
 - PAUSESCENE must return to option "RESUME" when exiting
+- PAUSESCENE doesn't have a black background, but blurres the background and puts the menù on
 
 - OnEnter() OnExit in scenes: remove?
 

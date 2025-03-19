@@ -20,8 +20,23 @@ func (p *Paddle) MoveOnKeyPress() { // Move the paddle based on keypress
 }
 
 func (p *Paddle) CollideWithPaddle(b *Ball) bool { // Check if the ball collides with the paddle
-	return p.X < b.X+b.W &&
-		p.X+p.W > b.X &&
-		p.Y < b.Y+b.H &&
-		p.Y+p.H > b.Y
+	if p.X < b.X+b.W && p.X+p.W > b.X && p.Y < b.Y+b.H && p.Y+p.H > b.Y {
+		// Calulate the impact point based on the center of the paddle
+
+		impactPoint := (p.Y + p.H/2) - (b.Y + b.H/2)
+
+		// Normalize the result
+
+		normalizedImpactPoint := float64(impactPoint) / float64(p.H/2)
+
+		// Calculate inflexion angle based on the normalized impact point
+		// The ball reflects with a lower vertical speed if the impact point is closer to the center of the paddle
+
+		b.Dydt = int(float64(constants.BallSpeed) * normalizedImpactPoint)
+
+		b.Dxdt = -b.Dxdt
+
+		return true
+	}
+	return false
 }
