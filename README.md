@@ -48,6 +48,7 @@ MENU:
 
 - STARTMENU
     - Highscores option to show the best highScores (make player save name and save)
+    - Unplayable pong playing in the background (https://richardcarter.org/)
 
 
 Print colors:  

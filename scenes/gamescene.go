@@ -97,7 +97,11 @@ func (g *GameScene) Update() SceneId {
 	}
 	g.paddle.MoveOnKeyPress()
 	g.ball.Move()
-	g.CollideWithWall()
+
+	if g.ball.X+g.ball.W >= constants.ScreenWidth {
+		g.score = 0
+	}
+	g.ball.CollideWithWall(false, true)
 
 	if g.paddle.CollideWithPaddle(g.ball) {
 		g.IncreaseScore()
@@ -111,27 +115,9 @@ func (g *GameScene) Update() SceneId {
 
 var _ Scene = (*GameScene)(nil)
 
-func (g *GameScene) CollideWithWall() { // Check if the ball collides with the wall
-	if g.ball.X >= constants.ScreenWidth {
-		g.Reset()
-	} else if g.ball.X <= 0 {
-		g.ball.Dxdt = constants.BallSpeed
-	} else if g.ball.Y <= 0 {
-		g.ball.Dydt = constants.BallSpeed
-	} else if g.ball.Y >= constants.ScreenHeight {
-		g.ball.Dydt = -constants.BallSpeed
-	}
-}
-
 func (g *GameScene) IncreaseScore() {
 	g.score++
 	if g.score > g.highScore {
 		g.highScore = g.score
 	}
-}
-
-func (g *GameScene) Reset() { // Reset the game
-	g.ball.X = constants.ScreenWidth / 2
-	g.ball.Y = constants.ScreenHeight / 2
-	g.score = 0
 }
