@@ -3,7 +3,7 @@ package constants
 const (
 	ScreenWidth            = 640 //1000
 	ScreenHeight           = 480 //750
-	BallSpeed              = 3
+	BallSpeed              = 6
 	PaddleSpeed            = 6
 	MenuOptionsPerSecond   = 4
 	TextDimension          = 13                       //20

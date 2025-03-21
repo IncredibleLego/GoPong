@@ -2,6 +2,7 @@ package objects
 
 import (
 	"goPong/constants"
+	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 )
@@ -19,6 +20,7 @@ func (p *Paddle) MoveOnKeyPress() { // Move the paddle based on keypress
 	}
 }
 
+/*
 func (p *Paddle) CollideWithPaddle(b *Ball) bool { // Check if the ball collides with the paddle
 	if p.X < b.X+b.W && p.X+p.W > b.X && p.Y < b.Y+b.H && p.Y+p.H > b.Y {
 		// Calulate the impact point based on the center of the paddle
@@ -33,8 +35,40 @@ func (p *Paddle) CollideWithPaddle(b *Ball) bool { // Check if the ball collides
 		// The ball reflects with a lower vertical speed if the impact point is closer to the center of the paddle
 
 		b.Dydt = int(float64(constants.BallSpeed) * normalizedImpactPoint)
-
 		b.Dxdt = -b.Dxdt
+
+		return true
+	}
+	return false
+} */
+
+func (p *Paddle) CollideWithPaddle(b *Ball) bool { // Check if the ball collides with the paddle
+	if p.X < b.X+b.W && p.X+p.W > b.X && p.Y < b.Y+b.H && p.Y+p.H > b.Y {
+		// Calulate the impact point based on the center of the paddle
+		impactPoint := (p.Y + p.H/2) - (b.Y + b.H/2)
+
+		// Normalize the result
+		normalizedImpactPoint := float64(impactPoint) / float64(p.H/2)
+
+		// Calculate the new vertical speed based on the normalized impact point
+		newDydt := float64(constants.BallSpeed) * normalizedImpactPoint
+
+		// Ensure the newDydt does not exceed the total speed
+		if math.Abs(newDydt) > float64(constants.BallSpeed) {
+			newDydt = float64(constants.BallSpeed) * math.Copysign(1, newDydt)
+		}
+
+		// Calculate the new horizontal speed to maintain the total speed
+		newDxdt := math.Sqrt(float64(constants.BallSpeed*constants.BallSpeed) - newDydt*newDydt)
+
+		// Ensure the newDxdt does not fall below the minimum speed
+		if newDxdt < float64(constants.BallSpeed) {
+			newDxdt = float64(constants.BallSpeed)
+		}
+
+		// Update the ball's velocity
+		b.Dydt = -int(newDydt)
+		b.Dxdt = -int(newDxdt)
 
 		return true
 	}

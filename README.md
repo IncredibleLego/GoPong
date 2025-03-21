@@ -23,6 +23,8 @@ GAMEPLAY:
 - Ball bumping mechanic based on paddle hitpoint (different angle based on different hitpoint)
 - Ball must go thowards player that just got scored
 
+- Modify increase speed, no longer working
+
 SCENES:
 
 - Highscores saved to file

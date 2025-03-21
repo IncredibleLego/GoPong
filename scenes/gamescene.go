@@ -59,6 +59,13 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 	menu.ScreenDraw(constants.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(g.score))
 	menu.ScreenDraw(constants.TextDimension, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
 	menu.ScreenDraw(constants.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "SOLO MODE")
+
+	//Debug
+	x := strconv.Itoa(g.ball.Dxdt)
+	y := strconv.Itoa(g.ball.Dydt)
+
+	menu.ScreenDraw(constants.TextDimension, 300, 10, 1, 1, 1, 1, 1.5, screen, x)
+	menu.ScreenDraw(constants.TextDimension, 320, 10, 1, 1, 1, 1, 1.5, screen, y)
 }
 
 // FirstLoad implements Scene.
@@ -81,6 +88,7 @@ func (g *GameScene) FirstLoad() {
 		Dxdt: constants.BallSpeed,
 		Dydt: constants.BallSpeed,
 	}
+	g.ball.GenerateRandomDirection()
 }
 
 func (g *GameScene) OnEnter() {

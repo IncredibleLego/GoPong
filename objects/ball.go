@@ -2,6 +2,8 @@ package objects
 
 import (
 	"goPong/constants"
+	"math"
+	"math/rand/v2"
 	"time"
 )
 
@@ -25,13 +27,13 @@ func (b *Ball) IncreaseSpeed(increase int) { // Increase the speed of the ball
 func (b *Ball) CollideWithWall(w1, w2 bool) { // Check if the ball collides with the wall
 	if b.X <= 0 {
 		if w1 {
-			b.Reset()
+			b.Reset(true) //true = left player got scored
 		} else {
 			b.Dxdt = -b.Dxdt
 		}
 	} else if b.X+b.W >= constants.ScreenWidth {
 		if w2 {
-			b.Reset()
+			b.Reset(false) //false = right player got scored
 		} else {
 			b.Dxdt = -b.Dxdt
 		}
@@ -42,14 +44,29 @@ func (b *Ball) CollideWithWall(w1, w2 bool) { // Check if the ball collides with
 	}
 }
 
-func (b *Ball) Reset() { // Reset the ball to the center of the screen
+func (b *Ball) Reset(p bool) { // Reset the ball to the center of the screen
 	go func() {
-		b.X = constants.ScreenWidth / 2
-		b.Y = constants.ScreenHeight / 2
+		b.X = constants.ScreenWidth/2 - b.W/2
+		b.Y = constants.ScreenHeight/2 - b.H/2
 		b.Dxdt = 0
 		b.Dydt = 0
 		time.Sleep(time.Second)
-		b.Dxdt = constants.BallSpeed
-		b.Dydt = constants.BallSpeed
+
+		b.GenerateRandomDirection()
+
+		// Ensure the ball moves in the correct direction based on the player who scored
+		if p {
+			b.Dxdt = -b.Dxdt
+		}
 	}()
+}
+
+func (b *Ball) GenerateRandomDirection() {
+	// Generate a random angle between -45 and 45 degrees
+	angle := rand.Float64()*90 - 45
+	radians := angle * (math.Pi / 180)
+
+	// Calculate the new velocities based on the angle
+	b.Dxdt = int(float64(constants.BallSpeed) * math.Cos(radians))
+	b.Dydt = int(float64(constants.BallSpeed) * math.Sin(radians))
 }
