@@ -20,8 +20,6 @@ GAMEPLAY:
 
 - Ball positioning at beginning (random)
 - Ball delay after time hit
-- Ball bumping mechanic based on paddle hitpoint (different angle based on different hitpoint)
-- Ball must go thowards player that just got scored
 
 - Modify increase speed, no longer working
 
@@ -40,10 +38,9 @@ SCENES:
 - AI MODE
     - Beatable AI
 
-- Multiplayer MODE:
-    - Two controlled paddes
-
 MENU:
+
+- ScreenDraw() method must be simpler with less passed values
 
 - PAUSEMENU
     - Game paused that resmes after pause

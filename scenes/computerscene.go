@@ -18,6 +18,7 @@ type ComputerScene struct {
 	enemyPaddle *objects.Paddle
 	ball        *objects.Ball
 	score       int
+	scoreEnemy  int
 	highScore   int
 }
 
@@ -32,6 +33,7 @@ func NewComputerScene() *ComputerScene {
 		enemyPaddle: nil,
 		ball:        nil,
 		score:       0,
+		scoreEnemy:  0,
 		highScore:   0,
 	}
 }
@@ -64,8 +66,8 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	}
 
 	menu.ScreenDraw(constants.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.score))
-	menu.ScreenDraw(constants.TextDimension, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(c.highScore))
-	menu.ScreenDraw(constants.TextDimension, 450, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER MODE")
+	menu.ScreenDraw(constants.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.scoreEnemy))
+	menu.ScreenDraw(constants.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER MODE")
 }
 
 // FirstLoad implements Scene.
@@ -96,6 +98,7 @@ func (c *ComputerScene) FirstLoad() {
 		Dxdt: constants.BallSpeed,
 		Dydt: constants.BallSpeed,
 	}
+	c.ball.GenerateRandomDirection()
 }
 
 func (c *ComputerScene) OnEnter() {
@@ -111,20 +114,19 @@ func (c *ComputerScene) Update() SceneId {
 		return PauseSceneId
 	}
 
-	if !c.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown) {
-		c.paddle.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
-	}
-
+	c.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
+	c.enemyPaddle.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
 	c.ball.Move()
-	c.CollideWithWall()
+	c.ball.CollideWithWall(true, true)
 
-	if c.paddle.CollideWithPaddle(c.ball, true) {
-		c.IncreaseScore()
-		if c.score%5 == 0 {
-			c.ball.IncreaseSpeed(2)
-		}
-		c.ball.Dxdt = -c.ball.Dxdt
+	if c.ball.CollideWithWall(true, true) == 1 {
+		c.score++
+	} else if c.ball.CollideWithWall(true, true) == 2 {
+		c.scoreEnemy++
 	}
+
+	c.paddle.CollideWithPaddle(c.ball, true)
+	c.enemyPaddle.CollideWithPaddle(c.ball, false)
 
 	return ComputerSceneId
 }
