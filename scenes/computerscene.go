@@ -110,11 +110,15 @@ func (c *ComputerScene) Update() SceneId {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return PauseSceneId
 	}
-	c.paddle.MoveOnKeyPress()
+
+	if !c.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown) {
+		c.paddle.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
+	}
+
 	c.ball.Move()
 	c.CollideWithWall()
 
-	if c.paddle.CollideWithPaddle(c.ball) {
+	if c.paddle.CollideWithPaddle(c.ball, true) {
 		c.IncreaseScore()
 		if c.score%5 == 0 {
 			c.ball.IncreaseSpeed(2)

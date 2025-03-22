@@ -35,6 +35,7 @@ SCENES:
 
 - ()OnExit remove?
 - Print score values: 2 sprite for all values (max value 99) with all numbers that increase
+- When you exit a mode, it shouldn't be saved the score and results
 
 - AI MODE
     - Beatable AI

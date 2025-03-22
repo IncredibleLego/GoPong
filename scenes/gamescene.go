@@ -103,7 +103,11 @@ func (g *GameScene) Update() SceneId {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return PauseSceneId
 	}
-	g.paddle.MoveOnKeyPress()
+
+	if !g.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown) {
+		g.paddle.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
+	}
+
 	g.ball.Move()
 
 	if g.ball.X+g.ball.W >= constants.ScreenWidth {
@@ -111,7 +115,7 @@ func (g *GameScene) Update() SceneId {
 	}
 	g.ball.CollideWithWall(false, true)
 
-	if g.paddle.CollideWithPaddle(g.ball) {
+	if g.paddle.CollideWithPaddle(g.ball, true) {
 		g.IncreaseScore()
 		if g.score%5 == 0 {
 			g.ball.IncreaseSpeed(2)

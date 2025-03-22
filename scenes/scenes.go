@@ -12,6 +12,7 @@ const (
 	ExitSceneId
 	PauseSceneId
 	ComputerSceneId
+	MultiplayerSceneId
 )
 
 type Scene interface {

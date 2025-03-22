@@ -127,7 +127,7 @@ func (s *StartScene) handleMenuSelection() SceneId {
 	case "COMPUTER MODE":
 		return ComputerSceneId
 	case "MULTIPLAYER MODE":
-		return GameSceneId
+		return MultiplayerSceneId
 	case "BACK":
 		s.currentMenu = s.mainMenu
 	}
