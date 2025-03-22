@@ -47,6 +47,58 @@ func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides 
 	return 0
 }
 
+func (b *Ball) CollideWithPaddle(p *Paddle, direction bool) bool { // Check if the ball collides with the paddle
+	check := false
+
+	// direction is true if the ball is moving to the left, false otherwise
+	if direction {
+		if p.X < b.X+b.W && p.X+p.W > b.X+b.W && p.Y < b.Y+b.H && p.Y+p.H > b.Y {
+			check = true
+		}
+	} else {
+		if p.X < b.X && p.X+p.W > b.X && p.Y < b.Y+b.H && p.Y+p.H > b.Y {
+			check = true
+		}
+	}
+
+	if check {
+		// Calculate the impact point based on the center of the paddle
+		impactPoint := (p.Y + p.H/2) - (b.Y + b.H/2)
+
+		// Normalize the result
+		normalizedImpactPoint := float64(impactPoint) / float64(p.H/2)
+
+		// Calculate the new vertical speed based on the normalized impact point
+		newDydt := float64(constants.BallSpeed) * normalizedImpactPoint
+
+		// Ensure the newDydt does not exceed the total speed
+		if math.Abs(newDydt) > float64(constants.BallSpeed) {
+			newDydt = float64(constants.BallSpeed) * math.Copysign(1, newDydt)
+		}
+
+		// Calculate the new horizontal speed to maintain the total speed
+		newDxdt := math.Sqrt(float64(constants.BallSpeed*constants.BallSpeed) - newDydt*newDydt)
+
+		// Ensure the newDxdt does not fall below the minimum speed
+		if newDxdt < float64(constants.BallSpeed) {
+			newDxdt = float64(constants.BallSpeed)
+		}
+
+		// Update the ball's velocity
+		b.Dydt = -int(newDydt)
+
+		if !direction {
+			b.Dxdt = int(newDxdt)
+		} else {
+			b.Dxdt = -int(newDxdt)
+		}
+
+		return true
+	}
+
+	return false
+}
+
 func (b *Ball) Reset(p bool) { // Reset the ball to the center of the screen
 	go func() {
 		b.X = constants.ScreenWidth/2 - b.W/2

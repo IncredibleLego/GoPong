@@ -115,7 +115,7 @@ func (g *GameScene) Update() SceneId {
 	}
 	g.ball.CollideWithWall(false, true)
 
-	if g.paddle.CollideWithPaddle(g.ball, true) {
+	if g.ball.CollideWithPaddle(g.paddle, true) {
 		g.IncreaseScore()
 		if g.score%5 == 0 {
 			g.ball.IncreaseSpeed(2)
