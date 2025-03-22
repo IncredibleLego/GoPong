@@ -9,4 +9,5 @@ const (
 	TextDimension          = 13                       //20
 	PaddleDistanceFromWall = 40                       //80
 	MaxBounceAngle         = 45.0 * (3.14159 / 180.0) // Max bounce angle in radians
+	Difficulty             = 0.5
 )

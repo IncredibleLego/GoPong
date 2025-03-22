@@ -36,7 +36,9 @@ SCENES:
 - When you exit a mode, it shouldn't be saved the score and results
 
 - AI MODE
-    - Beatable AI
+    AI Features:
+    - Doesn't always hit in the center, based on a random number generator it decides where to hit
+    - Doesn't always hit the ball: difficulty based on a number of possibilities/hits
 
 MENU:
 
