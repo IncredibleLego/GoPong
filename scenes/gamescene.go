@@ -73,17 +73,17 @@ func (g *GameScene) FirstLoad() {
 	g.paddle = &objects.Paddle{
 		Object: &objects.Object{
 			X: constants.ScreenWidth - constants.PaddleDistanceFromWall,
-			Y: constants.ScreenHeight / 2,
+			Y: constants.ScreenHeight/2 - constants.PaddleHeight/2,
 			W: 15,
-			H: 100,
+			H: constants.PaddleHeight,
 		},
 	}
 	g.ball = &objects.Ball{
 		Object: &objects.Object{
 			X: constants.ScreenWidth / 2,
 			Y: constants.ScreenHeight / 2,
-			W: 15,
-			H: 15,
+			W: constants.BallSize,
+			H: constants.BallSize,
 		},
 		Dxdt: constants.BallSpeed,
 		Dydt: constants.BallSpeed,

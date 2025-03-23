@@ -10,4 +10,6 @@ const (
 	PaddleDistanceFromWall = 40                       //80
 	MaxBounceAngle         = 45.0 * (3.14159 / 180.0) // Max bounce angle in radians
 	Difficulty             = 0.5
+	PaddleHeight           = 100
+	BallSize               = 15
 )
