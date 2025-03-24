@@ -14,9 +14,12 @@ type StartScene struct { // is the scene loaded now
 	currentMenu        *menu.Menu
 	mainMenu           *menu.Menu
 	playMenu           *menu.Menu
-	loaded             bool
 	lastEnterPressTime time.Time
 	actionExecuted     bool
+}
+
+func (s *StartScene) ShouldPreserveState() bool {
+	return false
 }
 
 func NewStartScene() *StartScene {
@@ -24,7 +27,6 @@ func NewStartScene() *StartScene {
 		currentMenu: nil,
 		mainMenu:    nil,
 		playMenu:    nil,
-		loaded:      false,
 	}
 }
 
@@ -61,13 +63,8 @@ func (s *StartScene) FirstLoad() {
 		LastMoveTime: time.Now(),
 	}
 	s.currentMenu = s.mainMenu
-	s.loaded = true
 	s.lastEnterPressTime = time.Now()
 	s.actionExecuted = false
-}
-
-func (s *StartScene) IsLoaded() bool {
-	return s.loaded
 }
 
 func (s *StartScene) OnEnter() {

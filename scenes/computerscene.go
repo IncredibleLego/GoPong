@@ -13,7 +13,6 @@ import (
 )
 
 type ComputerScene struct {
-	loaded      bool
 	paddle      *objects.Paddle
 	enemyPaddle *objects.Paddle
 	ball        *objects.Ball
@@ -22,13 +21,12 @@ type ComputerScene struct {
 	highScore   int
 }
 
-func (c *ComputerScene) IsLoaded() bool {
-	return c.loaded
+func (c *ComputerScene) ShouldPreserveState() bool {
+	return true
 }
 
 func NewComputerScene() *ComputerScene {
 	return &ComputerScene{
-		loaded:      false,
 		paddle:      nil,
 		enemyPaddle: nil,
 		ball:        nil,

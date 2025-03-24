@@ -21,5 +21,5 @@ type Scene interface {
 	FirstLoad()
 	OnEnter()
 	OnExit()
-	IsLoaded() bool
+	ShouldPreserveState() bool
 }

@@ -20,6 +20,10 @@ type GameScene struct {
 	highScore int
 }
 
+func (g *GameScene) ShouldPreserveState() bool {
+	return true
+}
+
 func (g *GameScene) IsLoaded() bool {
 	return g.loaded
 }

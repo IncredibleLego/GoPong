@@ -13,7 +13,6 @@ import (
 )
 
 type MultiplayerScene struct {
-	loaded    bool
 	paddle1   *objects.Paddle
 	paddle2   *objects.Paddle
 	ball      *objects.Ball
@@ -22,13 +21,12 @@ type MultiplayerScene struct {
 	highScore int
 }
 
-func (m *MultiplayerScene) IsLoaded() bool {
-	return m.loaded
+func (m *MultiplayerScene) ShouldPreserveState() bool {
+	return true
 }
 
 func NewMultiplayerScene() *MultiplayerScene {
 	return &MultiplayerScene{
-		loaded:    false,
 		paddle1:   nil,
 		paddle2:   nil,
 		ball:      nil,

@@ -47,6 +47,7 @@ MENU:
 - PAUSEMENU
     - Game paused that resmes after pause
     - Gamescene blurred in the background
+    - Choose if the scene must be saved or not
 
 - STARTMENU
     - Highscores option to show the best highScores (make player save name and save)

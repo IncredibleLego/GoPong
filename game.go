@@ -10,6 +10,7 @@ import (
 type Game struct {
 	sceneMap      map[scenes.SceneId]scenes.Scene
 	activeSceneId scenes.SceneId
+	loadedScenes  map[scenes.SceneId]bool
 }
 
 func NewGame() *Game {
@@ -23,8 +24,9 @@ func NewGame() *Game {
 	activeSceneId := scenes.StartSceneId
 	sceneMap[activeSceneId].FirstLoad()
 	return &Game{
-		sceneMap,
-		activeSceneId,
+		sceneMap:      sceneMap,
+		activeSceneId: activeSceneId,
+		loadedScenes:  map[scenes.SceneId]bool{activeSceneId: true},
 	}
 }
 
@@ -41,8 +43,9 @@ func (g *Game) Update() error {
 		}
 
 		nextScene := g.sceneMap[nextSceneId] // if the scene is different from the current scene, the current scene is exited and the new scene is entered
-		if !nextScene.IsLoaded() {
-			nextScene.FirstLoad() // if the scene is not loaded, it is loaded
+		if !g.loadedScenes[nextSceneId] || !nextScene.ShouldPreserveState() {
+			nextScene.FirstLoad() // if the scene is not loaded or should not preserve state, it is loaded
+			g.loadedScenes[nextSceneId] = true
 		}
 		nextScene.OnEnter()                  // the new scene is entered
 		g.sceneMap[g.activeSceneId].OnExit() // the current scene is exited

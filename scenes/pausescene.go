@@ -11,15 +11,17 @@ import (
 
 type PauseScene struct {
 	pauseMenu       *menu.Menu
-	loaded          bool
 	actionExecuted  bool
 	previousSceneId SceneId
+}
+
+func (p *PauseScene) ShouldPreserveState() bool {
+	return false
 }
 
 func NewPauseScene(previous SceneId) *PauseScene {
 	return &PauseScene{
 		pauseMenu:       nil,
-		loaded:          false,
 		previousSceneId: previous,
 	}
 }
@@ -41,11 +43,6 @@ func (p *PauseScene) FirstLoad() {
 		Selected:     0,
 		LastMoveTime: time.Now(),
 	}
-	p.loaded = true
-}
-
-func (p *PauseScene) IsLoaded() bool {
-	return p.loaded
 }
 
 func (p *PauseScene) OnEnter() {
