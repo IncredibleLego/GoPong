@@ -3,7 +3,6 @@ package scenes
 import (
 	"fmt"
 	"goPong/menu"
-	"image/color"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -32,7 +31,7 @@ func NewStartScene() *StartScene {
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
 
-	screen.Fill(color.RGBA{0, 0, 0, 1})
+	//screen.Fill(color.RGBA{0, 0, 0, 1})
 
 	menu.ScreenDraw(13, 250, 60, 1, 1, 1, 1, 1.5, screen, "Pong in Go")
 	menu.ScreenDraw(13, 210, 80, 1, 1, 1, 1, 1.5, screen, "by IncredibleLego")

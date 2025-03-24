@@ -5,6 +5,10 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 TODO:
 
+- AVANZATO: salvataggio dati partite su file? Possibilità di salvare una partita uscire dal gioco e riprenderla in un altro momento
+- Quando entri in una modalità chiedi se vuoi caricare la precedente partita o vuoi ripartire da 0
+- Gestione menu funzione esterna da chiamare
+
 
 CONSTANTS:
 
