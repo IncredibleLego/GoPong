@@ -21,8 +21,11 @@ type ComputerScene struct {
 	highScore   int
 }
 
-func (c *ComputerScene) ShouldPreserveState() bool {
-	return true
+func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
+	if reason == Unpause {
+		return true
+	}
+	return false
 }
 
 func NewComputerScene() *ComputerScene {

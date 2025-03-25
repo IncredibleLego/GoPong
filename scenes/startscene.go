@@ -17,7 +17,7 @@ type StartScene struct { // is the scene loaded now
 	actionExecuted     bool
 }
 
-func (s *StartScene) ShouldPreserveState() bool {
+func (s *StartScene) ShouldPreserveState(reason SceneChangeReason) bool {
 	return false
 }
 

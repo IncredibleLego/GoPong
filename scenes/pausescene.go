@@ -15,7 +15,7 @@ type PauseScene struct {
 	previousSceneId SceneId
 }
 
-func (p *PauseScene) ShouldPreserveState() bool {
+func (p *PauseScene) ShouldPreserveState(reason SceneChangeReason) bool {
 	return false
 }
 

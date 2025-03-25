@@ -21,8 +21,11 @@ type MultiplayerScene struct {
 	highScore int
 }
 
-func (m *MultiplayerScene) ShouldPreserveState() bool {
-	return true
+func (m *MultiplayerScene) ShouldPreserveState(reason SceneChangeReason) bool {
+	if reason == Unpause {
+		return true
+	}
+	return false
 }
 
 func NewMultiplayerScene() *MultiplayerScene {

@@ -20,8 +20,11 @@ type GameScene struct {
 	highScore int
 }
 
-func (g *GameScene) ShouldPreserveState() bool {
-	return true
+func (g *GameScene) ShouldPreserveState(reason SceneChangeReason) bool {
+	if reason == Unpause {
+		return true
+	}
+	return false
 }
 
 func (g *GameScene) IsLoaded() bool {
@@ -93,6 +96,8 @@ func (g *GameScene) FirstLoad() {
 		Dydt: constants.BallSpeed,
 	}
 	g.ball.GenerateRandomDirection()
+	g.score = 0
+	g.highScore = 0
 }
 
 func (g *GameScene) OnEnter() {

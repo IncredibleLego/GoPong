@@ -21,5 +21,13 @@ type Scene interface {
 	FirstLoad()
 	OnEnter()
 	OnExit()
-	ShouldPreserveState() bool
+	ShouldPreserveState(reason SceneChangeReason) bool
 }
+
+type SceneChangeReason string
+
+const (
+	Unpause SceneChangeReason = "unpause"
+	Exit    SceneChangeReason = "exit"
+	Other   SceneChangeReason = "other"
+)

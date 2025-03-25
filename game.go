@@ -38,12 +38,18 @@ func (g *Game) Update() error {
 	}
 	if nextSceneId != g.activeSceneId {
 
+		var reason scenes.SceneChangeReason
 		if nextSceneId == scenes.PauseSceneId {
 			g.sceneMap[scenes.PauseSceneId] = scenes.NewPauseScene(g.activeSceneId)
+			reason = scenes.Other
+		} else if g.activeSceneId == scenes.PauseSceneId && nextSceneId != scenes.ExitSceneId {
+			reason = scenes.Unpause
+		} else {
+			reason = scenes.Exit
 		}
 
 		nextScene := g.sceneMap[nextSceneId] // if the scene is different from the current scene, the current scene is exited and the new scene is entered
-		if !g.loadedScenes[nextSceneId] || !nextScene.ShouldPreserveState() {
+		if !g.loadedScenes[nextSceneId] || !nextScene.ShouldPreserveState(reason) {
 			nextScene.FirstLoad() // if the scene is not loaded or should not preserve state, it is loaded
 			g.loadedScenes[nextSceneId] = true
 		}
