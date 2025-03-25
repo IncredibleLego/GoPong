@@ -100,6 +100,8 @@ func (m *MultiplayerScene) FirstLoad() {
 		Dydt: constants.BallSpeed,
 	}
 	m.ball.GenerateRandomDirection()
+	m.score1 = 0
+	m.score2 = 0
 }
 
 func (g *MultiplayerScene) OnEnter() {

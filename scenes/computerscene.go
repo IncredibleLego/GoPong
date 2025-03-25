@@ -100,6 +100,8 @@ func (c *ComputerScene) FirstLoad() {
 		Dydt: constants.BallSpeed,
 	}
 	c.ball.GenerateRandomDirection()
+	c.score = 0
+	c.highScore = 0
 }
 
 func (c *ComputerScene) OnEnter() {

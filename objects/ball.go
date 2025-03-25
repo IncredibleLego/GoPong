@@ -19,8 +19,11 @@ func (b *Ball) Move() { // Move the ball
 }
 
 func (b *Ball) IncreaseSpeed(increase int) { // Increase the speed of the ball
-	b.Dxdt += increase
-	b.Dydt += increase
+	if b.Dxdt > 0 {
+		b.Dxdt += increase
+	} else {
+		b.Dxdt -= increase
+	}
 }
 
 // w1 and w2 are the horizontal walls options that the ball can collide with

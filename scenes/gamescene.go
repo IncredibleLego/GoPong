@@ -13,7 +13,6 @@ import (
 )
 
 type GameScene struct {
-	loaded    bool
 	paddle    *objects.Paddle
 	ball      *objects.Ball
 	score     int
@@ -27,13 +26,8 @@ func (g *GameScene) ShouldPreserveState(reason SceneChangeReason) bool {
 	return false
 }
 
-func (g *GameScene) IsLoaded() bool {
-	return g.loaded
-}
-
 func NewGameScene() *GameScene {
 	return &GameScene{
-		loaded:    false,
 		paddle:    nil,
 		ball:      nil,
 		score:     0,
