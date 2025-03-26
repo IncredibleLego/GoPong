@@ -10,6 +10,7 @@ TODO:
 - Gestione menu funzione esterna da chiamare
 
 - System to avoid ball always hitting in the same position (anche se la palla colpisce sempre al centro, dopo un po cambia angolo)
+- Cambiare aspetto delle opzioni selezionate
 
 
 CONSTANTS:
