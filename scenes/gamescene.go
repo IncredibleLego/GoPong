@@ -13,10 +13,11 @@ import (
 )
 
 type GameScene struct {
-	paddle    *objects.Paddle
-	ball      *objects.Ball
-	score     int
-	highScore int
+	playerName string
+	paddle     *objects.Paddle
+	ball       *objects.Ball
+	score      int
+	highScore  int
 }
 
 func (g *GameScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -28,10 +29,11 @@ func (g *GameScene) ShouldPreserveState(reason SceneChangeReason) bool {
 
 func NewGameScene() *GameScene {
 	return &GameScene{
-		paddle:    nil,
-		ball:      nil,
-		score:     0,
-		highScore: 0,
+		playerName: "",
+		paddle:     nil,
+		ball:       nil,
+		score:      0,
+		highScore:  0,
 	}
 }
 
@@ -57,7 +59,7 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(g.score))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
 	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
 	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "SOLO MODE")
 
@@ -71,6 +73,7 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 
 // FirstLoad implements Scene.
 func (g *GameScene) FirstLoad() {
+	g.playerName = config.GlobalConfig.Player1Name
 	g.paddle = &objects.Paddle{
 		Object: &objects.Object{
 			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,

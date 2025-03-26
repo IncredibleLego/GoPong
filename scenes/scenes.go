@@ -14,6 +14,7 @@ const (
 	ComputerSceneId
 	MultiplayerSceneId
 	OptionsSceneId
+	NameInputSceneId
 )
 
 type Scene interface {

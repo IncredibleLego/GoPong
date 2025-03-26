@@ -89,7 +89,7 @@ func (m *Menu) Draw(screen *ebiten.Image) {
 		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Centra verticalmente
 
 		if i == m.Selected {
-			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, "◀"+option.Label+"▶")
+			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, "◀"+option.Label+"▶")
 			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, option.Label)
 		} else {
 			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option.Label)

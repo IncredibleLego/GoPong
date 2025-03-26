@@ -1,6 +1,7 @@
 package scenes
 
 import (
+	"fmt"
 	"goPong/config"
 	"goPong/menu"
 	"goPong/objects"
@@ -13,12 +14,14 @@ import (
 )
 
 type MultiplayerScene struct {
-	paddle1   *objects.Paddle
-	paddle2   *objects.Paddle
-	ball      *objects.Ball
-	score1    int
-	score2    int
-	highScore int
+	player1Name string
+	player2Name string
+	paddle1     *objects.Paddle
+	paddle2     *objects.Paddle
+	ball        *objects.Ball
+	score1      int
+	score2      int
+	highScore   int
 }
 
 func (m *MultiplayerScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -30,12 +33,14 @@ func (m *MultiplayerScene) ShouldPreserveState(reason SceneChangeReason) bool {
 
 func NewMultiplayerScene() *MultiplayerScene {
 	return &MultiplayerScene{
-		paddle1:   nil,
-		paddle2:   nil,
-		ball:      nil,
-		score1:    0,
-		score2:    0,
-		highScore: 0,
+		player1Name: "",
+		player2Name: "",
+		paddle1:     nil,
+		paddle2:     nil,
+		ball:        nil,
+		score1:      0,
+		score2:      0,
+		highScore:   0,
 	}
 }
 
@@ -66,13 +71,19 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score1))
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score2))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, m.player1Name)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score1))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, m.player2Name)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score2))
 	menu.ScreenDraw(config.GlobalConfig.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "MULTIPLAYER MODE")
 }
 
 // FirstLoad implements Scene.
 func (m *MultiplayerScene) FirstLoad() {
+	m.player1Name = config.GlobalConfig.Player1Name
+	m.player2Name = config.GlobalConfig.Player2Name
+	fmt.Println(m.player1Name)
+	fmt.Println(m.player2Name)
 	m.paddle1 = &objects.Paddle{
 		Object: &objects.Object{
 			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,

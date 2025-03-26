@@ -13,6 +13,7 @@ import (
 )
 
 type ComputerScene struct {
+	playerName  string
 	paddle      *objects.Paddle
 	enemyPaddle *objects.Paddle
 	ball        *objects.Ball
@@ -30,6 +31,7 @@ func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
 
 func NewComputerScene() *ComputerScene {
 	return &ComputerScene{
+		playerName:  "",
 		paddle:      nil,
 		enemyPaddle: nil,
 		ball:        nil,
@@ -66,13 +68,17 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.score))
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.scoreEnemy))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.scoreEnemy))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, c.playerName)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.score))
+
 	menu.ScreenDraw(config.GlobalConfig.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER MODE")
 }
 
 // FirstLoad implements Scene.
 func (c *ComputerScene) FirstLoad() {
+	c.playerName = config.GlobalConfig.Player1Name
 	c.paddle = &objects.Paddle{
 		Object: &objects.Object{
 			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,

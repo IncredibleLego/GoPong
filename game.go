@@ -21,6 +21,7 @@ func NewGame() *Game {
 		scenes.ComputerSceneId:    scenes.NewComputerScene(),
 		scenes.MultiplayerSceneId: scenes.NewMultiplayerScene(),
 		scenes.OptionsSceneId:     scenes.NewOptionScene(),
+		scenes.NameInputSceneId:   nil,
 	}
 	activeSceneId := scenes.StartSceneId
 	sceneMap[activeSceneId].FirstLoad()
@@ -45,6 +46,11 @@ func (g *Game) Update() error {
 			reason = scenes.Other
 		} else if g.activeSceneId == scenes.PauseSceneId && nextSceneId != scenes.ExitSceneId {
 			reason = scenes.Unpause
+		} else if nextSceneId == scenes.NameInputSceneId {
+			startScene := g.sceneMap[scenes.StartSceneId].(*scenes.StartScene)
+			selectedMode := startScene.GetSelectedMode()
+			g.sceneMap[scenes.NameInputSceneId] = scenes.NewNameInputScene(selectedMode)
+			reason = scenes.Other
 		} else {
 			reason = scenes.Exit
 		}

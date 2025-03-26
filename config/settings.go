@@ -19,6 +19,8 @@ type Config struct {
 }
 
 var GlobalConfig = &Config{
+	Player1Name:            "Player 1",
+	Player2Name:            "Player 2",
 	ScreenWidth:            640,
 	ScreenHeight:           480,
 	BallSpeed:              6,
@@ -33,6 +35,8 @@ var GlobalConfig = &Config{
 }
 
 var DefaultConfig = &Config{
+	Player1Name:            "Player 1",
+	Player2Name:            "Player 2",
 	ScreenWidth:            640,
 	ScreenHeight:           480,
 	BallSpeed:              6,

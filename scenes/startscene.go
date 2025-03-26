@@ -15,6 +15,7 @@ type StartScene struct { // is the scene loaded now
 	playMenu           *menu.Menu
 	lastEnterPressTime time.Time
 	actionExecuted     bool
+	selectedMode       int
 }
 
 func (s *StartScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -105,6 +106,10 @@ func (s *StartScene) Update() SceneId {
 
 var _ Scene = (*StartScene)(nil)
 
+func (s *StartScene) GetSelectedMode() int {
+	return s.selectedMode
+}
+
 func (s *StartScene) handleMenuSelection() SceneId {
 	selectedOption := s.currentMenu.Options[s.currentMenu.Selected].Label
 
@@ -119,11 +124,14 @@ func (s *StartScene) handleMenuSelection() SceneId {
 	case "QUIT":
 		return ExitSceneId
 	case "SOLO MODE":
-		return GameSceneId
+		s.selectedMode = 1
+		return NameInputSceneId
 	case "COMPUTER MODE":
-		return ComputerSceneId
+		s.selectedMode = 3
+		return NameInputSceneId
 	case "MULTIPLAYER MODE":
-		return MultiplayerSceneId
+		s.selectedMode = 2
+		return NameInputSceneId
 	case "BACK":
 		s.currentMenu = s.mainMenu
 	}
