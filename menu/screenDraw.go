@@ -3,6 +3,7 @@ package menu
 import (
 	"bytes"
 	_ "embed"
+	"goPong/config"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -28,12 +29,13 @@ func ScreenDraw(size int, x, y float64, r, g, b, a float32, spacing float64, scr
 	textOptions := &text.DrawOptions{}
 	textOptions.GeoM.Translate(x, y)
 	textOptions.ColorScale.Scale(r, g, b, a)
-	textOptions.LineSpacing = spacing
+	//textOptions.LineSpacing = spacing
+	textOptions.LineSpacing = float64(size) / 10
 
 	text.Draw(screen, line, textFace, textOptions)
 }
 
-func MeasureText(option MenuOption, spacing float64) (float64, float64) {
+func MeasureText(option MenuOption) (float64, float64) {
 	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
 	if err != nil {
 		log.Fatal(err)
@@ -42,9 +44,9 @@ func MeasureText(option MenuOption, spacing float64) (float64, float64) {
 
 	textFace := &text.GoTextFace{
 		Source: pressStart2PFaceSource,
-		Size:   13,
+		Size:   float64(config.GlobalConfig.TextDimension),
 	}
 
-	boundsX, boundsY := text.Measure(option.Label, textFace, spacing)
+	boundsX, boundsY := text.Measure(option.Label, textFace, float64(config.GlobalConfig.TextDimension)/10)
 	return boundsX, boundsY
 }

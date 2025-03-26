@@ -1,7 +1,6 @@
 package scenes
 
 import (
-	"fmt"
 	"goPong/config"
 	"goPong/menu"
 	"goPong/objects"
@@ -82,8 +81,6 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 func (m *MultiplayerScene) FirstLoad() {
 	m.player1Name = config.GlobalConfig.Player1Name
 	m.player2Name = config.GlobalConfig.Player2Name
-	fmt.Println(m.player1Name)
-	fmt.Println(m.player2Name)
 	m.paddle1 = &objects.Paddle{
 		Object: &objects.Object{
 			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,

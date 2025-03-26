@@ -11,7 +11,8 @@ TODO:
 
 - System to avoid ball always hitting in the same position (anche se la palla colpisce sempre al centro, dopo un po cambia angolo)
 - Cambiare aspetto delle opzioni selezionate
-
+- Centre menu mouse options for bigger screens
+- OPZIONE SELEZIONATA IN MENù un po più in basso delle altre
 
 CONSTANTS:
 
