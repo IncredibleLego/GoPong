@@ -1,7 +1,7 @@
 package scenes
 
 import (
-	"goPong/constants"
+	"goPong/config"
 	"goPong/menu"
 	"goPong/objects"
 	"image/color"
@@ -58,46 +58,46 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 
 	// Draw center lines
 
-	for i := 0; i < constants.ScreenHeight; i += 24 {
+	for i := 0; i < config.GlobalConfig.ScreenHeight; i += 24 {
 		vector.DrawFilledRect(screen,
-			float32(constants.ScreenWidth/2), float32(i),
+			float32(config.GlobalConfig.ScreenWidth/2), float32(i),
 			float32(3), float32(12),
 			color.White, false,
 		)
 	}
 
-	menu.ScreenDraw(constants.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score1))
-	menu.ScreenDraw(constants.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score2))
-	menu.ScreenDraw(constants.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "MULTIPLAYER MODE")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score1))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score2))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "MULTIPLAYER MODE")
 }
 
 // FirstLoad implements Scene.
 func (m *MultiplayerScene) FirstLoad() {
 	m.paddle1 = &objects.Paddle{
 		Object: &objects.Object{
-			X: constants.ScreenWidth - constants.PaddleDistanceFromWall,
-			Y: constants.ScreenHeight/2 - constants.PaddleHeight/2,
+			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,
+			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
 			W: 15,
-			H: constants.PaddleHeight,
+			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
 	m.paddle2 = &objects.Paddle{
 		Object: &objects.Object{
-			X: constants.PaddleDistanceFromWall,
-			Y: constants.ScreenHeight/2 - constants.PaddleHeight/2,
+			X: config.GlobalConfig.PaddleDistanceFromWall,
+			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
 			W: 15,
-			H: constants.PaddleHeight,
+			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
 	m.ball = &objects.Ball{
 		Object: &objects.Object{
-			X: constants.ScreenWidth / 2,
-			Y: constants.ScreenHeight / 2,
-			W: constants.BallSize,
-			H: constants.BallSize,
+			X: config.GlobalConfig.ScreenWidth / 2,
+			Y: config.GlobalConfig.ScreenHeight / 2,
+			W: config.GlobalConfig.BallSize,
+			H: config.GlobalConfig.BallSize,
 		},
-		Dxdt: constants.BallSpeed,
-		Dydt: constants.BallSpeed,
+		Dxdt: config.GlobalConfig.BallSpeed,
+		Dydt: config.GlobalConfig.BallSpeed,
 	}
 	m.ball.GenerateRandomDirection()
 	m.score1 = 0

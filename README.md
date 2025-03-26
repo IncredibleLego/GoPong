@@ -9,6 +9,8 @@ TODO:
 - Quando entri in una modalità chiedi se vuoi caricare la precedente partita o vuoi ripartire da 0
 - Gestione menu funzione esterna da chiamare
 
+- System to avoid ball always hitting in the same position (anche se la palla colpisce sempre al centro, dopo un po cambia angolo)
+
 
 CONSTANTS:
 

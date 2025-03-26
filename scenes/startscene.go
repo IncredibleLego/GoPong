@@ -113,7 +113,7 @@ func (s *StartScene) handleMenuSelection() SceneId {
 		s.currentMenu = s.playMenu
 		s.playMenu.Selected = 0
 	case "OPTIONS":
-		fmt.Println("OPTIONS NOT YET IMPLEMENTED")
+		return OptionsSceneId
 	case "CREDITS":
 		fmt.Println("CREDITS NOT YET IMPLEMENTED")
 	case "QUIT":

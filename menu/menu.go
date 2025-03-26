@@ -2,7 +2,7 @@ package menu
 
 import (
 	_ "embed"
-	"goPong/constants"
+	"goPong/config"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -23,7 +23,7 @@ type Menu struct {
 func (m *Menu) Update() *Menu {
 
 	// moveInterval could be a constant
-	moveInterval := time.Duration(time.Second / constants.MenuOptionsPerSecond)
+	moveInterval := time.Duration(time.Second / config.GlobalConfig.MenuOptionsPerSecond)
 
 	arrowUp := inpututil.KeyPressDuration(ebiten.KeyArrowUp)
 	keyW := inpututil.KeyPressDuration(ebiten.KeyW)
@@ -55,12 +55,12 @@ func (m *Menu) Update() *Menu {
 	// **Gestione del mouse**
 	mouseX, mouseY := ebiten.CursorPosition()
 
-	baseY := constants.ScreenHeight / 3 // Punto di partenza delle opzioni (centrato)
-	spacing := 30                       // Spazio tra le opzioni
+	baseY := config.GlobalConfig.ScreenHeight / 3 // Punto di partenza delle opzioni (centrato)
+	spacing := 30                                 // Spazio tra le opzioni
 
 	for i, option := range m.Options {
 		textWidth, textHeight := MeasureText(option, 1.5)
-		x := (constants.ScreenWidth - textWidth) / 2
+		x := (float64(config.GlobalConfig.ScreenWidth) - textWidth) / 2
 		y := baseY + i*spacing
 
 		// Controllo se il mouse è sopra il testo
@@ -85,13 +85,13 @@ func (m *Menu) Draw(screen *ebiten.Image) {
 
 		textWidth, textHeight := MeasureText(m.Options[i], 1.5)
 
-		x := (constants.ScreenWidth - textWidth) / 2   // Centra orizzontalmente
-		y := (constants.ScreenHeight - textHeight) / 3 // Centra verticalmente
+		x := (float64(config.GlobalConfig.ScreenWidth) - textWidth) / 2   // Centra orizzontalmente
+		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Centra verticalmente
 
 		if i == m.Selected {
-			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, option.Label)
+			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, option.Label)
 		} else {
-			ScreenDraw(constants.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option.Label)
+			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option.Label)
 		}
 	}
 }

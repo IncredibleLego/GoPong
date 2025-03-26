@@ -1,7 +1,7 @@
 package scenes
 
 import (
-	"goPong/constants"
+	"goPong/config"
 	"goPong/menu"
 	"goPong/objects"
 	"image/color"
@@ -58,46 +58,46 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 
 	// Draw center lines
 
-	for i := 0; i < constants.ScreenHeight; i += 24 {
+	for i := 0; i < config.GlobalConfig.ScreenHeight; i += 24 {
 		vector.DrawFilledRect(screen,
-			float32(constants.ScreenWidth/2), float32(i),
+			float32(config.GlobalConfig.ScreenWidth/2), float32(i),
 			float32(3), float32(12),
 			color.White, false,
 		)
 	}
 
-	menu.ScreenDraw(constants.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.score))
-	menu.ScreenDraw(constants.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.scoreEnemy))
-	menu.ScreenDraw(constants.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER MODE")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.score))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.scoreEnemy))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER MODE")
 }
 
 // FirstLoad implements Scene.
 func (c *ComputerScene) FirstLoad() {
 	c.paddle = &objects.Paddle{
 		Object: &objects.Object{
-			X: constants.ScreenWidth - constants.PaddleDistanceFromWall,
-			Y: constants.ScreenHeight/2 - constants.PaddleHeight/2,
+			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,
+			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
 			W: 15,
-			H: constants.PaddleHeight,
+			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
 	c.enemyPaddle = &objects.Paddle{
 		Object: &objects.Object{
-			X: constants.PaddleDistanceFromWall,
-			Y: constants.ScreenHeight/2 - constants.PaddleHeight/2,
+			X: config.GlobalConfig.PaddleDistanceFromWall,
+			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
 			W: 15,
-			H: constants.PaddleHeight,
+			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
 	c.ball = &objects.Ball{
 		Object: &objects.Object{
-			X: constants.ScreenWidth / 2,
-			Y: constants.ScreenHeight / 2,
-			W: constants.BallSize,
-			H: constants.BallSize,
+			X: config.GlobalConfig.ScreenWidth / 2,
+			Y: config.GlobalConfig.ScreenHeight / 2,
+			W: config.GlobalConfig.BallSize,
+			H: config.GlobalConfig.BallSize,
 		},
-		Dxdt: constants.BallSpeed,
-		Dydt: constants.BallSpeed,
+		Dxdt: config.GlobalConfig.BallSpeed,
+		Dydt: config.GlobalConfig.BallSpeed,
 	}
 	c.ball.GenerateRandomDirection()
 	c.score = 0
@@ -139,14 +139,14 @@ func (c *ComputerScene) Update() SceneId {
 var _ Scene = (*ComputerScene)(nil)
 
 func (c *ComputerScene) CollideWithWall() { // Check if the ball collides with the wall
-	if c.ball.X >= constants.ScreenWidth {
+	if c.ball.X >= config.GlobalConfig.ScreenWidth {
 		c.Reset()
 	} else if c.ball.X <= 0 {
-		c.ball.Dxdt = constants.BallSpeed
+		c.ball.Dxdt = config.GlobalConfig.BallSpeed
 	} else if c.ball.Y <= 0 {
-		c.ball.Dydt = constants.BallSpeed
-	} else if c.ball.Y >= constants.ScreenHeight {
-		c.ball.Dydt = -constants.BallSpeed
+		c.ball.Dydt = config.GlobalConfig.BallSpeed
+	} else if c.ball.Y >= config.GlobalConfig.ScreenHeight {
+		c.ball.Dydt = -config.GlobalConfig.BallSpeed
 	}
 }
 
@@ -158,7 +158,7 @@ func (c *ComputerScene) IncreaseScore() {
 }
 
 func (c *ComputerScene) Reset() { // Reset the game
-	c.ball.X = constants.ScreenWidth / 2
-	c.ball.Y = constants.ScreenHeight / 2
+	c.ball.X = config.GlobalConfig.ScreenWidth / 2
+	c.ball.Y = config.GlobalConfig.ScreenHeight / 2
 	c.score = 0
 }

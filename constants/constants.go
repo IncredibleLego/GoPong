@@ -1,5 +1,6 @@
 package constants
 
+/*
 const (
 	ScreenWidth            = 640 //1000
 	ScreenHeight           = 480 //750
@@ -12,4 +13,4 @@ const (
 	Difficulty             = 0.5
 	PaddleHeight           = 100
 	BallSize               = 15
-)
+) */

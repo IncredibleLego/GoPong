@@ -1,7 +1,7 @@
 package objects
 
 import (
-	"goPong/constants"
+	"goPong/config"
 	"math"
 	"math/rand/v2"
 	"time"
@@ -35,7 +35,7 @@ func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides 
 		} else {
 			b.Dxdt = -b.Dxdt
 		}
-	} else if b.X+b.W >= constants.ScreenWidth {
+	} else if b.X+b.W >= config.GlobalConfig.ScreenWidth {
 		if w2 {
 			b.Reset(false) //false = right player got scored
 			return 2
@@ -44,7 +44,7 @@ func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides 
 		}
 	} else if b.Y <= 0 {
 		b.Dydt = -b.Dydt
-	} else if b.Y+b.H >= constants.ScreenHeight {
+	} else if b.Y+b.H >= config.GlobalConfig.ScreenHeight {
 		b.Dydt = -b.Dydt
 	}
 	return 0
@@ -72,19 +72,19 @@ func (b *Ball) CollideWithPaddle(p *Paddle, direction bool) bool { // Check if t
 		normalizedImpactPoint := float64(impactPoint) / float64(p.H/2)
 
 		// Calculate the new vertical speed based on the normalized impact point
-		newDydt := float64(constants.BallSpeed) * normalizedImpactPoint
+		newDydt := float64(config.GlobalConfig.BallSpeed) * normalizedImpactPoint
 
 		// Ensure the newDydt does not exceed the total speed
-		if math.Abs(newDydt) > float64(constants.BallSpeed) {
-			newDydt = float64(constants.BallSpeed) * math.Copysign(1, newDydt)
+		if math.Abs(newDydt) > float64(config.GlobalConfig.BallSpeed) {
+			newDydt = float64(config.GlobalConfig.BallSpeed) * math.Copysign(1, newDydt)
 		}
 
 		// Calculate the new horizontal speed to maintain the total speed
-		newDxdt := math.Sqrt(float64(constants.BallSpeed*constants.BallSpeed) - newDydt*newDydt)
+		newDxdt := math.Sqrt(float64(config.GlobalConfig.BallSpeed*config.GlobalConfig.BallSpeed) - newDydt*newDydt)
 
 		// Ensure the newDxdt does not fall below the minimum speed
-		if newDxdt < float64(constants.BallSpeed) {
-			newDxdt = float64(constants.BallSpeed)
+		if newDxdt < float64(config.GlobalConfig.BallSpeed) {
+			newDxdt = float64(config.GlobalConfig.BallSpeed)
 		}
 
 		// Update the ball's velocity
@@ -104,8 +104,8 @@ func (b *Ball) CollideWithPaddle(p *Paddle, direction bool) bool { // Check if t
 
 func (b *Ball) Reset(p bool) { // Reset the ball to the center of the screen
 	go func() {
-		b.X = constants.ScreenWidth/2 - b.W/2
-		b.Y = constants.ScreenHeight/2 - b.H/2
+		b.X = config.GlobalConfig.ScreenWidth/2 - b.W/2
+		b.Y = config.GlobalConfig.ScreenHeight/2 - b.H/2
 		b.Dxdt = 0
 		b.Dydt = 0
 		time.Sleep(time.Second)
@@ -125,6 +125,6 @@ func (b *Ball) GenerateRandomDirection() {
 	radians := angle * (math.Pi / 180)
 
 	// Calculate the new velocities based on the angle
-	b.Dxdt = int(float64(constants.BallSpeed) * math.Cos(radians))
-	b.Dydt = int(float64(constants.BallSpeed) * math.Sin(radians))
+	b.Dxdt = int(float64(config.GlobalConfig.BallSpeed) * math.Cos(radians))
+	b.Dydt = int(float64(config.GlobalConfig.BallSpeed) * math.Sin(radians))
 }

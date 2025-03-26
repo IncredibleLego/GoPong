@@ -1,7 +1,7 @@
 package scenes
 
 import (
-	"goPong/constants"
+	"goPong/config"
 	"goPong/menu"
 	"goPong/objects"
 	"image/color"
@@ -49,45 +49,45 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 
 	// Draw center lines
 
-	for i := 0; i < constants.ScreenHeight; i += 24 {
+	for i := 0; i < config.GlobalConfig.ScreenHeight; i += 24 {
 		vector.DrawFilledRect(screen,
-			float32(constants.ScreenWidth/2), float32(i),
+			float32(config.GlobalConfig.ScreenWidth/2), float32(i),
 			float32(3), float32(12),
 			color.White, false,
 		)
 	}
 
-	menu.ScreenDraw(constants.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(g.score))
-	menu.ScreenDraw(constants.TextDimension, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
-	menu.ScreenDraw(constants.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "SOLO MODE")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(g.score))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "SOLO MODE")
 
 	//Debug
 	x := strconv.Itoa(g.ball.Dxdt)
 	y := strconv.Itoa(g.ball.Dydt)
 
-	menu.ScreenDraw(constants.TextDimension, 300, 10, 1, 1, 1, 1, 1.5, screen, x)
-	menu.ScreenDraw(constants.TextDimension, 320, 10, 1, 1, 1, 1, 1.5, screen, y)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 300, 10, 1, 1, 1, 1, 1.5, screen, x)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 320, 10, 1, 1, 1, 1, 1.5, screen, y)
 }
 
 // FirstLoad implements Scene.
 func (g *GameScene) FirstLoad() {
 	g.paddle = &objects.Paddle{
 		Object: &objects.Object{
-			X: constants.ScreenWidth - constants.PaddleDistanceFromWall,
-			Y: constants.ScreenHeight/2 - constants.PaddleHeight/2,
+			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,
+			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
 			W: 15,
-			H: constants.PaddleHeight,
+			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
 	g.ball = &objects.Ball{
 		Object: &objects.Object{
-			X: constants.ScreenWidth / 2,
-			Y: constants.ScreenHeight / 2,
-			W: constants.BallSize,
-			H: constants.BallSize,
+			X: config.GlobalConfig.ScreenWidth / 2,
+			Y: config.GlobalConfig.ScreenHeight / 2,
+			W: config.GlobalConfig.BallSize,
+			H: config.GlobalConfig.BallSize,
 		},
-		Dxdt: constants.BallSpeed,
-		Dydt: constants.BallSpeed,
+		Dxdt: config.GlobalConfig.BallSpeed,
+		Dydt: config.GlobalConfig.BallSpeed,
 	}
 	g.ball.GenerateRandomDirection()
 	g.score = 0
@@ -113,7 +113,7 @@ func (g *GameScene) Update() SceneId {
 
 	g.ball.Move()
 
-	if g.ball.X+g.ball.W >= constants.ScreenWidth {
+	if g.ball.X+g.ball.W >= config.GlobalConfig.ScreenWidth {
 		g.score = 0
 	}
 	g.ball.CollideWithWall(false, true)

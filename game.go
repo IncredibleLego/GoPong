@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goPong/constants"
+	"goPong/config"
 	"goPong/scenes"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -20,6 +20,7 @@ func NewGame() *Game {
 		scenes.PauseSceneId:       nil,
 		scenes.ComputerSceneId:    scenes.NewComputerScene(),
 		scenes.MultiplayerSceneId: scenes.NewMultiplayerScene(),
+		scenes.OptionsSceneId:     scenes.NewOptionScene(),
 	}
 	activeSceneId := scenes.StartSceneId
 	sceneMap[activeSceneId].FirstLoad()
@@ -65,5 +66,5 @@ func (g *Game) Draw(screen *ebiten.Image) { // draws the current scene
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
-	return constants.ScreenWidth, constants.ScreenHeight
+	return config.GlobalConfig.ScreenWidth, config.GlobalConfig.ScreenHeight
 }

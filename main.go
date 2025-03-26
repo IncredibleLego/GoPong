@@ -1,7 +1,7 @@
 package main
 
 import (
-	"goPong/constants"
+	"goPong/config"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -9,7 +9,7 @@ import (
 
 func main() {
 	ebiten.SetWindowTitle("Pong in Go")
-	ebiten.SetWindowSize(constants.ScreenWidth, constants.ScreenHeight)
+	ebiten.SetWindowSize(config.GlobalConfig.ScreenWidth, config.GlobalConfig.ScreenHeight)
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	game := NewGame()

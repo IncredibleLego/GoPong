@@ -13,7 +13,7 @@ import (
 var pressStart2P []byte
 var pressStart2PFaceSource *text.GoTextFaceSource
 
-func ScreenDraw(size, x, y float64, r, g, b, a float32, spacing float64, screen *ebiten.Image, line string) {
+func ScreenDraw(size int, x, y float64, r, g, b, a float32, spacing float64, screen *ebiten.Image, line string) {
 	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
 	if err != nil {
 		log.Fatal(err)
@@ -22,7 +22,7 @@ func ScreenDraw(size, x, y float64, r, g, b, a float32, spacing float64, screen 
 
 	textFace := &text.GoTextFace{
 		Source: pressStart2PFaceSource,
-		Size:   size,
+		Size:   float64(size),
 	}
 
 	textOptions := &text.DrawOptions{}
