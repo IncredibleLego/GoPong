@@ -93,10 +93,10 @@ func (m *Menu) Draw(screen *ebiten.Image) {
 		if i == m.Selected {
 			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, "◀"+option.Label+"▶")
 			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, option.Label)
-			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i)*spacing-5, 1, 1, 0, 1, 1.5, screen, option.Label)
+			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
 		} else {
 			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option.Label)
-			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i)*spacing, 1, 1, 1, 1, 1.5, screen, option.Label)
+			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i)*spacing, "white", screen, option.Label)
 		}
 	}
 }

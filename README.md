@@ -16,6 +16,12 @@ TODO:
 - Centre menu mouse options for bigger screens
 - OPZIONE SELEZIONATA IN MENù un po più in basso delle altre
 
+- Modify nameinput textdimension
+- Colors definied ad settings? (change color of menus as option)
+- Menu position relative to number of options?
+
+pass string to color
+
 CONSTANTS:
 
 - Make game scalable: all that is drawn on screen must be adapted to the options

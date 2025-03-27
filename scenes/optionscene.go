@@ -23,14 +23,14 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 		"Screen Height: " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
 	}
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 200, 200, 255, 255, 255, 255, 1.5, screen, "OPTIONS")
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 120, 220, 255, 255, 255, 255, 1.5, screen, "Press enter to go back")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 200, 200, "white", screen, "OPTIONS")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 120, 220, "white", screen, "Press enter to go back")
 
 	for i, option := range options {
 		if i == o.selectedOption {
-			menu.ScreenDraw(config.GlobalConfig.TextDimension, 120, float64(240+20*i), 255, 255, 0, 255, 1.5, screen, option)
+			menu.ScreenDraw(config.GlobalConfig.TextDimension, 120, float64(240+20*i), "yellow", screen, option)
 		} else {
-			menu.ScreenDraw(config.GlobalConfig.TextDimension, 120, float64(240+20*i), 255, 255, 255, 255, 1.5, screen, option)
+			menu.ScreenDraw(config.GlobalConfig.TextDimension, 120, float64(240+20*i), "white", screen, option)
 		}
 	}
 }

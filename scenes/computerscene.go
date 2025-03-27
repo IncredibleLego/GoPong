@@ -68,12 +68,11 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER")
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.scoreEnemy))
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, c.playerName)
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(c.score))
-
-	menu.ScreenDraw(config.GlobalConfig.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "COMPUTER MODE")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, "white", screen, "COMPUTER")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 25, "white", screen, "Score: "+strconv.Itoa(c.scoreEnemy))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, "white", screen, c.playerName)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 25, "white", screen, "Score: "+strconv.Itoa(c.score))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension-3, 250, 10, "white", screen, "COMPUTER MODE")
 }
 
 // FirstLoad implements Scene.

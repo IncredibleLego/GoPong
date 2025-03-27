@@ -34,8 +34,8 @@ func (s *StartScene) Draw(screen *ebiten.Image) {
 
 	//screen.Fill(color.RGBA{0, 0, 0, 1})
 
-	menu.ScreenDraw(13, 250, 60, 1, 1, 1, 1, 1.5, screen, "Pong in Go")
-	menu.ScreenDraw(13, 210, 80, 1, 1, 1, 1, 1.5, screen, "by IncredibleLego")
+	menu.ScreenDraw(13, 250, 60, "white", screen, "Pong in Go")
+	menu.ScreenDraw(13, 210, 80, "white", screen, "by IncredibleLego")
 
 	s.currentMenu.Draw(screen)
 

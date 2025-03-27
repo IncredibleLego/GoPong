@@ -59,16 +59,16 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 30, 1, 1, 1, 1, 1.5, screen, "High Score: "+strconv.Itoa(g.highScore))
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, "SOLO MODE")
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, "white", screen, "SOLO MODE")
 
 	//Debug
 	x := strconv.Itoa(g.ball.Dxdt)
 	y := strconv.Itoa(g.ball.Dydt)
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 300, 10, 1, 1, 1, 1, 1.5, screen, x)
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 320, 10, 1, 1, 1, 1, 1.5, screen, y)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 300, 10, "white", screen, x)
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 320, 10, "white", screen, y)
 }
 
 // FirstLoad implements Scene.
