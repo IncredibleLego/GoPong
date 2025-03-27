@@ -42,7 +42,7 @@ var DefaultConfig = &Config{
 	BallSpeed:              6,
 	PaddleSpeed:            6,
 	MenuOptionsPerSecond:   4,
-	TextDimension:          13,
+	TextDimension:          20,
 	PaddleDistanceFromWall: 40,
 	MaxBounceAngle:         45.0 * (3.14159 / 180.0),
 	Difficulty:             0.5,

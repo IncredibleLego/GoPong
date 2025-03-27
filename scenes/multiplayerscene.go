@@ -71,9 +71,9 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 	}
 
 	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 10, 1, 1, 1, 1, 1.5, screen, m.player1Name)
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score1))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 10, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score2))
 	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 10, 1, 1, 1, 1, 1.5, screen, m.player2Name)
-	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score2))
+	menu.ScreenDraw(config.GlobalConfig.TextDimension, 500, 25, 1, 1, 1, 1, 1.5, screen, "Score: "+strconv.Itoa(m.score1))
 	menu.ScreenDraw(config.GlobalConfig.TextDimension-3, 250, 10, 1, 1, 1, 1, 1.5, screen, "MULTIPLAYER MODE")
 }
 

@@ -3,6 +3,8 @@ A simple pong implementation made in Go using Ebitengine
 
 Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
+ROADMAP:
+
 TODO:
 
 - AVANZATO: salvataggio dati partite su file? Possibilità di salvare una partita uscire dal gioco e riprenderla in un altro momento
