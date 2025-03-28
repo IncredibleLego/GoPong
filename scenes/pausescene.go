@@ -28,8 +28,6 @@ func NewPauseScene(previous SceneId) *PauseScene {
 
 func (p *PauseScene) Draw(screen *ebiten.Image) {
 
-	//screen.Fill(color.RGBA{0, 0, 0, 1})
-
 	p.pauseMenu.Draw(screen)
 }
 

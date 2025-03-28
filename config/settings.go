@@ -10,7 +10,7 @@ type Config struct {
 	BallSpeed              int
 	PaddleSpeed            int
 	MenuOptionsPerSecond   time.Duration
-	TextDimension          int
+	TextDimension          float64
 	PaddleDistanceFromWall int
 	MaxBounceAngle         float64
 	Difficulty             float64

@@ -14,7 +14,7 @@ import (
 var pressStart2P []byte
 var pressStart2PFaceSource *text.GoTextFaceSource
 
-func ScreenDraw(size int, x, y float64, colorName string, screen *ebiten.Image, line string) {
+func ScreenDraw(size float64, x, y float64, colorName string, screen *ebiten.Image, line string) {
 	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
 	if err != nil {
 		log.Fatal(err)
@@ -23,7 +23,7 @@ func ScreenDraw(size int, x, y float64, colorName string, screen *ebiten.Image, 
 
 	textFace := &text.GoTextFace{
 		Source: pressStart2PFaceSource,
-		Size:   float64(size),
+		Size:   config.GlobalConfig.TextDimension + size,
 	}
 
 	textOptions := &text.DrawOptions{}
@@ -44,7 +44,7 @@ func MeasureText(option MenuOption) (float64, float64) {
 
 	textFace := &text.GoTextFace{
 		Source: pressStart2PFaceSource,
-		Size:   float64(config.GlobalConfig.TextDimension),
+		Size:   config.GlobalConfig.TextDimension,
 	}
 
 	boundsX, boundsY := text.Measure(option.Label, textFace, float64(config.GlobalConfig.TextDimension)/10)

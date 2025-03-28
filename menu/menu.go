@@ -88,15 +88,13 @@ func (m *Menu) Draw(screen *ebiten.Image) {
 		x := float64(config.GlobalConfig.ScreenWidth)/2 - textWidth/2     // Centra orizzontalmente
 		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Centra verticalmente
 
-		spacing := float64(config.GlobalConfig.TextDimension) * 1.5
+		spacing := config.GlobalConfig.TextDimension * 1.5
 
 		if i == m.Selected {
-			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, "◀"+option.Label+"▶")
-			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 0, 1, 1.5, screen, option.Label)
-			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
+			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), "yellow", screen, "◀"+option.Label+"▶")
+			ScreenDraw(0, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
 		} else {
-			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), 1, 1, 1, 1, 1.5, screen, option.Label)
-			ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i)*spacing, "white", screen, option.Label)
+			ScreenDraw(0, x, y+float64(i)*spacing, "white", screen, option.Label)
 		}
 	}
 }

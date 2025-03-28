@@ -19,6 +19,7 @@ TODO:
 - Modify nameinput textdimension
 - Colors definied ad settings? (change color of menus as option)
 - Menu position relative to number of options?
+- Offsets to print not with simple numbers
 
 pass string to color
 

@@ -37,9 +37,9 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 		return
 	}
 
-	menu.ScreenDraw(config.GlobalConfig.TextDimension-7, 100, 100, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
-	menu.ScreenDraw(config.GlobalConfig.TextDimension-7, 100, 150, "white", screen, n.playerNames[n.activePlayer])
-	menu.ScreenDraw(config.GlobalConfig.TextDimension-7, 100, 200, "white", screen, "Press Enter to confirm")
+	menu.ScreenDraw(-7, 100, 100, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
+	menu.ScreenDraw(-7, 100, 150, "white", screen, n.playerNames[n.activePlayer])
+	menu.ScreenDraw(-7, 100, 200, "white", screen, "Press Enter to confirm")
 
 }
 
