@@ -1,6 +1,7 @@
 package scenes
 
 import (
+	"fmt"
 	"goPong/config"
 	"goPong/menu"
 	"strconv"
@@ -60,7 +61,14 @@ func (o *OptionScene) Update() SceneId {
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
 		switch o.selectedOption {
 		case 0: // Modifica Screen Width
-			config.GlobalConfig.TextDimension += 10
+			err := config.UpdateConfig(func(cfg *config.Config) {
+				cfg.TextDimension += 10
+				fmt.Println("Screen Width:", cfg.TextDimension)
+			})
+			if err != nil {
+				// Gestisci l'errore
+				fmt.Println("Errore durante il salvataggio della configurazione:", err)
+			}
 		case 1: // Modifica Screen Height
 			config.GlobalConfig.ScreenHeight += 10
 		}
@@ -68,7 +76,15 @@ func (o *OptionScene) Update() SceneId {
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
 		switch o.selectedOption {
 		case 0: // Modifica Screen Width
-			config.GlobalConfig.TextDimension -= 10
+
+			err := config.UpdateConfig(func(cfg *config.Config) {
+				cfg.TextDimension -= 10
+				fmt.Println("Screen Width:", cfg.TextDimension)
+			})
+			if err != nil {
+				// Gestisci l'errore
+				fmt.Println("Errore durante il salvataggio della configurazione:", err)
+			}
 		case 1: // Modifica Screen Height
 			config.GlobalConfig.ScreenHeight -= 10
 		}
