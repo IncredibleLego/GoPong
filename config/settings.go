@@ -28,7 +28,7 @@ var GlobalConfig = &Config{
 	MenuOptionsPerSecond:   4,
 	TextDimension:          20,
 	PaddleDistanceFromWall: 40,
-	MaxBounceAngle:         45.0 * (3.14159 / 180.0),
+	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 	Difficulty:             0.5,
 	PaddleHeight:           100,
 	BallSize:               15,
@@ -44,7 +44,7 @@ var DefaultConfig = &Config{
 	MenuOptionsPerSecond:   4,
 	TextDimension:          13,
 	PaddleDistanceFromWall: 40,
-	MaxBounceAngle:         45.0 * (3.14159 / 180.0),
+	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 	Difficulty:             0.5,
 	PaddleHeight:           100,
 	BallSize:               15,

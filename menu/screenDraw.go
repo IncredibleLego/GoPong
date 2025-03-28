@@ -35,7 +35,7 @@ func ScreenDraw(size float64, x, y float64, colorName string, screen *ebiten.Ima
 	text.Draw(screen, line, textFace, textOptions)
 }
 
-func MeasureText(option MenuOption) (float64, float64) {
+func MeasureText(label string) (float64, float64) {
 	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
 	if err != nil {
 		log.Fatal(err)
@@ -47,7 +47,7 @@ func MeasureText(option MenuOption) (float64, float64) {
 		Size:   config.GlobalConfig.TextDimension,
 	}
 
-	boundsX, boundsY := text.Measure(option.Label, textFace, float64(config.GlobalConfig.TextDimension)/10)
+	boundsX, boundsY := text.Measure(label, textFace, float64(config.GlobalConfig.TextDimension)/10)
 	return boundsX, boundsY
 }
 

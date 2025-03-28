@@ -59,7 +59,7 @@ func (m *Menu) Update() *Menu {
 	spacing := 30                                 // Spazio tra le opzioni
 
 	for i, option := range m.Options {
-		textWidth, textHeight := MeasureText(option)
+		textWidth, textHeight := MeasureText(option.Label)
 		x := (float64(config.GlobalConfig.ScreenWidth) - textWidth) / 2
 		y := baseY + i*spacing
 
@@ -83,7 +83,7 @@ func (m *Menu) Update() *Menu {
 func (m *Menu) Draw(screen *ebiten.Image) {
 	for i, option := range m.Options {
 
-		textWidth, textHeight := MeasureText(m.Options[i])
+		textWidth, textHeight := MeasureText(m.Options[i].Label)
 
 		x := float64(config.GlobalConfig.ScreenWidth)/2 - textWidth/2     // Centra orizzontalmente
 		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Centra verticalmente
@@ -91,8 +91,8 @@ func (m *Menu) Draw(screen *ebiten.Image) {
 		spacing := config.GlobalConfig.TextDimension * 1.5
 
 		if i == m.Selected {
-			//ScreenDraw(config.GlobalConfig.TextDimension, x, y+float64(i*30), "yellow", screen, "◀"+option.Label+"▶")
-			ScreenDraw(0, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
+			ScreenDraw(0, x-20, y+float64(i)*spacing-5, "yellow", screen, "◀"+option.Label+"▶")
+			//ScreenDraw(0, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
 		} else {
 			ScreenDraw(0, x, y+float64(i)*spacing, "white", screen, option.Label)
 		}
