@@ -10,6 +10,7 @@ import (
 type Game struct {
 	sceneMap      map[scenes.SceneId]scenes.Scene
 	activeSceneId scenes.SceneId
+	lastSceneId   scenes.SceneId
 	loadedScenes  map[scenes.SceneId]bool
 }
 
@@ -20,7 +21,7 @@ func NewGame() *Game {
 		scenes.PauseSceneId:       nil,
 		scenes.ComputerSceneId:    scenes.NewComputerScene(),
 		scenes.MultiplayerSceneId: scenes.NewMultiplayerScene(),
-		scenes.OptionsSceneId:     scenes.NewOptionScene(),
+		scenes.OptionsSceneId:     nil,
 		scenes.NameInputSceneId:   nil,
 	}
 	activeSceneId := scenes.StartSceneId
@@ -46,7 +47,17 @@ func (g *Game) Update() error {
 		var reason scenes.SceneChangeReason
 		if nextSceneId == scenes.PauseSceneId {
 			// If the next scene is the pause scene, it is created and the reason is set to "other"
-			g.sceneMap[scenes.PauseSceneId] = scenes.NewPauseScene(g.activeSceneId)
+			if g.activeSceneId == scenes.OptionsSceneId {
+				// If the current scene is the options scene, the last scene id is set to the previous scene
+				g.sceneMap[scenes.PauseSceneId] = scenes.NewPauseScene(g.lastSceneId, true)
+			} else {
+				// If the current scene is not the options scene, the last scene id is set to the active scene
+				g.sceneMap[scenes.PauseSceneId] = scenes.NewPauseScene(g.activeSceneId, false)
+			}
+			reason = scenes.Other
+		} else if nextSceneId == scenes.OptionsSceneId {
+			// If the next scene is the pause scene, it is created and the reason is set to "other"
+			g.sceneMap[scenes.OptionsSceneId] = scenes.NewOptionScene(g.activeSceneId)
 			reason = scenes.Other
 		} else if g.activeSceneId == scenes.PauseSceneId && nextSceneId != scenes.ExitSceneId {
 			// If the current scene is the pause scene and the next scene is not the exit scene, the reason is set to "unpause"
@@ -72,6 +83,10 @@ func (g *Game) Update() error {
 		}
 		// The current scene is exited
 		g.sceneMap[g.activeSceneId].OnExit()
+		// If the current scene is not the pause scene or the options scene, the last scene id is saved
+		if g.activeSceneId != scenes.PauseSceneId && g.activeSceneId != scenes.OptionsSceneId {
+			g.lastSceneId = g.activeSceneId
+		}
 		// The new scene is entered
 		nextScene.OnEnter()
 	}

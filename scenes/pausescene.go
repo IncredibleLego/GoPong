@@ -1,7 +1,6 @@
 package scenes
 
 import (
-	"fmt"
 	"goPong/menu"
 	"time"
 
@@ -13,16 +12,18 @@ type PauseScene struct {
 	pauseMenu       *menu.Menu
 	actionExecuted  bool
 	previousSceneId SceneId
+	options         bool //true if the last scene was options
 }
 
 func (p *PauseScene) ShouldPreserveState(reason SceneChangeReason) bool {
 	return false
 }
 
-func NewPauseScene(previous SceneId) *PauseScene {
+func NewPauseScene(previous SceneId, opt bool) *PauseScene {
 	return &PauseScene{
 		pauseMenu:       nil,
 		previousSceneId: previous,
+		options:         opt,
 	}
 }
 
@@ -44,7 +45,9 @@ func (p *PauseScene) FirstLoad() {
 }
 
 func (p *PauseScene) OnEnter() {
-
+	if p.options {
+		p.pauseMenu.Selected = 1
+	}
 }
 
 func (p *PauseScene) OnExit() {
@@ -80,7 +83,7 @@ func (p *PauseScene) handleMenuSelection() SceneId {
 		p.pauseMenu.Selected = 0
 		return p.previousSceneId
 	case "OPTIONS":
-		fmt.Println("OPTIONS NOT YET IMPLEMENTED")
+		return OptionsSceneId
 	case "EXIT":
 		p.pauseMenu.Selected = 0
 		return StartSceneId

@@ -11,11 +11,15 @@ import (
 )
 
 type OptionScene struct {
-	selectedOption int
+	selectedOption  int
+	previousSceneId SceneId
 }
 
-func NewOptionScene() *OptionScene {
-	return &OptionScene{}
+func NewOptionScene(previous SceneId) *OptionScene {
+	return &OptionScene{
+		selectedOption:  0,
+		previousSceneId: previous,
+	}
 }
 
 func (o *OptionScene) Draw(screen *ebiten.Image) {
@@ -68,7 +72,7 @@ func (o *OptionScene) Update() SceneId {
 
 	// Return to the main menu
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		return StartSceneId
+		return o.previousSceneId
 	}
 
 	return OptionsSceneId
