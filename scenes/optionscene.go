@@ -11,7 +11,7 @@ import (
 )
 
 type OptionScene struct {
-	selectedOption int // Indice dell'opzione attualmente selezionata
+	selectedOption int
 }
 
 func NewOptionScene() *OptionScene {
@@ -20,7 +20,7 @@ func NewOptionScene() *OptionScene {
 
 func (o *OptionScene) Draw(screen *ebiten.Image) {
 	options := []string{
-		"Screen Width: " + strconv.Itoa(config.GlobalConfig.ScreenWidth),
+		"Text dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
 		"Screen Height: " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
 	}
 
@@ -47,9 +47,9 @@ func (o *OptionScene) ShouldPreserveState(reason SceneChangeReason) bool {
 }
 
 func (o *OptionScene) Update() SceneId {
-	optionsCount := 2 // Numero totale di opzioni
+	optionsCount := 2 // Total number of options
 
-	// Navigazione verticale (freccia su/giù o tasti W/S)
+	// Selecting the option
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) || inpututil.IsKeyJustPressed(ebiten.KeyW) {
 		o.selectedOption = (o.selectedOption - 1 + optionsCount) % optionsCount
 	}
@@ -57,45 +57,49 @@ func (o *OptionScene) Update() SceneId {
 		o.selectedOption = (o.selectedOption + 1) % optionsCount
 	}
 
-	// Modifica dell'opzione selezionata (freccia sinistra/destra o tasti A/D)
+	// Modify the selected option
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
-		switch o.selectedOption {
-		case 0: // Modifica Screen Width
-			err := config.UpdateConfig(func(cfg *config.Config) {
-				cfg.TextDimension += 10
-				fmt.Println("Screen Width:", cfg.TextDimension)
-			})
-			if err != nil {
-				// Gestisci l'errore
-				fmt.Println("Errore durante il salvataggio della configurazione:", err)
-			}
-		case 1: // Modifica Screen Height
-			config.GlobalConfig.ScreenHeight += 10
-		}
+		handleOptionSelection(o, true)
 	}
+
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
-		switch o.selectedOption {
-		case 0: // Modifica Screen Width
-
-			err := config.UpdateConfig(func(cfg *config.Config) {
-				cfg.TextDimension -= 10
-				fmt.Println("Screen Width:", cfg.TextDimension)
-			})
-			if err != nil {
-				// Gestisci l'errore
-				fmt.Println("Errore durante il salvataggio della configurazione:", err)
-			}
-		case 1: // Modifica Screen Height
-			config.GlobalConfig.ScreenHeight -= 10
-		}
+		handleOptionSelection(o, false)
 	}
 
-	// Ritorno alla scena iniziale con il tasto Enter
+	// Return to the main menu
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return StartSceneId
 	}
 
 	return OptionsSceneId
+}
+
+func handleOptionSelection(o *OptionScene, mode bool) {
+	// If mode is true = +, if false = -
+	switch o.selectedOption {
+	case 0:
+		err := config.UpdateConfig(func(cfg *config.Config) {
+			if mode {
+				cfg.TextDimension += 10
+			} else {
+				cfg.TextDimension -= 10
+			}
+		})
+		if err != nil {
+			fmt.Println("Error during option saving", err)
+		}
+	case 1:
+		err := config.UpdateConfig(func(cfg *config.Config) {
+			if mode {
+				cfg.ScreenHeight += 10
+			} else {
+				cfg.ScreenHeight -= 10
+			}
+		})
+		if err != nil {
+			fmt.Println("Error during option saving", err)
+		}
+	}
 }
 
 var _ Scene = (*OptionScene)(nil)
