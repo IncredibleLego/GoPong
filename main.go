@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"goPong/config"
 	"log"
 
@@ -14,7 +13,7 @@ func main() {
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
 	config.InitConfig()
-	fmt.Printf("Configurazione caricata: %+v\n", config.GlobalConfig)
+	//fmt.Printf("Loaded configuration: %+v\n", config.GlobalConfig)
 
 	game := NewGame()
 
