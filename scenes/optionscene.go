@@ -26,6 +26,7 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 	options := []string{
 		"Text dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
 		"Screen Height: " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
+		"Reset to default",
 	}
 
 	menu.ScreenDraw(0, 200, 200, "white", screen, "OPTIONS")
@@ -51,7 +52,7 @@ func (o *OptionScene) ShouldPreserveState(reason SceneChangeReason) bool {
 }
 
 func (o *OptionScene) Update() SceneId {
-	optionsCount := 2 // Total number of options
+	optionsCount := 3 // Total number of options
 
 	// Selecting the option
 	if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) || inpututil.IsKeyJustPressed(ebiten.KeyW) {
@@ -103,6 +104,9 @@ func handleOptionSelection(o *OptionScene, mode bool) {
 		if err != nil {
 			fmt.Println("Error during option saving", err)
 		}
+	case 2:
+		config.SaveConfig(config.DefaultConfig)
+		config.InitConfig()
 	}
 }
 
