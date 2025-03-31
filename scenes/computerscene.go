@@ -124,7 +124,7 @@ func (c *ComputerScene) Update() SceneId {
 
 	c.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
 	//c.enemyPaddle.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
-	c.enemyPaddle.AiMovement(float64(c.ball.Y))
+	c.enemyPaddle.AiMovement(c.ball)
 
 	c.ball.Move()
 	c.ball.CollideWithWall(true, true)

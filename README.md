@@ -21,6 +21,8 @@ TODO:
 - Menu position relative to number of options?
 - Offsets to print not with simple numbers
 
+- In modalità contro computer, selezionare difficoltà dopo scelta del nome in schermata inputscene
+
 pass string to color
 
 CONSTANTS:
