@@ -7,14 +7,22 @@ ROADMAP:
 
 TODO:
 
-- AVANZATO: salvataggio dati partite su file? Possibilità di salvare una partita uscire dal gioco e riprenderla in un altro momento
-- Quando entri in una modalità chiedi se vuoi caricare la precedente partita o vuoi ripartire da 0
+NEXT:
+- Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
+
+GENERAL:
+- Make game scalable: all that is drawn on screen must be adapted to the options
+- Modify draw on screen options to make text (menu ecc.) related to textDimension
+
+SAVES:
+    - Match save on file, saving data of a match on file to open it later
+        . When entering a mode ask if you wanna start a new match or restart from 0
+
 - Gestione menu funzione esterna da chiamare
 
 - System to avoid ball always hitting in the same position (anche se la palla colpisce sempre al centro, dopo un po cambia angolo)
 - Cambiare aspetto delle opzioni selezionate
 - Centre menu mouse options for bigger screens
-- OPZIONE SELEZIONATA IN MENù un po più in basso delle altre
 
 - Modify nameinput textdimension
 - Colors definied ad settings? (change color of menus as option)
@@ -23,23 +31,15 @@ TODO:
 
 - In modalità contro computer, selezionare difficoltà dopo scelta del nome in schermata inputscene
 
-pass string to color
-
-CONSTANTS:
-
-- Make game scalable: all that is drawn on screen must be adapted to the options
-- Modify draw on screen options to make text (menu ecc.) related to textDimension
 
 OPTIONS:
 
-- Options saved to file, user adaptable
-- Predefined options saved to restore original value (maybe original value for single values too?)
+- Options scene full implementation
+- Set to default values options (for single values too, maybe a button to press)
 
 GAMEPLAY:
 
-- Ball positioning at beginning (random)
 - Ball delay after time hit
-
 - Modify increase speed, no longer working
 
 SCENES:
@@ -64,7 +64,6 @@ MENU:
 - ScreenDraw() method must be simpler with less passed values
 
 - PAUSEMENU
-    - Game paused that resmes after pause
     - Gamescene blurred in the background
     - Choose if the scene must be saved or not
 
