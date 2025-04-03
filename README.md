@@ -7,8 +7,6 @@ ROADMAP:
 
 TODO:
 
-
-
 NEXT:
 - Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
 
