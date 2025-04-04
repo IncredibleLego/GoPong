@@ -12,7 +12,7 @@ NEXT:
 
 GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
-- Modify draw on screen options to make text (menu ecc.) related to textDimension
+- Modify draw on screen options to make text (menu ecc.) related to textDimension 
 
 SAVES:
     - Match save on file, saving data of a match on file to open it later
