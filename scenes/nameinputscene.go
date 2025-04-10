@@ -3,10 +3,12 @@ package scenes
 import (
 	"goPong/config"
 	"goPong/menu"
+	"image/color"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type NameInputScene struct {
@@ -37,9 +39,31 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 		return
 	}
 
-	menu.ScreenDraw(-7, 100, 100, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
-	menu.ScreenDraw(-7, 100, 150, "white", screen, n.playerNames[n.activePlayer])
-	menu.ScreenDraw(-7, 100, 200, "white", screen, "Press Enter to confirm")
+	l := float64(len(n.playerNames[n.activePlayer]))
+	//width := float64(config.GlobalConfig.ScreenWidth)
+	height := float64(config.GlobalConfig.ScreenHeight)
+
+	vector.DrawFilledRect(screen,
+		float32(config.GlobalConfig.ScreenWidth/2), float32(config.GlobalConfig.ScreenHeight/2),
+		float32(3), float32(12),
+		color.White, false,
+	)
+
+	d := 20 - config.GlobalConfig.TextDimension
+
+	//menu.ScreenDraw(d, 65, height/3, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
+
+	playerMessage := "Player " + strconv.Itoa(n.activePlayer+1) + ", insert your name:"
+	x1 := float64((config.GlobalConfig.ScreenWidth / 2)) - (float64(len(playerMessage)) * config.GlobalConfig.TextDimension / 2)
+	menu.ScreenDraw(d, x1, height/3, "white", screen, playerMessage)
+
+	menu.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer])
+
+	//menu.ScreenDraw(d, 130, height/3*2, "white", screen, "Press Enter to confirm")
+
+	confirmMessage := "Press Enter to confirm"
+	x2 := float64((config.GlobalConfig.ScreenWidth / 2)) - (float64(len(confirmMessage)) * config.GlobalConfig.TextDimension / 2)
+	menu.ScreenDraw(d, x2, (height/3)*2, "white", screen, confirmMessage)
 
 }
 

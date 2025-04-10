@@ -23,10 +23,7 @@ type ComputerScene struct {
 }
 
 func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
-	if reason == Unpause {
-		return true
-	}
-	return false
+	return reason == Unpause
 }
 
 func NewComputerScene() *ComputerScene {

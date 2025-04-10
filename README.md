@@ -16,7 +16,7 @@ GENERAL:
 
 SAVES:
     - Match save on file, saving data of a match on file to open it later
-        . When entering a mode ask if you wanna start a new match or restart from 0   
+        . When entering a mode ask if you wanna start a new match or restart from 0
 
 - Gestione menu funzione esterna da chiamare
 

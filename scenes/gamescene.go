@@ -21,10 +21,7 @@ type GameScene struct {
 }
 
 func (g *GameScene) ShouldPreserveState(reason SceneChangeReason) bool {
-	if reason == Unpause {
-		return true
-	}
-	return false
+	return reason == Unpause
 }
 
 func NewGameScene() *GameScene {

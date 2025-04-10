@@ -24,10 +24,7 @@ type MultiplayerScene struct {
 }
 
 func (m *MultiplayerScene) ShouldPreserveState(reason SceneChangeReason) bool {
-	if reason == Unpause {
-		return true
-	}
-	return false
+	return reason == Unpause
 }
 
 func NewMultiplayerScene() *MultiplayerScene {
