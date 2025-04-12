@@ -34,6 +34,8 @@ SAVES:
 - In modalità contro computer, selezionare difficoltà dopo scelta del nome in schermata inputscene
 
 
+
+
 OPTIONS:
 
 - Options scene full implementation
