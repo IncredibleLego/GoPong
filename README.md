@@ -6,6 +6,8 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 ROADMAP:
 
 - MAKE Utils scene, where to save easy functions such as screendraw or option to draw constant screen
+- Screen drawl must be improved amd should print to the center of the screen
+    - Maybe doing two functions: screenDraw with less arguments for all simple inputs and screenDraw extra for all different options
 
 TODO:
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goPong/config"
 	"goPong/menu"
+	"goPong/utils"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -29,14 +30,17 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 		"Reset to default",
 	}
 
-	menu.ScreenDraw(0, 200, 200, "white", screen, "OPTIONS")
-	menu.ScreenDraw(0, 120, 220, "white", screen, "Press enter to go back")
+	x1 := utils.XCentered("Options", config.GlobalConfig.TextDimension)
+	x2 := utils.XCentered("Press enter to go back", config.GlobalConfig.TextDimension-5)
+	menu.ScreenDraw(0, x1, 50, "white", screen, "OPTIONS")
+	menu.ScreenDraw(-5, x2, 80, "white", screen, "Press enter to go back")
 
 	for i, option := range options {
+		x := utils.XCentered(option, config.GlobalConfig.TextDimension)
 		if i == o.selectedOption {
-			menu.ScreenDraw(0, 120, float64(240+20*i), "yellow", screen, option)
+			menu.ScreenDraw(0, x-20, float64(120+30*i-5), "yellow", screen, "◀"+option+"▶")
 		} else {
-			menu.ScreenDraw(0, 120, float64(240+20*i), "white", screen, option)
+			menu.ScreenDraw(0, x, float64(120+30*i), "white", screen, option)
 		}
 	}
 }
