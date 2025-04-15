@@ -3,6 +3,7 @@ package scenes
 import (
 	"goPong/config"
 	"goPong/menu"
+	"goPong/utils"
 	"image/color"
 	"strconv"
 
@@ -54,7 +55,7 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 	//menu.ScreenDraw(d, 65, height/3, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
 
 	playerMessage := "Player " + strconv.Itoa(n.activePlayer+1) + ", insert your name:"
-	x1 := float64((config.GlobalConfig.ScreenWidth / 2)) - (float64(len(playerMessage)) * config.GlobalConfig.TextDimension / 2)
+	x1 := utils.XCentered(playerMessage, config.GlobalConfig.TextDimension)
 	menu.ScreenDraw(d, x1, height/3, "white", screen, playerMessage)
 
 	menu.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer])
@@ -62,7 +63,7 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 	//menu.ScreenDraw(d, 130, height/3*2, "white", screen, "Press Enter to confirm")
 
 	confirmMessage := "Press Enter to confirm"
-	x2 := float64((config.GlobalConfig.ScreenWidth / 2)) - (float64(len(confirmMessage)) * config.GlobalConfig.TextDimension / 2)
+	x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
 	menu.ScreenDraw(d, x2, (height/3)*2, "white", screen, confirmMessage)
 
 }
