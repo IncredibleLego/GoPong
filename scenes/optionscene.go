@@ -6,6 +6,7 @@ import (
 	"goPong/menu"
 	"goPong/utils"
 	"strconv"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -38,7 +39,12 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 	for i, option := range options {
 		x := utils.XCentered(option, config.GlobalConfig.TextDimension)
 		if i == o.selectedOption {
-			menu.ScreenDraw(0, x-20, float64(120+30*i-5), "yellow", screen, "◀"+option+"▶")
+			j := strings.Index(option, ": ")
+			if j > 0 {
+				option = option[:j+2] + "◀" + option[j+2:] + "▶"
+				x = x - 20
+			}
+			menu.ScreenDraw(0, x, float64(120+30*i-5), "cyan", screen, option)
 		} else {
 			menu.ScreenDraw(0, x, float64(120+30*i), "white", screen, option)
 		}
