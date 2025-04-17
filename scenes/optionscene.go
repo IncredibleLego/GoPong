@@ -3,7 +3,6 @@ package scenes
 import (
 	"fmt"
 	"goPong/config"
-	"goPong/menu"
 	"goPong/utils"
 	"strconv"
 	"strings"
@@ -33,8 +32,8 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 
 	x1 := utils.XCentered("Options", config.GlobalConfig.TextDimension)
 	x2 := utils.XCentered("Press enter to go back", config.GlobalConfig.TextDimension-5)
-	menu.ScreenDraw(0, x1, 50, "white", screen, "OPTIONS")
-	menu.ScreenDraw(-5, x2, 80, "white", screen, "Press enter to go back")
+	utils.ScreenDraw(0, x1, 50, "white", screen, "OPTIONS")
+	utils.ScreenDraw(-5, x2, 80, "white", screen, "Press enter to go back")
 
 	for i, option := range options {
 		x := utils.XCentered(option, config.GlobalConfig.TextDimension)
@@ -44,9 +43,9 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 				option = option[:j+2] + "◀" + option[j+2:] + "▶"
 				x = x - 20
 			}
-			menu.ScreenDraw(0, x, float64(120+30*i-5), "cyan", screen, option)
+			utils.ScreenDraw(0, x, float64(120+30*i-5), "cyan", screen, option)
 		} else {
-			menu.ScreenDraw(0, x, float64(120+30*i), "white", screen, option)
+			utils.ScreenDraw(0, x, float64(120+30*i), "white", screen, option)
 		}
 	}
 }

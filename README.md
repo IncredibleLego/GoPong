@@ -27,7 +27,15 @@ General -
 Menu options per second:
 Reload options:
 
+EXTERNAL MENU (normal menù)
 
+Internal menu - custum options menu as implemented
+
+
+
+- Possibility to change commands? example choose the pause button?
+
+- Create a new menu type, optionmenu 
 
 - MAKE Utils scene, where to save easy functions such as screendraw or option to draw constant screen
 - Screen drawl must be improved amd should print to the center of the screen

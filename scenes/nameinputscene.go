@@ -2,7 +2,6 @@ package scenes
 
 import (
 	"goPong/config"
-	"goPong/menu"
 	"goPong/utils"
 	"image/color"
 	"strconv"
@@ -52,19 +51,19 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 
 	d := 20 - config.GlobalConfig.TextDimension
 
-	//menu.ScreenDraw(d, 65, height/3, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
+	//utils.ScreenDraw(d, 65, height/3, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
 
 	playerMessage := "Player " + strconv.Itoa(n.activePlayer+1) + ", insert your name:"
 	x1 := utils.XCentered(playerMessage, config.GlobalConfig.TextDimension)
-	menu.ScreenDraw(d, x1, height/3, "white", screen, playerMessage)
+	utils.ScreenDraw(d, x1, height/3, "white", screen, playerMessage)
 
-	menu.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer])
+	utils.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer])
 
-	//menu.ScreenDraw(d, 130, height/3*2, "white", screen, "Press Enter to confirm")
+	//utils.ScreenDraw(d, 130, height/3*2, "white", screen, "Press Enter to confirm")
 
 	confirmMessage := "Press Enter to confirm"
 	x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
-	menu.ScreenDraw(d, x2, (height/3)*2, "white", screen, confirmMessage)
+	utils.ScreenDraw(d, x2, (height/3)*2, "white", screen, confirmMessage)
 
 }
 

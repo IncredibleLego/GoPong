@@ -1,11 +1,57 @@
 package utils
 
 import (
+	"bytes"
+	_ "embed"
 	"goPong/config"
 	"log"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
 // This file contains utility functions for the game.
+
+//go:embed PressStart2P-Regular.ttf
+var pressStart2P []byte
+var pressStart2PFaceSource *text.GoTextFaceSource
+
+func ScreenDraw(size float64, x, y float64, colorName string, screen *ebiten.Image, line string) {
+	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
+	if err != nil {
+		log.Fatal(err)
+	}
+	pressStart2PFaceSource = s
+
+	textFace := &text.GoTextFace{
+		Source: pressStart2PFaceSource,
+		Size:   config.GlobalConfig.TextDimension + size,
+	}
+
+	textOptions := &text.DrawOptions{}
+	textOptions.GeoM.Translate(x, y)
+	r, g, b, a := Color(colorName)
+	textOptions.ColorScale.Scale(r, g, b, a)
+	textOptions.LineSpacing = float64(size) / 10
+
+	text.Draw(screen, line, textFace, textOptions)
+}
+
+func MeasureText(label string) (float64, float64) {
+	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
+	if err != nil {
+		log.Fatal(err)
+	}
+	pressStart2PFaceSource = s
+
+	textFace := &text.GoTextFace{
+		Source: pressStart2PFaceSource,
+		Size:   config.GlobalConfig.TextDimension,
+	}
+
+	boundsX, boundsY := text.Measure(label, textFace, float64(config.GlobalConfig.TextDimension)/10)
+	return boundsX, boundsY
+}
 
 // Gives x coord to place a message in the middle of the screen given the message and the font size
 func XCentered(message string, fontSize float64) float64 {

@@ -3,6 +3,7 @@ package scenes
 import (
 	"fmt"
 	"goPong/menu"
+	"goPong/utils"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -32,8 +33,8 @@ func NewStartScene() *StartScene {
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
 
-	menu.ScreenDraw(-7, 250, 60, "white", screen, "Pong in Go")
-	menu.ScreenDraw(-7, 210, 80, "white", screen, "by IncredibleLego")
+	utils.ScreenDraw(-7, 250, 60, "white", screen, "Pong in Go")
+	utils.ScreenDraw(-7, 210, 80, "white", screen, "by IncredibleLego")
 
 	s.currentMenu.Draw(screen)
 

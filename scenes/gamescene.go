@@ -2,8 +2,8 @@ package scenes
 
 import (
 	"goPong/config"
-	"goPong/menu"
 	"goPong/objects"
+	"goPong/utils"
 	"image/color"
 	"strconv"
 
@@ -56,16 +56,16 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(0, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
-	menu.ScreenDraw(0, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
-	menu.ScreenDraw(0, 500, 10, "white", screen, "SOLO MODE")
+	utils.ScreenDraw(0, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
+	utils.ScreenDraw(0, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
+	utils.ScreenDraw(0, 500, 10, "white", screen, "SOLO MODE")
 
 	//Debug
 	x := strconv.Itoa(g.ball.Dxdt)
 	y := strconv.Itoa(g.ball.Dydt)
 
-	menu.ScreenDraw(0, 300, 10, "white", screen, x)
-	menu.ScreenDraw(0, 320, 10, "white", screen, y)
+	utils.ScreenDraw(0, 300, 10, "white", screen, x)
+	utils.ScreenDraw(0, 320, 10, "white", screen, y)
 }
 
 // FirstLoad implements Scene.

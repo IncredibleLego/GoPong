@@ -2,8 +2,8 @@ package scenes
 
 import (
 	"goPong/config"
-	"goPong/menu"
 	"goPong/objects"
+	"goPong/utils"
 	"image/color"
 	"strconv"
 
@@ -67,11 +67,11 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(0, 10, 10, "white", screen, m.player1Name)
-	menu.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(m.score2))
-	menu.ScreenDraw(0, 500, 10, "white", screen, m.player2Name)
-	menu.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(m.score1))
-	menu.ScreenDraw(-3, 250, 10, "white", screen, "MULTIPLAYER MODE")
+	utils.ScreenDraw(0, 10, 10, "white", screen, m.player1Name)
+	utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(m.score2))
+	utils.ScreenDraw(0, 500, 10, "white", screen, m.player2Name)
+	utils.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(m.score1))
+	utils.ScreenDraw(-3, 250, 10, "white", screen, "MULTIPLAYER MODE")
 }
 
 // FirstLoad implements Scene.

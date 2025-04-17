@@ -2,8 +2,8 @@ package scenes
 
 import (
 	"goPong/config"
-	"goPong/menu"
 	"goPong/objects"
+	"goPong/utils"
 	"image/color"
 	"strconv"
 
@@ -65,11 +65,11 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
-	menu.ScreenDraw(0, 10, 10, "white", screen, "COMPUTER")
-	menu.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(c.scoreEnemy))
-	menu.ScreenDraw(0, 500, 10, "white", screen, c.playerName)
-	menu.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(c.score))
-	menu.ScreenDraw(-3, 250, 10, "white", screen, "COMPUTER MODE")
+	utils.ScreenDraw(0, 10, 10, "white", screen, "COMPUTER")
+	utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(c.scoreEnemy))
+	utils.ScreenDraw(0, 500, 10, "white", screen, c.playerName)
+	utils.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(c.score))
+	utils.ScreenDraw(-3, 250, 10, "white", screen, "COMPUTER MODE")
 }
 
 // FirstLoad implements Scene.
