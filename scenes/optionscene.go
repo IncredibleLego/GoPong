@@ -30,7 +30,7 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 		"Reset to default",
 	}
 
-	x1 := utils.XCentered("Options", config.GlobalConfig.TextDimension)
+	x1 := utils.XCentered("OPTIONS", config.GlobalConfig.TextDimension)
 	x2 := utils.XCentered("Press enter to go back", config.GlobalConfig.TextDimension-5)
 	utils.ScreenDraw(0, x1, 50, "white", screen, "OPTIONS")
 	utils.ScreenDraw(-5, x2, 80, "white", screen, "Press enter to go back")

@@ -37,6 +37,8 @@ Internal menu - custum options menu as implemented
 
 - Create a new menu type, optionmenu 
 
+- Make moveInterval inside menu an option calculated using menuoptions per second and remove that option
+
 - MAKE Utils scene, where to save easy functions such as screendraw or option to draw constant screen
 - Screen drawl must be improved amd should print to the center of the screen
     - Maybe doing two functions: screenDraw with less arguments for all simple inputs and screenDraw extra for all different options

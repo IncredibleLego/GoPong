@@ -1,7 +1,6 @@
 package menu
 
 import (
-	_ "embed"
 	"goPong/config"
 	"goPong/utils"
 	"time"
@@ -19,6 +18,25 @@ type Menu struct {
 	Options      []MenuOption
 	Selected     int
 	LastMoveTime time.Time
+}
+
+func (m *Menu) Draw(screen *ebiten.Image) {
+	for i, option := range m.Options {
+
+		textWidth, textHeight := utils.MeasureText(m.Options[i].Label)
+
+		x := float64(config.GlobalConfig.ScreenWidth)/2 - textWidth/2     // Centra orizzontalmente
+		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Centra verticalmente
+
+		spacing := config.GlobalConfig.TextDimension * 1.5
+
+		if i == m.Selected {
+			utils.ScreenDraw(0, x-20, y+float64(i)*spacing-5, "yellow", screen, "◀"+option.Label+"▶")
+			//ScreenDraw(0, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
+		} else {
+			utils.ScreenDraw(0, x, y+float64(i)*spacing, "white", screen, option.Label)
+		}
+	}
 }
 
 func (m *Menu) Update() *Menu {
@@ -79,23 +97,4 @@ func (m *Menu) Update() *Menu {
 		}
 	}
 	return nil
-}
-
-func (m *Menu) Draw(screen *ebiten.Image) {
-	for i, option := range m.Options {
-
-		textWidth, textHeight := utils.MeasureText(m.Options[i].Label)
-
-		x := float64(config.GlobalConfig.ScreenWidth)/2 - textWidth/2     // Centra orizzontalmente
-		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Centra verticalmente
-
-		spacing := config.GlobalConfig.TextDimension * 1.5
-
-		if i == m.Selected {
-			utils.ScreenDraw(0, x-20, y+float64(i)*spacing-5, "yellow", screen, "◀"+option.Label+"▶")
-			//ScreenDraw(0, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
-		} else {
-			utils.ScreenDraw(0, x, y+float64(i)*spacing, "white", screen, option.Label)
-		}
-	}
 }
