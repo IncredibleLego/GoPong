@@ -37,5 +37,4 @@ func (o *OptionMenu) Draw(screen *ebiten.Image) {
 
 func (o *OptionMenu) Update() {
 	// Implement
-
 }
