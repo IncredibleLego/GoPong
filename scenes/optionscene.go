@@ -3,54 +3,70 @@ package scenes
 import (
 	"fmt"
 	"goPong/config"
-	"goPong/utils"
+	"goPong/menu"
 	"strconv"
-	"strings"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type OptionScene struct {
-	selectedOption  int
-	previousSceneId SceneId
+	currentMenu        menu.Menu
+	mainMenu           *menu.RegularMenu
+	gameMenu           *menu.OptionMenu
+	lastEnterPressTime time.Time
+	actionExecuted     bool
+	previousSceneId    SceneId
 }
 
 func NewOptionScene(previous SceneId) *OptionScene {
 	return &OptionScene{
-		selectedOption:  0,
+		currentMenu:     nil,
+		mainMenu:        nil,
+		gameMenu:        nil,
 		previousSceneId: previous,
 	}
 }
 
-func (o *OptionScene) Draw(screen *ebiten.Image) {
-	options := []string{
+func (o *OptionScene) generateGameMenuOptions() []string {
+	return []string{
 		"Text dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
 		"Screen Height: " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
 		"Reset to default",
-	}
-
-	x1 := utils.XCentered("OPTIONS", config.GlobalConfig.TextDimension)
-	x2 := utils.XCentered("Press enter to go back", config.GlobalConfig.TextDimension-5)
-	utils.ScreenDraw(0, x1, 50, "white", screen, "OPTIONS")
-	utils.ScreenDraw(-5, x2, 80, "white", screen, "Press enter to go back")
-
-	for i, option := range options {
-		x := utils.XCentered(option, config.GlobalConfig.TextDimension)
-		if i == o.selectedOption {
-			j := strings.Index(option, ": ")
-			if j > 0 {
-				option = option[:j+2] + "◀" + option[j+2:] + "▶"
-				x = x - 20
-			}
-			utils.ScreenDraw(0, x, float64(120+30*i-5), "cyan", screen, option)
-		} else {
-			utils.ScreenDraw(0, x, float64(120+30*i), "white", screen, option)
-		}
+		"Back to options",
 	}
 }
 
-func (o *OptionScene) FirstLoad() {}
+func (o *OptionScene) Draw(screen *ebiten.Image) {
+
+	//If selected menu is main menu print relative options
+	//When changing ball and paddle dimension, print relative on the screen
+
+	o.currentMenu.Draw(screen)
+}
+
+func (o *OptionScene) FirstLoad() {
+	o.mainMenu = &menu.RegularMenu{
+		Options: []menu.MenuOption{
+			{Label: "GAME"},
+			{Label: "SCREEN"},
+			{Label: "GENERAL"},
+			{Label: "BACK"},
+		},
+		Selected:     0,
+		LastMoveTime: time.Now(),
+	}
+	o.gameMenu = &menu.OptionMenu{
+		Options:      o.generateGameMenuOptions(),
+		Selected:     0,
+		LastMoveTime: time.Now(),
+		MenuName:     "GAME OPTIONS",
+	}
+	o.currentMenu = o.mainMenu
+	o.lastEnterPressTime = time.Now()
+	o.actionExecuted = false
+}
 
 func (o *OptionScene) OnEnter() {}
 
@@ -61,36 +77,77 @@ func (o *OptionScene) ShouldPreserveState(reason SceneChangeReason) bool {
 }
 
 func (o *OptionScene) Update() SceneId {
-	optionsCount := 3 // Total number of options
+	// Updates the current menu to print correctly the options
+	o.gameMenu.Options = o.generateGameMenuOptions()
+	nextMenu := o.currentMenu.Update()
+	if nextMenu != nil {
+		o.currentMenu = nextMenu
+		o.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
+		o.actionExecuted = false
+	} else {
+		// Evita l'esecuzione immediata dopo il cambio menu
+		if time.Since(o.lastEnterPressTime) > 200*time.Millisecond {
+			// Controlla se il menu corrente è un OptionMenu
+			if _, ok := o.currentMenu.(*menu.OptionMenu); ok {
 
-	// Selecting the option
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowUp) || inpututil.IsKeyJustPressed(ebiten.KeyW) {
-		o.selectedOption = (o.selectedOption - 1 + optionsCount) % optionsCount
-	}
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowDown) || inpututil.IsKeyJustPressed(ebiten.KeyS) {
-		o.selectedOption = (o.selectedOption + 1) % optionsCount
+				// Effettua un'asserzione di tipo per accedere a OptionMenu
+				optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
+				if !ok {
+					fmt.Println("Errore: currentMenu non è un OptionMenu")
+				}
+
+				// Ottieni l'opzione selezionata
+				selectedOption := optionMenu.Selected
+
+				// Modifica l'opzione selezionata
+				if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
+					handleOptionSelection(selectedOption, true)
+				}
+
+				if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
+					handleOptionSelection(selectedOption, false)
+				}
+
+				// Torna al menu principale
+
+				//If enter is pressed AND label = Back? universal
+				if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && selectedOption == 3 {
+					o.currentMenu = o.mainMenu
+				}
+			} else {
+				// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
+				if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !o.actionExecuted {
+					o.actionExecuted = true // Evita che venga eseguito più volte
+
+					// Gestisci il passaggio dal mainMenu a un OptionMenu
+					if o.currentMenu == o.mainMenu {
+						switch o.mainMenu.Selected {
+						case 0: // Prima opzione del mainMenu
+							o.currentMenu = o.gameMenu
+							o.gameMenu.Selected = 0
+						// Puoi aggiungere altri case per altre opzioni del mainMenu
+						case 3:
+							return o.previousSceneId
+						default:
+							// Gestione di default (se necessario)
+						}
+					}
+				}
+			}
+		}
 	}
 
-	// Modify the selected option
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
-		handleOptionSelection(o, true)
-	}
-
-	if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
-		handleOptionSelection(o, false)
-	}
-
-	// Return to the main menu
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		return o.previousSceneId
+	// Se Enter viene rilasciato, permetti nuove azioni
+	if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+		o.actionExecuted = false
 	}
 
 	return OptionsSceneId
 }
 
-func handleOptionSelection(o *OptionScene, mode bool) {
+func handleOptionSelection(selectedOption int, mode bool) {
 	// If mode is true = +, if false = -
-	switch o.selectedOption {
+	switch selectedOption {
 	case 0:
 		err := config.UpdateConfig(func(cfg *config.Config) {
 			if mode {

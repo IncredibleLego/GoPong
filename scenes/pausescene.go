@@ -9,7 +9,7 @@ import (
 )
 
 type PauseScene struct {
-	pauseMenu       *menu.Menu
+	pauseMenu       *menu.RegularMenu
 	actionExecuted  bool
 	previousSceneId SceneId
 	options         bool //true if the last scene was options
@@ -33,7 +33,7 @@ func (p *PauseScene) Draw(screen *ebiten.Image) {
 }
 
 func (p *PauseScene) FirstLoad() {
-	p.pauseMenu = &menu.Menu{
+	p.pauseMenu = &menu.RegularMenu{
 		Options: []menu.MenuOption{
 			{Label: "UNPAUSE"},
 			{Label: "OPTIONS"},

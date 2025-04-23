@@ -11,9 +11,9 @@ import (
 )
 
 type StartScene struct { // is the scene loaded now
-	currentMenu        *menu.Menu
-	mainMenu           *menu.Menu
-	playMenu           *menu.Menu
+	currentMenu        *menu.RegularMenu
+	mainMenu           *menu.RegularMenu
+	playMenu           *menu.RegularMenu
 	lastEnterPressTime time.Time
 	actionExecuted     bool
 	selectedMode       int
@@ -41,7 +41,7 @@ func (s *StartScene) Draw(screen *ebiten.Image) {
 }
 
 func (s *StartScene) FirstLoad() {
-	s.mainMenu = &menu.Menu{
+	s.mainMenu = &menu.RegularMenu{
 		Options: []menu.MenuOption{
 			{Label: "PLAY"},
 			{Label: "OPTIONS"},
@@ -51,7 +51,7 @@ func (s *StartScene) FirstLoad() {
 		Selected:     0,
 		LastMoveTime: time.Now(),
 	}
-	s.playMenu = &menu.Menu{
+	s.playMenu = &menu.RegularMenu{
 		Options: []menu.MenuOption{
 			{Label: "SOLO MODE"},
 			{Label: "COMPUTER MODE"},
@@ -77,7 +77,11 @@ func (s *StartScene) OnExit() {
 func (s *StartScene) Update() SceneId {
 	nextMenu := s.currentMenu.Update()
 	if nextMenu != nil {
-		s.currentMenu = nextMenu
+		if regularMenu, ok := nextMenu.(*menu.RegularMenu); ok {
+			s.currentMenu = regularMenu
+		} else {
+			fmt.Println("Error: nextMenu is not of type *menu.RegularMenu")
+		}
 		s.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
 		s.actionExecuted = false
 	} else {

@@ -7,6 +7,8 @@ ROADMAP:
 
 HOW OPTIONS WILL LOOK:
 
+- Comparison between menu and optionmenu, create comparison between the two
+- Implement in optionscene using firstscene
 
 
 Game -
@@ -29,9 +31,12 @@ General -
 Menu options per second:
 Reload options:
 
+CONFIRM LABEL on screen when coosing if to delete an option
+
 EXTERNAL MENU (normal menù)
 
 Internal menu - custum options menu as implemented
+Implement mouse in optionmenu
 
 
 
