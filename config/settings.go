@@ -19,6 +19,7 @@ type Config struct {
 	ScreenWidth            int
 	ScreenHeight           int
 	MenuOptionsPerSecond   time.Duration
+	OptionsPerSecond       time.Duration
 	MaxBounceAngle         float64
 }
 
@@ -35,6 +36,7 @@ var GlobalConfig = &Config{
 	ScreenWidth:            640,
 	ScreenHeight:           480,
 	MenuOptionsPerSecond:   4,
+	OptionsPerSecond:       90,
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 }
 
@@ -51,6 +53,7 @@ var DefaultConfig = &Config{
 	ScreenWidth:            640,
 	ScreenHeight:           480,
 	MenuOptionsPerSecond:   4,
+	OptionsPerSecond:       90,
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 }
 

@@ -51,15 +51,21 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 	//When changing ball and paddle dimension, print relative on the screen
 
 	switch o.showOption {
-	case 4:
+	case 1, 2:
+		x := config.GlobalConfig.ScreenWidth/2 - config.GlobalConfig.BallSize/2
+		vector.DrawFilledRect(screen,
+			float32(x), float32(400-config.GlobalConfig.BallSize/2),
+			float32(config.GlobalConfig.BallSize), float32(config.GlobalConfig.BallSize),
+			color.White, false,
+		)
+	case 3, 4, 5:
 		x := config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall
 		y := config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2
-
 		vector.DrawFilledRect(screen,
 			float32(x), float32(y),
 			float32(15), float32(config.GlobalConfig.PaddleHeight),
 			color.White, false,
-		) // Draw the paddle
+		)
 	default:
 		_ = 0
 	}
@@ -111,6 +117,14 @@ func (o *OptionScene) Update() SceneId {
 			// Controlla se il menu corrente è un OptionMenu
 			if _, ok := o.currentMenu.(*menu.OptionMenu); ok {
 
+				moveInterval := time.Duration(time.Second / config.GlobalConfig.OptionsPerSecond)
+
+				arrowRight := inpututil.KeyPressDuration(ebiten.KeyArrowRight)
+				keyD := inpututil.KeyPressDuration(ebiten.KeyD)
+
+				arrowLeft := inpututil.KeyPressDuration(ebiten.KeyArrowLeft)
+				keyA := inpututil.KeyPressDuration(ebiten.KeyA)
+
 				// Effettua un'asserzione di tipo per accedere a OptionMenu
 
 				optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
@@ -118,13 +132,28 @@ func (o *OptionScene) Update() SceneId {
 					fmt.Println("Errore: currentMenu non è un OptionMenu")
 				}
 
-				// Modifica l'opzione selezionata
-				if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
-					handleOptionSelection(o, true)
+				// Make it print only if the menu is the gameMenu
+				if optionMenu.MenuName == "GAME OPTIONS" {
+					o.showOption = optionMenu.Selected + 1
 				}
 
-				if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
+				// Modifica l'opzione selezionata
+				/*
+					if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
+						handleOptionSelection(o, true)
+					}
+
+					if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
+						handleOptionSelection(o, false)
+					} */
+
+				if (arrowRight > 0 || keyD > 0) && time.Since(o.lastEnterPressTime) >= moveInterval {
+					handleOptionSelection(o, true)
+					o.lastEnterPressTime = time.Now()
+				}
+				if (arrowLeft > 0 || keyA > 0) && time.Since(o.lastEnterPressTime) >= moveInterval {
 					handleOptionSelection(o, false)
+					o.lastEnterPressTime = time.Now()
 				}
 
 				// Torna al menu principale
@@ -182,18 +211,6 @@ func handleOptionSelection(o *OptionScene, mode bool) {
 	}
 }
 
-/*
-return []string{
-	"Ball Speed: " + strconv.Itoa(config.GlobalConfig.BallSpeed),
-	"Ball Size: " + strconv.Itoa(config.GlobalConfig.BallSize),
-	"Paddle Speed: " + strconv.Itoa(config.GlobalConfig.PaddleSpeed),
-	"Paddle Height: " + strconv.Itoa(config.GlobalConfig.PaddleHeight),
-	"Paddle Distance: " + strconv.Itoa(config.GlobalConfig.PaddleDistanceFromWall),
-	"Enemy Difficulty: " + fmt.Sprintf("%.2f", config.GlobalConfig.Difficulty),
-	"Reset to default",
-	"Back to options",
-} */
-
 func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	// If mode is true = +, if false = -
 	var err error
@@ -207,16 +224,14 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 				cfg.BallSpeed -= 1
 			}
 		})
-		o.showOption = 1
 	case 1:
 		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode {
+			if mode && cfg.BallSize < 200 {
 				cfg.BallSize += 5
-			} else {
+			} else if !mode && cfg.BallSize > 5 {
 				cfg.BallSize -= 5
 			}
 		})
-		o.showOption = 2
 	case 2:
 		err = config.UpdateConfig(func(cfg *config.Config) {
 			if mode {
@@ -225,16 +240,14 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 				cfg.PaddleSpeed -= 1
 			}
 		})
-		o.showOption = 3
 	case 3:
 		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode {
+			if mode && cfg.PaddleHeight < 470 {
 				cfg.PaddleHeight += 10
-			} else {
+			} else if !mode && cfg.PaddleHeight > 10 {
 				cfg.PaddleHeight -= 10
 			}
 		})
-		o.showOption = 4
 	case 4:
 		err = config.UpdateConfig(func(cfg *config.Config) {
 			if mode {
@@ -243,7 +256,6 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 				cfg.PaddleDistanceFromWall -= 5
 			}
 		})
-		o.showOption = 5
 	case 5:
 		err = config.UpdateConfig(func(cfg *config.Config) {
 			if mode {
@@ -252,11 +264,9 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 				cfg.Difficulty -= 0.1
 			}
 		})
-		o.showOption = 6
 	case 6:
 		config.SaveConfig(config.DefaultConfig)
 		config.InitConfig()
-		o.showOption = 7
 	}
 
 	if err != nil {
