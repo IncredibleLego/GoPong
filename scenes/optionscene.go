@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"goPong/config"
 	"goPong/menu"
+	"image/color"
 	"strconv"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type OptionScene struct {
@@ -18,6 +20,7 @@ type OptionScene struct {
 	lastEnterPressTime time.Time
 	actionExecuted     bool
 	previousSceneId    SceneId
+	showOption         int
 }
 
 func NewOptionScene(previous SceneId) *OptionScene {
@@ -31,8 +34,12 @@ func NewOptionScene(previous SceneId) *OptionScene {
 
 func (o *OptionScene) generateGameMenuOptions() []string {
 	return []string{
-		"Text dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
-		"Screen Height: " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
+		"Ball Speed: " + strconv.Itoa(config.GlobalConfig.BallSpeed),
+		"Ball Size: " + strconv.Itoa(config.GlobalConfig.BallSize),
+		"Paddle Speed: " + strconv.Itoa(config.GlobalConfig.PaddleSpeed),
+		"Paddle Height: " + strconv.Itoa(config.GlobalConfig.PaddleHeight),
+		"Paddle Distance: " + strconv.Itoa(config.GlobalConfig.PaddleDistanceFromWall),
+		"Enemy Difficulty: " + fmt.Sprintf("%.2f", config.GlobalConfig.Difficulty),
 		"Reset to default",
 		"Back to options",
 	}
@@ -42,6 +49,20 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 
 	//If selected menu is main menu print relative options
 	//When changing ball and paddle dimension, print relative on the screen
+
+	switch o.showOption {
+	case 4:
+		x := config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall
+		y := config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2
+
+		vector.DrawFilledRect(screen,
+			float32(x), float32(y),
+			float32(15), float32(config.GlobalConfig.PaddleHeight),
+			color.White, false,
+		) // Draw the paddle
+	default:
+		_ = 0
+	}
 
 	o.currentMenu.Draw(screen)
 }
@@ -91,28 +112,27 @@ func (o *OptionScene) Update() SceneId {
 			if _, ok := o.currentMenu.(*menu.OptionMenu); ok {
 
 				// Effettua un'asserzione di tipo per accedere a OptionMenu
+
 				optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
 				if !ok {
 					fmt.Println("Errore: currentMenu non è un OptionMenu")
 				}
 
-				// Ottieni l'opzione selezionata
-				selectedOption := optionMenu.Selected
-
 				// Modifica l'opzione selezionata
 				if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
-					handleOptionSelection(selectedOption, true)
+					handleOptionSelection(o, true)
 				}
 
 				if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
-					handleOptionSelection(selectedOption, false)
+					handleOptionSelection(o, false)
 				}
 
 				// Torna al menu principale
 
 				//If enter is pressed AND label = Back? universal
-				if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && selectedOption == 3 {
+				if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && optionMenu.Selected == len(optionMenu.Options)-1 {
 					o.currentMenu = o.mainMenu
+					o.showOption = 0
 				}
 			} else {
 				// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
@@ -145,34 +165,92 @@ func (o *OptionScene) Update() SceneId {
 	return OptionsSceneId
 }
 
-func handleOptionSelection(selectedOption int, mode bool) {
+func handleOptionSelection(o *OptionScene, mode bool) {
+
+	optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
+	if !ok {
+		fmt.Println("Errore: currentMenu non è un OptionMenu")
+	}
+
+	// Gestisci le opzioni in base al menu corrente
+	switch optionMenu.MenuName {
+	case "GAME OPTIONS":
+		handleGameMenuOptions(o, optionMenu.Selected, mode)
+	// Aggiungi altri case per altri menu
+	default:
+		fmt.Println("Menu non riconosciuto:", optionMenu.MenuName)
+	}
+}
+
+/*
+return []string{
+	"Ball Speed: " + strconv.Itoa(config.GlobalConfig.BallSpeed),
+	"Ball Size: " + strconv.Itoa(config.GlobalConfig.BallSize),
+	"Paddle Speed: " + strconv.Itoa(config.GlobalConfig.PaddleSpeed),
+	"Paddle Height: " + strconv.Itoa(config.GlobalConfig.PaddleHeight),
+	"Paddle Distance: " + strconv.Itoa(config.GlobalConfig.PaddleDistanceFromWall),
+	"Enemy Difficulty: " + fmt.Sprintf("%.2f", config.GlobalConfig.Difficulty),
+	"Reset to default",
+	"Back to options",
+} */
+
+func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	// If mode is true = +, if false = -
+	var err error
+
 	switch selectedOption {
 	case 0:
-		err := config.UpdateConfig(func(cfg *config.Config) {
+		err = config.UpdateConfig(func(cfg *config.Config) {
 			if mode {
-				cfg.TextDimension += 10
+				cfg.BallSpeed += 1
 			} else {
-				cfg.TextDimension -= 10
+				cfg.BallSpeed -= 1
 			}
 		})
-		if err != nil {
-			fmt.Println("Error during option saving", err)
-		}
+		o.showOption = 1
 	case 1:
-		err := config.UpdateConfig(func(cfg *config.Config) {
+		err = config.UpdateConfig(func(cfg *config.Config) {
 			if mode {
-				cfg.ScreenHeight += 10
+				cfg.BallSize += 5
 			} else {
-				cfg.ScreenHeight -= 10
+				cfg.BallSize -= 5
 			}
 		})
-		if err != nil {
-			fmt.Println("Error during option saving", err)
-		}
+		o.showOption = 2
 	case 2:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode {
+				cfg.PaddleSpeed += 1
+			} else {
+				cfg.PaddleSpeed -= 1
+			}
+		})
+		o.showOption = 3
+	case 3:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode {
+				cfg.PaddleHeight += 10
+			} else {
+				cfg.PaddleHeight -= 10
+			}
+		})
+		o.showOption = 4
+	case 4:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode {
+				cfg.PaddleDistanceFromWall += 5
+			} else {
+				cfg.PaddleDistanceFromWall -= 5
+			}
+		})
+		o.showOption = 5
+	case 6:
 		config.SaveConfig(config.DefaultConfig)
 		config.InitConfig()
+	}
+
+	if err != nil {
+		fmt.Println("Error during option saving", err)
 	}
 }
 

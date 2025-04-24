@@ -102,7 +102,16 @@ func (g *GameScene) OnExit() {
 
 }
 
+func (g *GameScene) updateDimensions() {
+	g.ball.W = config.GlobalConfig.BallSize
+	g.ball.H = config.GlobalConfig.BallSize
+	g.paddle.H = config.GlobalConfig.PaddleHeight
+}
+
 func (g *GameScene) Update() SceneId {
+
+	g.updateDimensions()
+
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return PauseSceneId
 	}

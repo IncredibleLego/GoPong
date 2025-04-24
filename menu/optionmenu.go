@@ -29,9 +29,9 @@ func (o *OptionMenu) Draw(screen *ebiten.Image) {
 				option = option[:j+2] + "◀" + option[j+2:] + "▶"
 				x = x - 20
 			}
-			utils.ScreenDraw(0, x, float64(120+30*i-5), "cyan", screen, option)
+			utils.ScreenDraw(0, x, float64(100+30*i-5), "cyan", screen, option)
 		} else {
-			utils.ScreenDraw(0, x, float64(120+30*i), "white", screen, option)
+			utils.ScreenDraw(0, x, float64(100+30*i), "white", screen, option)
 		}
 	}
 }

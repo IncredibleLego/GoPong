@@ -117,7 +117,17 @@ func (g *MultiplayerScene) OnExit() {
 
 }
 
+func (m *MultiplayerScene) updateDimensions() {
+	m.ball.W = config.GlobalConfig.BallSize
+	m.ball.H = config.GlobalConfig.BallSize
+	m.paddle1.H = config.GlobalConfig.PaddleHeight
+	m.paddle2.H = config.GlobalConfig.PaddleHeight
+}
+
 func (m *MultiplayerScene) Update() SceneId {
+
+	m.updateDimensions()
+
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return PauseSceneId
 	}

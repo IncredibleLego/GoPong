@@ -114,7 +114,17 @@ func (c *ComputerScene) OnExit() {
 
 }
 
+func (c *ComputerScene) updateDimensions() {
+	c.ball.W = config.GlobalConfig.BallSize
+	c.ball.H = config.GlobalConfig.BallSize
+	c.paddle.H = config.GlobalConfig.PaddleHeight
+	c.enemyPaddle.H = config.GlobalConfig.PaddleHeight
+}
+
 func (c *ComputerScene) Update() SceneId {
+
+	c.updateDimensions()
+
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return PauseSceneId
 	}
