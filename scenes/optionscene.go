@@ -244,9 +244,19 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 			}
 		})
 		o.showOption = 5
+	case 5:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode {
+				cfg.Difficulty += 0.1
+			} else {
+				cfg.Difficulty -= 0.1
+			}
+		})
+		o.showOption = 6
 	case 6:
 		config.SaveConfig(config.DefaultConfig)
 		config.InitConfig()
+		o.showOption = 7
 	}
 
 	if err != nil {
