@@ -5,6 +5,7 @@ import (
 	"goPong/scenes"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 type Game struct {
@@ -34,6 +35,13 @@ func NewGame() *Game {
 }
 
 func (g *Game) Update() error {
+
+	// Using "Esc" you can enter or exit fullscreen
+	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
+		isFullscreen = !isFullscreen
+		ebiten.SetFullscreen(isFullscreen)
+	}
+
 	// Updates the current scene and checks if the scene has changed if nextSceneId is different from the current scene
 	nextSceneId := g.sceneMap[g.activeSceneId].Update()
 	// If the next scene is the exit scene, the game is terminated

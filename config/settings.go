@@ -7,6 +7,7 @@ import (
 )
 
 type Config struct {
+	Fullscreen             bool
 	Player1Name            string
 	Player2Name            string
 	BallSpeed              int
@@ -24,6 +25,7 @@ type Config struct {
 }
 
 var GlobalConfig = &Config{
+	Fullscreen:             true,
 	Player1Name:            "Player 1",
 	Player2Name:            "Player 2",
 	BallSpeed:              6,
@@ -41,6 +43,7 @@ var GlobalConfig = &Config{
 }
 
 var DefaultConfig = &Config{
+	Fullscreen:             true,
 	Player1Name:            "Player 1",
 	Player2Name:            "Player 2",
 	BallSpeed:              6,

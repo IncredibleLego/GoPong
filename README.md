@@ -25,6 +25,7 @@ Screen -
 Text dimension:
 Screen Width:
 Screen Height:
+Fullscreen by default
 - Reset do default
 
 General -
