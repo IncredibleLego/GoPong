@@ -288,8 +288,14 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 			}
 		})
 	case 6:
-		config.SaveConfig(config.DefaultConfig)
-		config.InitConfig()
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			cfg.BallSpeed = config.DefaultConfig.BallSpeed
+			cfg.BallSize = config.DefaultConfig.BallSize
+			cfg.PaddleSpeed = config.DefaultConfig.PaddleSpeed
+			cfg.PaddleHeight = config.DefaultConfig.PaddleHeight
+			cfg.PaddleDistanceFromWall = config.DefaultConfig.PaddleDistanceFromWall
+			cfg.Difficulty = config.DefaultConfig.Difficulty
+		})
 	}
 
 	if err != nil {
@@ -331,13 +337,24 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 			cfg.Fullscreen = !cfg.Fullscreen
 		})
 	case 4:
-		config.SaveConfig(config.DefaultConfig)
-		config.InitConfig()
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			cfg.TextDimension = config.DefaultConfig.TextDimension
+			cfg.ScreenWidth = config.DefaultConfig.ScreenWidth
+			cfg.ScreenHeight = config.DefaultConfig.ScreenHeight
+			cfg.Fullscreen = config.DefaultConfig.Fullscreen
+		})
 	}
 
 	if err != nil {
 		fmt.Println("Error during option saving", err)
 	}
 }
+
+/*
+Reset all to default
+
+config.SaveConfig(config.DefaultConfig)
+config.InitConfig()
+*/
 
 var _ Scene = (*OptionScene)(nil)
