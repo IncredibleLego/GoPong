@@ -254,61 +254,49 @@ func handleOptionSelection(o *OptionScene, mode bool) {
 	}
 }
 
+func updateConfigValue(option *int, min, max, step int, mode bool) {
+	err := config.UpdateConfig(func(cfg *config.Config) {
+		if mode && *option < max {
+			*option += step
+		} else if !mode && *option > min {
+			*option -= step
+		}
+	})
+	if err != nil {
+		fmt.Println("Error during option saving", err)
+	}
+}
+
+func updateConfigValueFloat(option *float64, min, max, step float64, mode bool) {
+	err := config.UpdateConfig(func(cfg *config.Config) {
+		if mode && *option < max {
+			*option += step
+		} else if !mode && *option > min {
+			*option -= step
+		}
+	})
+	if err != nil {
+		fmt.Println("Error during option saving", err)
+	}
+}
+
 func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	// If mode is true = +, if false = -
-	var err error
-
 	switch selectedOption {
 	case 0:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode {
-				cfg.BallSpeed += 1
-			} else {
-				cfg.BallSpeed -= 1
-			}
-		})
+		updateConfigValue(&config.GlobalConfig.BallSpeed, 1, 200, 1, mode)
 	case 1:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode && cfg.BallSize < 200 {
-				cfg.BallSize += 5
-			} else if !mode && cfg.BallSize > 5 {
-				cfg.BallSize -= 5
-			}
-		})
+		updateConfigValue(&config.GlobalConfig.BallSize, 5, 200, 5, mode)
 	case 2:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode {
-				cfg.PaddleSpeed += 1
-			} else {
-				cfg.PaddleSpeed -= 1
-			}
-		})
+		updateConfigValue(&config.GlobalConfig.PaddleSpeed, 1, 200, 1, mode)
 	case 3:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode && cfg.PaddleHeight < 470 {
-				cfg.PaddleHeight += 10
-			} else if !mode && cfg.PaddleHeight > 10 {
-				cfg.PaddleHeight -= 10
-			}
-		})
+		updateConfigValue(&config.GlobalConfig.PaddleHeight, 10, 470, 10, mode)
 	case 4:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode {
-				cfg.PaddleDistanceFromWall += 5
-			} else {
-				cfg.PaddleDistanceFromWall -= 5
-			}
-		})
+		updateConfigValue(&config.GlobalConfig.PaddleDistanceFromWall, 15, config.GlobalConfig.ScreenWidth/2, 5, mode)
 	case 5:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode {
-				cfg.Difficulty += 0.1
-			} else {
-				cfg.Difficulty -= 0.1
-			}
-		})
+		updateConfigValueFloat(&config.GlobalConfig.Difficulty, 0.2, 0.9, 0.1, mode)
 	case 6:
-		err = config.UpdateConfig(func(cfg *config.Config) {
+		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.BallSpeed = config.DefaultConfig.BallSpeed
 			cfg.BallSize = config.DefaultConfig.BallSize
 			cfg.PaddleSpeed = config.DefaultConfig.PaddleSpeed
@@ -316,57 +304,38 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 			cfg.PaddleDistanceFromWall = config.DefaultConfig.PaddleDistanceFromWall
 			cfg.Difficulty = config.DefaultConfig.Difficulty
 		})
-	}
-
-	if err != nil {
-		fmt.Println("Error during option saving", err)
+		if err != nil {
+			fmt.Println("Error during option saving", err)
+		}
 	}
 }
 
 func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	// If mode is true = +, if false = -
-	var err error
-
 	switch selectedOption {
 	case 0:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode && cfg.TextDimension < 35 {
-				cfg.TextDimension += 1
-			} else if !mode && cfg.BallSize > 0 {
-				cfg.TextDimension -= 1
-			}
-		})
+		updateConfigValueFloat(&config.GlobalConfig.TextDimension, 1, 35, 1, mode)
 	case 1:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode && cfg.ScreenWidth < 800 { //Random value, change
-				cfg.ScreenWidth += 10
-			} else if !mode && cfg.ScreenWidth > 10 {
-				cfg.ScreenWidth -= 10
-			}
-		})
+		updateConfigValue(&config.GlobalConfig.ScreenWidth, 10, 800, 10, mode)
 	case 2:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode && cfg.ScreenHeight < 800 { //Random value, change
-				cfg.ScreenHeight += 10
-			} else if !mode && cfg.ScreenHeight > 10 {
-				cfg.ScreenHeight -= 10
-			}
-		})
+		updateConfigValue(&config.GlobalConfig.ScreenHeight, 10, 800, 10, mode)
 	case 3:
-		err = config.UpdateConfig(func(cfg *config.Config) {
+		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.Fullscreen = !cfg.Fullscreen
 		})
+		if err != nil {
+			fmt.Println("Error during option saving", err)
+		}
 	case 4:
-		err = config.UpdateConfig(func(cfg *config.Config) {
+		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.TextDimension = config.DefaultConfig.TextDimension
 			cfg.ScreenWidth = config.DefaultConfig.ScreenWidth
 			cfg.ScreenHeight = config.DefaultConfig.ScreenHeight
 			cfg.Fullscreen = config.DefaultConfig.Fullscreen
 		})
-	}
-
-	if err != nil {
-		fmt.Println("Error during option saving", err)
+		if err != nil {
+			fmt.Println("Error during option saving", err)
+		}
 	}
 }
 
