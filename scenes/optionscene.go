@@ -18,6 +18,7 @@ type OptionScene struct {
 	mainMenu           *menu.RegularMenu
 	gameMenu           *menu.OptionMenu
 	screenMenu         *menu.OptionMenu
+	generalMenu        *menu.OptionMenu
 	lastEnterPressTime time.Time
 	actionExecuted     bool
 	previousSceneId    SceneId
@@ -29,6 +30,8 @@ func NewOptionScene(previous SceneId) *OptionScene {
 		currentMenu:     nil,
 		mainMenu:        nil,
 		gameMenu:        nil,
+		screenMenu:      nil,
+		generalMenu:     nil,
 		previousSceneId: previous,
 	}
 }
@@ -57,6 +60,15 @@ func (o *OptionScene) generateScreenMenuOptions() []string {
 	}
 }
 
+func (o *OptionScene) generateGeneralMenuOptions() []string {
+	return []string{
+		"Menu opt. per second: " + strconv.Itoa(int(config.GlobalConfig.MenuOptionsPerSecond)),
+		"Options per second: " + strconv.Itoa(int(config.GlobalConfig.OptionsPerSecond)),
+		"Reset to default",
+		"Back to options",
+	}
+}
+
 func (o *OptionScene) Draw(screen *ebiten.Image) {
 
 	//If selected menu is main menu print relative options
@@ -78,8 +90,6 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 			float32(15), float32(config.GlobalConfig.PaddleHeight),
 			color.White, false,
 		)
-	default:
-		_ = 0
 	}
 
 	o.currentMenu.Draw(screen)
@@ -108,6 +118,12 @@ func (o *OptionScene) FirstLoad() {
 		LastMoveTime: time.Now(),
 		MenuName:     "SCREEN OPTIONS",
 	}
+	o.generalMenu = &menu.OptionMenu{
+		Options:      o.generateGeneralMenuOptions(),
+		Selected:     0,
+		LastMoveTime: time.Now(),
+		MenuName:     "GENERAL OPTIONS",
+	}
 	o.currentMenu = o.mainMenu
 	o.lastEnterPressTime = time.Now()
 	o.actionExecuted = false
@@ -125,6 +141,7 @@ func (o *OptionScene) Update() SceneId {
 	// Updates the current menu to print correctly the options
 	o.gameMenu.Options = o.generateGameMenuOptions()
 	o.screenMenu.Options = o.generateScreenMenuOptions()
+	o.generalMenu.Options = o.generateGeneralMenuOptions()
 
 	nextMenu := o.currentMenu.Update()
 	if nextMenu != nil {
@@ -197,10 +214,11 @@ func (o *OptionScene) Update() SceneId {
 						case 1:
 							o.currentMenu = o.screenMenu
 							o.screenMenu.Selected = 0
+						case 2:
+							o.currentMenu = o.generalMenu
+							o.generalMenu.Selected = 0
 						case 3:
 							return o.previousSceneId
-						default:
-							// Gestione di default (se necessario)
 						}
 					}
 				}
@@ -229,6 +247,8 @@ func handleOptionSelection(o *OptionScene, mode bool) {
 		handleGameMenuOptions(o, optionMenu.Selected, mode)
 	case "SCREEN OPTIONS":
 		handleScreenMenuOptions(o, optionMenu.Selected, mode)
+	case "GENERAL OPTIONS":
+		handleGeneralMenuOptions(o, optionMenu.Selected, mode)
 	default:
 		fmt.Println("Menu non riconosciuto:", optionMenu.MenuName)
 	}
@@ -342,6 +362,39 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 			cfg.ScreenWidth = config.DefaultConfig.ScreenWidth
 			cfg.ScreenHeight = config.DefaultConfig.ScreenHeight
 			cfg.Fullscreen = config.DefaultConfig.Fullscreen
+		})
+	}
+
+	if err != nil {
+		fmt.Println("Error during option saving", err)
+	}
+}
+
+func handleGeneralMenuOptions(o *OptionScene, selectedOption int, mode bool) {
+	// If mode is true = +, if false = -
+	var err error
+
+	switch selectedOption {
+	case 0:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode && cfg.MenuOptionsPerSecond < 35 {
+				cfg.MenuOptionsPerSecond += 1
+			} else if !mode && cfg.MenuOptionsPerSecond > 1 {
+				cfg.MenuOptionsPerSecond -= 1
+			}
+		})
+	case 1:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode && cfg.OptionsPerSecond < 200 { //Random value, change
+				cfg.OptionsPerSecond += 1
+			} else if !mode && cfg.OptionsPerSecond > 0 {
+				cfg.OptionsPerSecond -= 1
+			}
+		})
+	case 2:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			cfg.MenuOptionsPerSecond = config.DefaultConfig.MenuOptionsPerSecond
+			cfg.OptionsPerSecond = config.DefaultConfig.OptionsPerSecond
 		})
 	}
 
