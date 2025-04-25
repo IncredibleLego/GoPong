@@ -17,6 +17,7 @@ type OptionScene struct {
 	currentMenu        menu.Menu
 	mainMenu           *menu.RegularMenu
 	gameMenu           *menu.OptionMenu
+	screenMenu         *menu.OptionMenu
 	lastEnterPressTime time.Time
 	actionExecuted     bool
 	previousSceneId    SceneId
@@ -40,6 +41,17 @@ func (o *OptionScene) generateGameMenuOptions() []string {
 		"Paddle Height: " + strconv.Itoa(config.GlobalConfig.PaddleHeight),
 		"Paddle Distance: " + strconv.Itoa(config.GlobalConfig.PaddleDistanceFromWall),
 		"Enemy Difficulty: " + fmt.Sprintf("%.2f", config.GlobalConfig.Difficulty),
+		"Reset to default",
+		"Back to options",
+	}
+}
+
+func (o *OptionScene) generateScreenMenuOptions() []string {
+	return []string{
+		"Text Dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
+		"Screen Width: " + strconv.Itoa(config.GlobalConfig.ScreenWidth),
+		"Screen Height: " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
+		"FullScreen: " + strconv.FormatBool(config.GlobalConfig.Fullscreen),
 		"Reset to default",
 		"Back to options",
 	}
@@ -90,6 +102,12 @@ func (o *OptionScene) FirstLoad() {
 		LastMoveTime: time.Now(),
 		MenuName:     "GAME OPTIONS",
 	}
+	o.screenMenu = &menu.OptionMenu{
+		Options:      o.generateScreenMenuOptions(),
+		Selected:     0,
+		LastMoveTime: time.Now(),
+		MenuName:     "SCREEN OPTIONS",
+	}
 	o.currentMenu = o.mainMenu
 	o.lastEnterPressTime = time.Now()
 	o.actionExecuted = false
@@ -106,6 +124,8 @@ func (o *OptionScene) ShouldPreserveState(reason SceneChangeReason) bool {
 func (o *OptionScene) Update() SceneId {
 	// Updates the current menu to print correctly the options
 	o.gameMenu.Options = o.generateGameMenuOptions()
+	o.screenMenu.Options = o.generateScreenMenuOptions()
+
 	nextMenu := o.currentMenu.Update()
 	if nextMenu != nil {
 		o.currentMenu = nextMenu
@@ -174,7 +194,9 @@ func (o *OptionScene) Update() SceneId {
 						case 0: // Prima opzione del mainMenu
 							o.currentMenu = o.gameMenu
 							o.gameMenu.Selected = 0
-						// Puoi aggiungere altri case per altre opzioni del mainMenu
+						case 1:
+							o.currentMenu = o.screenMenu
+							o.screenMenu.Selected = 0
 						case 3:
 							return o.previousSceneId
 						default:
@@ -205,7 +227,8 @@ func handleOptionSelection(o *OptionScene, mode bool) {
 	switch optionMenu.MenuName {
 	case "GAME OPTIONS":
 		handleGameMenuOptions(o, optionMenu.Selected, mode)
-	// Aggiungi altri case per altri menu
+	case "SCREEN OPTIONS":
+		handleScreenMenuOptions(o, optionMenu.Selected, mode)
 	default:
 		fmt.Println("Menu non riconosciuto:", optionMenu.MenuName)
 	}
@@ -265,6 +288,49 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 			}
 		})
 	case 6:
+		config.SaveConfig(config.DefaultConfig)
+		config.InitConfig()
+	}
+
+	if err != nil {
+		fmt.Println("Error during option saving", err)
+	}
+}
+
+func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
+	// If mode is true = +, if false = -
+	var err error
+
+	switch selectedOption {
+	case 0:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode && cfg.TextDimension < 35 {
+				cfg.TextDimension += 1
+			} else if !mode && cfg.BallSize > 0 {
+				cfg.TextDimension -= 1
+			}
+		})
+	case 1:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode && cfg.ScreenWidth < 800 { //Random value, change
+				cfg.ScreenWidth += 10
+			} else if !mode && cfg.ScreenWidth > 10 {
+				cfg.ScreenWidth -= 10
+			}
+		})
+	case 2:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			if mode && cfg.ScreenHeight < 800 { //Random value, change
+				cfg.ScreenHeight += 10
+			} else if !mode && cfg.ScreenHeight > 10 {
+				cfg.ScreenHeight -= 10
+			}
+		})
+	case 3:
+		err = config.UpdateConfig(func(cfg *config.Config) {
+			cfg.Fullscreen = !cfg.Fullscreen
+		})
+	case 4:
 		config.SaveConfig(config.DefaultConfig)
 		config.InitConfig()
 	}

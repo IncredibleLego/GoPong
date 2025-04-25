@@ -10,6 +10,8 @@ HOW OPTIONS WILL LOOK:
 - Comparison between menu and optionmenu, create comparison between the two
 - Implement in optionscene using firstscene
 
+- Add max and min values for all options
+
 
 Game -
 
