@@ -111,18 +111,21 @@ func (o *OptionScene) FirstLoad() {
 		Selected:     0,
 		LastMoveTime: time.Now(),
 		MenuName:     "GAME OPTIONS",
+		Position:     100,
 	}
 	o.screenMenu = &menu.OptionMenu{
 		Options:      o.generateScreenMenuOptions(),
 		Selected:     0,
 		LastMoveTime: time.Now(),
 		MenuName:     "SCREEN OPTIONS",
+		Position:     150,
 	}
 	o.generalMenu = &menu.OptionMenu{
 		Options:      o.generateGeneralMenuOptions(),
 		Selected:     0,
 		LastMoveTime: time.Now(),
 		MenuName:     "GENERAL OPTIONS",
+		Position:     200,
 	}
 	o.currentMenu = o.mainMenu
 	o.lastEnterPressTime = time.Now()

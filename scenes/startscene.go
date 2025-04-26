@@ -50,6 +50,7 @@ func (s *StartScene) FirstLoad() {
 		},
 		Selected:     0,
 		LastMoveTime: time.Now(),
+		Offset:       40,
 	}
 	s.playMenu = &menu.RegularMenu{
 		Options: []menu.MenuOption{
@@ -60,6 +61,7 @@ func (s *StartScene) FirstLoad() {
 		},
 		Selected:     0,
 		LastMoveTime: time.Now(),
+		Offset:       40,
 	}
 	s.currentMenu = s.mainMenu
 	s.lastEnterPressTime = time.Now()

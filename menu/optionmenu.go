@@ -15,11 +15,12 @@ type OptionMenu struct {
 	Options      []string
 	Selected     int
 	LastMoveTime time.Time
+	Position     int
 }
 
 func (o *OptionMenu) Draw(screen *ebiten.Image) {
 	x := utils.XCentered(o.MenuName, config.GlobalConfig.TextDimension)
-	utils.ScreenDraw(0, x, 50, "white", screen, o.MenuName)
+	utils.ScreenDraw(0, x, float64(o.Position)-50, "white", screen, o.MenuName)
 
 	for i, option := range o.Options {
 		x = utils.XCentered(option, config.GlobalConfig.TextDimension)
@@ -29,9 +30,9 @@ func (o *OptionMenu) Draw(screen *ebiten.Image) {
 				option = option[:j+2] + "◀" + option[j+2:] + "▶"
 				x = x - 20
 			}
-			utils.ScreenDraw(0, x, float64(100+30*i-5), "cyan", screen, option)
+			utils.ScreenDraw(0, x, float64(o.Position+30*i-5), "cyan", screen, option)
 		} else {
-			utils.ScreenDraw(0, x, float64(100+30*i), "white", screen, option)
+			utils.ScreenDraw(0, x, float64(o.Position+30*i), "white", screen, option)
 		}
 	}
 }
