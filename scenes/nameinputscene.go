@@ -3,12 +3,10 @@ package scenes
 import (
 	"goPong/config"
 	"goPong/utils"
-	"image/color"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type NameInputScene struct {
@@ -43,11 +41,12 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 	//width := float64(config.GlobalConfig.ScreenWidth)
 	height := float64(config.GlobalConfig.ScreenHeight)
 
-	vector.DrawFilledRect(screen,
-		float32(config.GlobalConfig.ScreenWidth/2), float32(config.GlobalConfig.ScreenHeight/2),
-		float32(3), float32(12),
-		color.White, false,
-	)
+	/*
+		vector.DrawFilledRect(screen,
+			float32(config.GlobalConfig.ScreenWidth/2), float32(config.GlobalConfig.ScreenHeight/2),
+			float32(3), float32(12),
+			color.White, false,
+		) */
 
 	d := 20 - config.GlobalConfig.TextDimension
 

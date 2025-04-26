@@ -4,10 +4,12 @@ import (
 	"fmt"
 	"goPong/menu"
 	"goPong/utils"
+	"image/color"
 	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type StartScene struct { // is the scene loaded now
@@ -33,8 +35,121 @@ func NewStartScene() *StartScene {
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
 
-	utils.ScreenDraw(-7, 250, 60, "white", screen, "Pong in Go")
-	utils.ScreenDraw(-7, 210, 80, "white", screen, "by IncredibleLego")
+	//utils.ScreenDraw(-7, 250, 60, "white", screen, "Pong in Go")
+
+	//Lettere 82 spazio 21 dimensione 14
+	// Create file to print this text
+
+	var dimension float32 = 9
+	var firstY float32 = 30
+	var space float32 = 21
+
+	// Draw "G"
+	vector.DrawFilledRect(screen,
+		21, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21, firstY, 82, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21, firstY+100-dimension, 82, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+41, firstY+50-dimension/2, 41, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82-dimension, firstY+50-dimension/2, dimension, 50,
+		color.White, false,
+	)
+	// Draw "O"
+	vector.DrawFilledRect(screen,
+		21+82+space, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space, firstY, 82, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82-dimension, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space, firstY+100-dimension, 82, dimension,
+		color.White, false,
+	)
+	// Draw "P"
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space, firstY, 82, dimension,
+		color.White, false,
+	)
+
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space, firstY+45, 82, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82-dimension, firstY, dimension, 45,
+		color.White, false,
+	)
+	// Draw "O"
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space, firstY, 82, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82-dimension, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space, firstY+100-dimension, 82, dimension,
+		color.White, false,
+	)
+	// Draw "N"
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82+space, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82+space+82-dimension, firstY, dimension, 100,
+		color.White, false,
+	)
+	// Draw "G"
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82+space+82+space, firstY, dimension, 100,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82+space+82+space, firstY, 82, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82+space+82+space, firstY+100-dimension, 82, dimension,
+		color.White, false,
+	)
+
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82+space+82+space+41, firstY+50-dimension/2, 41, dimension,
+		color.White, false,
+	)
+	vector.DrawFilledRect(screen,
+		21+82+space+82+space+82+space+82+space+82+space+82-dimension, firstY+50-dimension/2, dimension, 50,
+		color.White, false,
+	)
+
+	utils.ScreenDraw(-5, 195, 200, "white", screen, "by IncredibleLego")
 
 	s.currentMenu.Draw(screen)
 
@@ -50,7 +165,7 @@ func (s *StartScene) FirstLoad() {
 		},
 		Selected:     0,
 		LastMoveTime: time.Now(),
-		Offset:       40,
+		Offset:       100,
 	}
 	s.playMenu = &menu.RegularMenu{
 		Options: []menu.MenuOption{
