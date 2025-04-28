@@ -12,120 +12,132 @@ func TitleDraw(screen *ebiten.Image) {
 
 	// Draw Options
 
-	var X float32 = 21     // Starting X position
-	var Y float32 = 30     // Y of the letters
+	//var X float32 = 21     // Starting X position
+	var Y float32 = 60     // Y of the letters
 	var border float32 = 9 // Border size
-	var space float32 = 21 // Space between letters
+	var space float32 = 40 // Space between letters
+	var letterHeight float32 = 80
+	var letterWidth float32 = 60
+
+	//var titleColor = color.RGBA{240, 45, 60, 255}
+
+	var titleColor = color.RGBA{77, 153, 255, 255}
+
+	/*
+		var Y float32 = 30     // Y of the letters
+		var border float32 = 9 // Border size
+		var space float32 = 21 // Space between letters
+		var letterHeight float32 = 100
+		var letterWidth float32 = 82
+	*/
+
+	// 82*6 (492) + 21*7 (147) = 639
 
 	// Draw "G"
 	vector.DrawFilledRect(screen,
-		X, Y, border, 100,
-		color.White, false,
+		space, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21, Y, 82, border,
-		color.White, false,
+		space, Y, letterWidth, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21, Y+100-border, 82, border,
-		color.White, false,
+		space, Y+letterHeight-border, letterWidth, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+41, Y+50-border/2, 41, border,
-		color.White, false,
+		space+letterWidth/2, Y+letterHeight/2-border/2, letterWidth/2, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82-border, Y+50-border/2, border, 50,
-		color.White, false,
+		space+letterWidth-border, Y+letterHeight/2-border/2, border, letterHeight/2,
+		titleColor, false,
 	)
 	// Draw "O"
 	vector.DrawFilledRect(screen,
-		21+82+space, Y, border, 100,
-		color.White, false,
+		space*2+letterWidth, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space, Y, 82, border,
-		color.White, false,
+		space*2+letterWidth, Y, letterWidth, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82-border, Y, border, 100,
-		color.White, false,
+		space*2+letterWidth*2-border, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space, Y+100-border, 82, border,
-		color.White, false,
+		space*2+letterWidth, Y+letterHeight-border, letterWidth, border,
+		titleColor, false,
 	)
 	// Draw "P"
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space, Y, border, 100,
-		color.White, false,
+		space*3+letterWidth*2, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space, Y, 82, border,
-		color.White, false,
-	)
-
-	vector.DrawFilledRect(screen,
-		21+82+space+82+space, Y+45, 82, border,
-		color.White, false,
+		space*3+letterWidth*2, Y, letterWidth, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82-border, Y, border, 45,
-		color.White, false,
+		space*3+letterWidth*2, Y+letterHeight/20*9, letterWidth, border,
+		titleColor, false,
+	)
+	vector.DrawFilledRect(screen,
+		space*3+letterWidth*3-border, Y, border, letterHeight/20*9,
+		titleColor, false,
 	)
 	// Draw "O"
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space, Y, border, 100,
-		color.White, false,
+		space*4+letterWidth*3, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space, Y, 82, border,
-		color.White, false,
+		space*4+letterWidth*3, Y, letterWidth, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82-border, Y, border, 100,
-		color.White, false,
+		space*4+letterWidth*4-border, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space, Y+100-border, 82, border,
-		color.White, false,
+		space*4+letterWidth*3, Y+letterHeight-border, letterWidth, border,
+		titleColor, false,
 	)
 	// Draw "N"
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82+space, Y, border, 100,
-		color.White, false,
+		space*5+letterWidth*4, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82+space+82-border, Y, border, 100,
-		color.White, false,
+		space*5+letterWidth*5-border, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.StrokeLine(screen,
-		21+82+space+82+space+82+space+82+space+border/2, Y,
-		21+82+space+82+space+82+space+82+space+82-border, Y+100,
-		border, color.White, false,
+		space*5+letterWidth*4+border/2, Y,
+		space*5+letterWidth*5-border, Y+letterHeight,
+		border, titleColor, false,
 	)
-
 	// Draw "G"
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82+space+82+space, Y, border, 100,
-		color.White, false,
+		space*6+letterWidth*5, Y, border, letterHeight,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82+space+82+space, Y, 82, border,
-		color.White, false,
+		space*6+letterWidth*5, Y, letterWidth, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82+space+82+space, Y+100-border, 82, border,
-		color.White, false,
-	)
-
-	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82+space+82+space+41, Y+50-border/2, 41, border,
-		color.White, false,
+		space*6+letterWidth*5, Y+letterHeight-border, letterWidth, border,
+		titleColor, false,
 	)
 	vector.DrawFilledRect(screen,
-		21+82+space+82+space+82+space+82+space+82+space+82-border, Y+50-border/2, border, 50,
-		color.White, false,
+		space*6+letterWidth*5+letterWidth/2, Y+letterHeight/2-border/2, letterWidth/2, border,
+		titleColor, false,
 	)
-
+	vector.DrawFilledRect(screen,
+		space*6+letterWidth*6-border, Y+letterHeight/2-border/2, border, letterHeight/2,
+		titleColor, false,
+	)
 }
