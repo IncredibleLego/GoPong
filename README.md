@@ -5,51 +5,17 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 ROADMAP:
 
-HOW OPTIONS WILL LOOK:
-
-- Comparison between menu and optionmenu, create comparison between the two
-- Implement in optionscene using firstscene
+- popup.go in utils to generate confirm pop-ups ("confirm this decision?")
 
 - Add max and min values for all options
 
-
-Game -
-
-Ball Speed:
-Ballsize:
-Paddle Speed:
-Paddle Height:
-Paddle distance from Wall:
-Enemy difficulty: (al posto dei numeri potrebbe essere easy medium hard impossible)
-- Reset to default
-
-Screen -
-Text dimension:
-Screen Width:
-Screen Height:
-Fullscreen by default
-- Reset do default
-
-General -
-Menu options per second:
-Reload options:
-
-CONFIRM LABEL on screen when coosing if to delete an option
-
-EXTERNAL MENU (normal menù)
-
-Internal menu - custum options menu as implemented
-Implement mouse in optionmenu
-
-
+- Option "reset all values to default"
+- Option to modify screen width and height together (ex 1080 x 640) etc, so uniting the two options in one
 
 - Possibility to change commands? example choose the pause button?
 
-- Create a new menu type, optionmenu 
-
 - Make moveInterval inside menu an option calculated using menuoptions per second and remove that option
 
-- MAKE Utils scene, where to save easy functions such as screendraw or option to draw constant screen
 - Screen drawl must be improved amd should print to the center of the screen
     - Maybe doing two functions: screenDraw with less arguments for all simple inputs and screenDraw extra for all different options
 

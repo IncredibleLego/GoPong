@@ -81,7 +81,7 @@ func (m *RegularMenu) Update() Menu {
 	for i, option := range m.Options {
 		textWidth, textHeight := utils.MeasureText(option.Label)
 		x := (float64(config.GlobalConfig.ScreenWidth) - textWidth) / 2
-		y := baseY + i*spacing
+		y := baseY + i*spacing + int(m.Offset)
 
 		// Controllo se il mouse è sopra il testo
 		if float64(mouseX) >= x && float64(mouseX) <= x+textWidth &&
