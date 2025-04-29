@@ -59,13 +59,6 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 	utils.ScreenDraw(0, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
 	utils.ScreenDraw(0, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
 	utils.ScreenDraw(0, 500, 10, "white", screen, "SOLO MODE")
-
-	//Debug
-	x := strconv.Itoa(g.ball.Dxdt)
-	y := strconv.Itoa(g.ball.Dydt)
-
-	utils.ScreenDraw(0, 300, 10, "white", screen, x)
-	utils.ScreenDraw(0, 320, 10, "white", screen, y)
 }
 
 // FirstLoad implements Scene.

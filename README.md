@@ -9,6 +9,8 @@ ROADMAP:
 
 - Add max and min values for all options
 
+- In nameinputscene, if you keep a letter or backspace pressed you should be able to delete many characters or write more characthers
+
 - Option "reset all values to default"
 - Option to modify screen width and height together (ex 1080 x 640) etc, so uniting the two options in one
 

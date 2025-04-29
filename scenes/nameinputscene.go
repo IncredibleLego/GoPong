@@ -4,6 +4,7 @@ import (
 	"goPong/config"
 	"goPong/utils"
 	"strconv"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -15,6 +16,9 @@ type NameInputScene struct {
 	playerNames  [2]string
 	activePlayer int
 	finished     bool
+	maxLetters   int
+	maxLenght    bool
+	timer        time.Time
 }
 
 func NewNameInputScene(mode int) *NameInputScene {
@@ -29,6 +33,8 @@ func NewNameInputScene(mode int) *NameInputScene {
 		numPlayers:   numPlayers,
 		activePlayer: 0,
 		finished:     false,
+		maxLetters:   14,
+		maxLenght:    false,
 	}
 }
 
@@ -38,31 +44,39 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 	}
 
 	l := float64(len(n.playerNames[n.activePlayer]))
-	//width := float64(config.GlobalConfig.ScreenWidth)
-	height := float64(config.GlobalConfig.ScreenHeight)
 
-	/*
-		vector.DrawFilledRect(screen,
-			float32(config.GlobalConfig.ScreenWidth/2), float32(config.GlobalConfig.ScreenHeight/2),
-			float32(3), float32(12),
-			color.White, false,
-		) */
+	height := float64(config.GlobalConfig.ScreenHeight)
 
 	d := 20 - config.GlobalConfig.TextDimension
 
-	//utils.ScreenDraw(d, 65, height/3, "white", screen, "Player "+strconv.Itoa(n.activePlayer+1)+", insert your name:")
-
 	playerMessage := "Player " + strconv.Itoa(n.activePlayer+1) + ", insert your name:"
 	x1 := utils.XCentered(playerMessage, config.GlobalConfig.TextDimension)
-	utils.ScreenDraw(d, x1, height/3, "white", screen, playerMessage)
 
-	utils.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer])
+	utils.ScreenDraw(d, x1, height/3, "yellow", screen, playerMessage)
+
+	if time.Since(n.timer) < time.Second && !n.maxLenght {
+		utils.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer]+"_")
+	} else {
+		utils.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer])
+	}
+
+	if time.Since(n.timer) > time.Second*2 {
+		n.timer = time.Now()
+	}
+
+	//utils.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, n.playerNames[n.activePlayer])
 
 	//utils.ScreenDraw(d, 130, height/3*2, "white", screen, "Press Enter to confirm")
 
 	confirmMessage := "Press Enter to confirm"
 	x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
-	utils.ScreenDraw(d, x2, (height/3)*2, "white", screen, confirmMessage)
+	utils.ScreenDraw(d, x2, (height/3)*2, "yellow", screen, confirmMessage)
+
+	if n.maxLenght {
+		errorMessage := "The name can be max " + strconv.Itoa(n.maxLetters) + " letters"
+		x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
+		utils.ScreenDraw(d-5, x2, (height/3)*2+50, "red", screen, errorMessage)
+	}
 
 }
 
@@ -87,6 +101,13 @@ func (n *NameInputScene) Update() SceneId {
 		return GameSceneId
 	}
 
+	// Check if max letters has been reached
+	if len(n.playerNames[n.activePlayer]) > n.maxLetters {
+		n.maxLenght = true
+	} else {
+		n.maxLenght = false
+	}
+
 	// Backspace
 	if inpututil.IsKeyJustPressed(ebiten.KeyBackspace) && len(n.playerNames[n.activePlayer]) > 0 {
 		n.playerNames[n.activePlayer] = n.playerNames[n.activePlayer][:len(n.playerNames[n.activePlayer])-1]
@@ -95,14 +116,18 @@ func (n *NameInputScene) Update() SceneId {
 	// Alphabetic characters
 	for key := ebiten.KeyA; key <= ebiten.KeyZ; key++ {
 		if inpututil.IsKeyJustPressed(key) {
-			n.playerNames[n.activePlayer] += string('A' + (key - ebiten.KeyA))
+			if !n.maxLenght {
+				n.playerNames[n.activePlayer] += string('A' + (key - ebiten.KeyA))
+			}
 		}
 	}
 
 	// Numerical characters
 	for key := ebiten.Key0; key <= ebiten.Key9; key++ {
 		if inpututil.IsKeyJustPressed(key) {
-			n.playerNames[n.activePlayer] += string('0' + (key - ebiten.Key0))
+			if !n.maxLenght {
+				n.playerNames[n.activePlayer] += string('0' + (key - ebiten.Key0))
+			}
 		}
 	}
 
