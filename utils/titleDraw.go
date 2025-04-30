@@ -19,9 +19,10 @@ func TitleDraw(screen *ebiten.Image) {
 	var letterHeight float32 = 80
 	var letterWidth float32 = 60
 
-	//var titleColor = color.RGBA{240, 45, 60, 255}
+	//var titleColor1 = color.RGBA{240, 45, 60, 255}
 
-	var titleColor = color.RGBA{77, 153, 255, 255}
+	var titleColor1 = color.RGBA{77, 153, 255, 255}
+	var titleColor2 = color.RGBA{0, 255, 255, 255}
 
 	/*
 		var Y float32 = 30     // Y of the letters
@@ -36,108 +37,108 @@ func TitleDraw(screen *ebiten.Image) {
 	// Draw "G"
 	vector.DrawFilledRect(screen,
 		space, Y, border, letterHeight,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space, Y, letterWidth, border,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space, Y+letterHeight-border, letterWidth, border,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space+letterWidth/2, Y+letterHeight/2-border/2, letterWidth/2, border,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space+letterWidth-border, Y+letterHeight/2-border/2, border, letterHeight/2,
-		titleColor, false,
+		titleColor1, false,
 	)
 	// Draw "O"
 	vector.DrawFilledRect(screen,
 		space*2+letterWidth, Y, border, letterHeight,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*2+letterWidth, Y, letterWidth, border,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*2+letterWidth*2-border, Y, border, letterHeight,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*2+letterWidth, Y+letterHeight-border, letterWidth, border,
-		titleColor, false,
+		titleColor2, false,
 	)
 	// Draw "P"
 	vector.DrawFilledRect(screen,
 		space*3+letterWidth*2, Y, border, letterHeight,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*3+letterWidth*2, Y, letterWidth, border,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*3+letterWidth*2, Y+letterHeight/20*9, letterWidth, border,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*3+letterWidth*3-border, Y, border, letterHeight/20*9,
-		titleColor, false,
+		titleColor1, false,
 	)
 	// Draw "O"
 	vector.DrawFilledRect(screen,
 		space*4+letterWidth*3, Y, border, letterHeight,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*4+letterWidth*3, Y, letterWidth, border,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*4+letterWidth*4-border, Y, border, letterHeight,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*4+letterWidth*3, Y+letterHeight-border, letterWidth, border,
-		titleColor, false,
+		titleColor2, false,
 	)
 	// Draw "N"
 	vector.DrawFilledRect(screen,
 		space*5+letterWidth*4, Y, border, letterHeight,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*5+letterWidth*5-border, Y, border, letterHeight,
-		titleColor, false,
+		titleColor1, false,
 	)
 	vector.StrokeLine(screen,
 		space*5+letterWidth*4+border/2, Y,
 		space*5+letterWidth*5-border, Y+letterHeight,
-		border, titleColor, false,
+		border, titleColor1, false,
 	)
 	// Draw "G"
 	vector.DrawFilledRect(screen,
 		space*6+letterWidth*5, Y, border, letterHeight,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*6+letterWidth*5, Y, letterWidth, border,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*6+letterWidth*5, Y+letterHeight-border, letterWidth, border,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*6+letterWidth*5+letterWidth/2, Y+letterHeight/2-border/2, letterWidth/2, border,
-		titleColor, false,
+		titleColor2, false,
 	)
 	vector.DrawFilledRect(screen,
 		space*6+letterWidth*6-border, Y+letterHeight/2-border/2, border, letterHeight/2,
-		titleColor, false,
+		titleColor2, false,
 	)
 }
