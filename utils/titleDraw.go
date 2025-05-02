@@ -35,6 +35,7 @@ func TitleDraw(screen *ebiten.Image) {
 	// 82*6 (492) + 21*7 (147) = 639
 
 	// Change colors to the letters to make more cool
+	// Do the same thing but I need a new commit
 
 	// Draw "G"
 	vector.DrawFilledRect(screen,
