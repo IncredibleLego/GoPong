@@ -56,6 +56,14 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		)
 	}
 
+	//utils.PointsDraw(screen, 170, 100, g.score%10) // Draw the first digit of the score
+	//utils.PointsDraw(screen, 100, 100, g.score/10) // Draw the second digit of the score
+
+	utils.PointsDraw(screen, 170, 100, 2)
+
+	//Array of all characters of the points, to draw
+	//Max points 99
+
 	utils.ScreenDraw(0, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
 	utils.ScreenDraw(0, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
 	utils.ScreenDraw(0, 500, 10, "white", screen, "SOLO MODE")
