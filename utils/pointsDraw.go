@@ -7,20 +7,22 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
-//Funzione che dato il punteggio lo disegna
-//Seconda funzione con i punteggi disegnati da stampare tra cui selezionare
-// In file principale: utils.PointsDraw(screen, X, Y, score)
+func PointsDraw(screen *ebiten.Image, X, Y float32, score int) {
+	// Draw the points
+	printPoint(screen, X+70, Y, score%10)
+	if score/10 != 0 {
+		printPoint(screen, X, Y, score/10)
+	}
+}
 
-func PointsDraw(screen *ebiten.Image, X, Y float32, number int) {
+func printPoint(screen *ebiten.Image, X, Y float32, number int) {
 
-	var border float32 = 9 // Border size
-	//var space float32 = 40 // Space between letters
+	var border float32 = 9
 	var numHeight float32 = 80
-	var numWidth float32 = 60
+	var numWidth float32 = 40
 
 	switch number {
 	case 0:
-		// Draw "0"
 		vector.DrawFilledRect(screen,
 			X, Y, numWidth, border,
 			color.White, false,
@@ -38,23 +40,21 @@ func PointsDraw(screen *ebiten.Image, X, Y float32, number int) {
 			color.White, false,
 		)
 	case 1:
-		// Draw "1"
 		vector.DrawFilledRect(screen,
 			X+numWidth/2, Y, border, numHeight,
 			color.White, false,
 		)
 	case 2:
-		// Draw "2"
 		vector.DrawFilledRect(screen,
 			X, Y, numWidth, border,
 			color.White, false,
 		)
 		vector.DrawFilledRect(screen,
-			X+numWidth-border, Y, border, numHeight/2-border/2,
+			X+numWidth-border, Y, border, numHeight/2-border,
 			color.White, false,
 		)
 		vector.DrawFilledRect(screen,
-			X, Y+numHeight/2-border/2, numWidth, border,
+			X, Y+numHeight/2-border, numWidth, border,
 			color.White, false,
 		)
 		vector.DrawFilledRect(screen,
@@ -65,6 +65,120 @@ func PointsDraw(screen *ebiten.Image, X, Y float32, number int) {
 			X, Y+numHeight-border, numWidth, border,
 			color.White, false,
 		)
-
+	case 3:
+		vector.DrawFilledRect(screen,
+			X, Y, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X+numWidth-border, Y, border, numHeight,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight/2-border, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight-border, numWidth, border,
+			color.White, false,
+		)
+	case 4:
+		vector.DrawFilledRect(screen,
+			X, Y, border, numHeight/2-border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X+numWidth-border, Y, border, numHeight,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight/2-border, numWidth, border,
+			color.White, false,
+		)
+	case 5:
+		vector.DrawFilledRect(screen,
+			X, Y, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y, border, numHeight/2-border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight/2-border, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X+numWidth-border, Y+numHeight/2, border, numHeight/2,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight-border, numWidth, border,
+			color.White, false,
+		)
+	case 6:
+		vector.DrawFilledRect(screen,
+			X, Y, border, numHeight,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight/2-border, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X+numWidth-border, Y+numHeight/2, border, numHeight/2,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight-border, numWidth, border,
+			color.White, false,
+		)
+	case 7:
+		vector.DrawFilledRect(screen,
+			X, Y, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X+numWidth-border, Y, border, numHeight,
+			color.White, false,
+		)
+	case 8:
+		vector.DrawFilledRect(screen,
+			X, Y, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y, border, numHeight,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X+numWidth-border, Y, border, numHeight,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight/2-border, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight-border, numWidth, border,
+			color.White, false,
+		)
+	case 9:
+		vector.DrawFilledRect(screen,
+			X, Y, numWidth, border,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y, border, numHeight/2,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X+numWidth-border, Y, border, numHeight,
+			color.White, false,
+		)
+		vector.DrawFilledRect(screen,
+			X, Y+numHeight/2-border, numWidth, border,
+			color.White, false,
+		)
 	}
 }
