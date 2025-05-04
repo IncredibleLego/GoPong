@@ -55,15 +55,8 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 		color.White, false,
 	) // Draw the ball
 
-	// Draw center lines
-
-	for i := 0; i < config.GlobalConfig.ScreenHeight; i += 24 {
-		vector.DrawFilledRect(screen,
-			float32(config.GlobalConfig.ScreenWidth/2), float32(i),
-			float32(3), float32(12),
-			color.White, false,
-		)
-	}
+	// Draw the net
+	utils.Net(screen)
 
 	utils.ScreenDraw(0, 10, 10, "white", screen, "COMPUTER")
 	utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(c.scoreEnemy))

@@ -4,10 +4,12 @@ import (
 	"bytes"
 	_ "embed"
 	"goPong/config"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 // This file contains utility functions for the game.
@@ -58,6 +60,16 @@ func XCentered(message string, fontSize float64) float64 {
 	width := float64(len(message)) * fontSize
 	x := (float64(config.GlobalConfig.ScreenWidth) / 2) - (width / 2)
 	return x
+}
+
+func Net(screen *ebiten.Image) {
+	for i := 0; i < config.GlobalConfig.ScreenHeight; i += 24 {
+		vector.DrawFilledRect(screen,
+			float32(config.GlobalConfig.ScreenWidth/2), float32(i),
+			float32(3), float32(12),
+			color.White, false,
+		)
+	}
 }
 
 func Color(colorName string) (float32, float32, float32, float32) {
