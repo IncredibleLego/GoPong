@@ -4,7 +4,6 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
-	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -51,11 +50,20 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 	// Draw the net
 	utils.Net(screen)
 
-	utils.ScreenDraw(0, 10, 10, "white", screen, m.player1Name)
-	utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(m.score2))
-	utils.ScreenDraw(0, 500, 10, "white", screen, m.player2Name)
-	utils.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(m.score1))
-	utils.ScreenDraw(-3, 250, 10, "white", screen, "MULTIPLAYER MODE")
+	// Draw the points
+	utils.PointsDraw(screen, 100, 50, m.score1)
+	utils.PointsDraw(screen, 400, 50, m.score2)
+
+	utils.ScreenDraw(0, 100, 10, "white", screen, m.player1Name)
+	utils.ScreenDraw(0, 400, 10, "white", screen, m.player2Name)
+
+	/*
+		utils.ScreenDraw(0, 10, 10, "white", screen, m.player1Name)
+		utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(m.score2))
+		utils.ScreenDraw(0, 500, 10, "white", screen, m.player2Name)
+		utils.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(m.score1))
+		utils.ScreenDraw(-3, 250, 10, "white", screen, "MULTIPLAYER MODE")
+	*/
 }
 
 // FirstLoad implements Scene.
@@ -121,9 +129,9 @@ func (m *MultiplayerScene) Update() SceneId {
 	m.ball.CollideWithWall(true, true)
 
 	if m.ball.CollideWithWall(true, true) == 1 {
-		m.score1++
-	} else if m.ball.CollideWithWall(true, true) == 2 {
 		m.score2++
+	} else if m.ball.CollideWithWall(true, true) == 2 {
+		m.score1++
 	}
 
 	m.ball.CollideWithPaddle(m.paddle1, true)

@@ -4,7 +4,6 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
-	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -49,11 +48,19 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	// Draw the net
 	utils.Net(screen)
 
-	utils.ScreenDraw(0, 10, 10, "white", screen, "COMPUTER")
-	utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(c.scoreEnemy))
-	utils.ScreenDraw(0, 500, 10, "white", screen, c.playerName)
-	utils.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(c.score))
-	utils.ScreenDraw(-3, 250, 10, "white", screen, "COMPUTER MODE")
+	// Draw the points
+	utils.PointsDraw(screen, 100, 50, c.scoreEnemy)
+	utils.PointsDraw(screen, 400, 50, c.score)
+
+	utils.ScreenDraw(0, 400, 10, "white", screen, c.playerName)
+
+	/*
+		utils.ScreenDraw(0, 10, 10, "white", screen, "COMPUTER")
+		utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(c.scoreEnemy))
+		utils.ScreenDraw(0, 500, 10, "white", screen, c.playerName)
+		utils.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(c.score))
+		utils.ScreenDraw(-3, 250, 10, "white", screen, "COMPUTER MODE")
+	*/
 }
 
 // FirstLoad implements Scene.

@@ -4,7 +4,6 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
-	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -43,11 +42,16 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 	// Draw the net
 	utils.Net(screen)
 
-	utils.PointsDraw(screen, 100, 100, g.score)
+	// Draw the points
+	utils.PointsDraw(screen, 100, 50, g.score)
 
-	utils.ScreenDraw(0, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
-	utils.ScreenDraw(0, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
-	utils.ScreenDraw(0, 500, 10, "white", screen, "SOLO MODE")
+	utils.ScreenDraw(0, 400, 10, "white", screen, g.playerName)
+
+	/*
+		utils.ScreenDraw(0, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
+		utils.ScreenDraw(0, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
+		utils.ScreenDraw(0, 500, 10, "white", screen, "SOLO MODE")
+	*/
 }
 
 // FirstLoad implements Scene.
