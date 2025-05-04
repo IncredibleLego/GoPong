@@ -2,13 +2,23 @@ package objects
 
 import (
 	"goPong/config"
+	"image/color"
 	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type Paddle struct {
 	*Object
+}
+
+func (p *Paddle) Draw(screen *ebiten.Image) {
+	vector.DrawFilledRect(screen,
+		float32(p.X), float32(p.Y),
+		float32(p.W), float32(p.H),
+		color.White, false,
+	)
 }
 
 func (p *Paddle) MoveOnKeyPress(keyUp, keyDown ebiten.Key) bool { // Move the paddle based on keypress

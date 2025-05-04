@@ -4,12 +4,10 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
-	"image/color"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type MultiplayerScene struct {
@@ -41,21 +39,14 @@ func NewMultiplayerScene() *MultiplayerScene {
 }
 
 func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
-	vector.DrawFilledRect(screen,
-		float32(m.paddle1.X), float32(m.paddle1.Y),
-		float32(m.paddle1.W), float32(m.paddle1.H),
-		color.White, false,
-	) // Draw the paddle
-	vector.DrawFilledRect(screen,
-		float32(m.paddle2.X), float32(m.paddle2.Y),
-		float32(m.paddle2.W), float32(m.paddle2.H),
-		color.White, false,
-	) // Draw enemy paddle
-	vector.DrawFilledRect(screen,
-		float32(m.ball.X), float32(m.ball.Y),
-		float32(m.ball.W), float32(m.ball.H),
-		color.White, false,
-	) // Draw the ball
+
+	// Draw the paddle
+	m.paddle1.Draw(screen)
+	// Draw enemy
+	m.paddle2.Draw(screen)
+
+	// Draw the ball
+	m.ball.Draw(screen)
 
 	// Draw the net
 	utils.Net(screen)

@@ -2,15 +2,27 @@ package objects
 
 import (
 	"goPong/config"
+	"image/color"
 	"math"
 	"math/rand/v2"
 	"time"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type Ball struct {
 	*Object
 	Dxdt int // x velocity per tick
 	Dydt int // y velocity per tick
+}
+
+func (b *Ball) Draw(screen *ebiten.Image) {
+	vector.DrawFilledRect(screen,
+		float32(b.X), float32(b.Y),
+		float32(b.W), float32(b.H),
+		color.White, false,
+	)
 }
 
 func (b *Ball) Move() { // Move the ball

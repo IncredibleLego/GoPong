@@ -4,12 +4,10 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
-	"image/color"
 	"strconv"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type ComputerScene struct {
@@ -39,21 +37,14 @@ func NewComputerScene() *ComputerScene {
 }
 
 func (c *ComputerScene) Draw(screen *ebiten.Image) {
-	vector.DrawFilledRect(screen,
-		float32(c.paddle.X), float32(c.paddle.Y),
-		float32(c.paddle.W), float32(c.paddle.H),
-		color.White, false,
-	) // Draw the paddle
-	vector.DrawFilledRect(screen,
-		float32(c.enemyPaddle.X), float32(c.enemyPaddle.Y),
-		float32(c.enemyPaddle.W), float32(c.enemyPaddle.H),
-		color.White, false,
-	) // Draw enemy paddle
-	vector.DrawFilledRect(screen,
-		float32(c.ball.X), float32(c.ball.Y),
-		float32(c.ball.W), float32(c.ball.H),
-		color.White, false,
-	) // Draw the ball
+
+	// Draw the paddle
+	c.paddle.Draw(screen)
+	// Draw enemy paddle
+	c.enemyPaddle.Draw(screen)
+
+	// Draw the ball
+	c.ball.Draw(screen)
 
 	// Draw the net
 	utils.Net(screen)
