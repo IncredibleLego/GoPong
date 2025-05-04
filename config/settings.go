@@ -2,11 +2,13 @@ package config
 
 import (
 	"encoding/json"
+	"math"
 	"os"
 	"time"
 )
 
 type Config struct {
+	Scale                  float64
 	Fullscreen             bool
 	Player1Name            string
 	Player2Name            string
@@ -25,6 +27,7 @@ type Config struct {
 }
 
 var GlobalConfig = &Config{
+	Scale:                  1.0,
 	Fullscreen:             true,
 	Player1Name:            "Player 1",
 	Player2Name:            "Player 2",
@@ -35,14 +38,15 @@ var GlobalConfig = &Config{
 	PaddleDistanceFromWall: 40,
 	Difficulty:             0.5,
 	TextDimension:          20,
-	ScreenWidth:            640,
-	ScreenHeight:           480,
+	ScreenWidth:            960,
+	ScreenHeight:           720,
 	MenuOptionsPerSecond:   4,
 	OptionsPerSecond:       90,
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 }
 
 var DefaultConfig = &Config{
+	Scale:                  1.0,
 	Fullscreen:             true,
 	Player1Name:            "Player 1",
 	Player2Name:            "Player 2",
@@ -53,11 +57,42 @@ var DefaultConfig = &Config{
 	PaddleDistanceFromWall: 40,
 	Difficulty:             0.5,
 	TextDimension:          20,
-	ScreenWidth:            640,
-	ScreenHeight:           480,
+	ScreenWidth:            960,
+	ScreenHeight:           720,
 	MenuOptionsPerSecond:   4,
 	OptionsPerSecond:       90,
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
+}
+
+func ApplyScaling(cfg *Config) {
+	cfg.BallSpeed = ScaledInt(cfg.BallSpeed)
+	cfg.BallSize = ScaledInt(cfg.BallSize)
+	cfg.PaddleSpeed = ScaledInt(cfg.PaddleSpeed)
+	cfg.PaddleHeight = ScaledInt(cfg.PaddleHeight)
+	cfg.PaddleDistanceFromWall = ScaledInt(cfg.PaddleDistanceFromWall)
+	cfg.ScreenWidth = ScaledInt(cfg.ScreenWidth)
+	cfg.ScreenHeight = ScaledInt(cfg.ScreenHeight)
+}
+
+func BaseScale(cfg *Config) {
+	cfg.BallSpeed = DefaultConfig.BallSpeed
+	cfg.BallSize = DefaultConfig.BallSize
+	cfg.PaddleSpeed = DefaultConfig.PaddleSpeed
+	cfg.PaddleHeight = DefaultConfig.PaddleHeight
+	cfg.PaddleDistanceFromWall = DefaultConfig.PaddleDistanceFromWall
+	cfg.ScreenWidth = DefaultConfig.ScreenWidth
+	cfg.ScreenHeight = DefaultConfig.ScreenHeight
+}
+
+// ScaledInt and ScaledFloat are utility functions to scale values based on the global configuration.
+// They are used to adjust the size of game elements based on the current scale factor.
+
+func ScaledInt(value int) int {
+	return int(math.Round(float64(value) * GlobalConfig.Scale))
+}
+
+func ScaledFloat(value float64) float64 {
+	return value * GlobalConfig.Scale
 }
 
 const configFilePath = "./config/settings.json" // Name of the configuration file

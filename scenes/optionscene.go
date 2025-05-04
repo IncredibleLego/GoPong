@@ -50,10 +50,18 @@ func (o *OptionScene) generateGameMenuOptions() []string {
 }
 
 func (o *OptionScene) generateScreenMenuOptions() []string {
+	var msg string
+	if config.GlobalConfig.Scale == 1.0 {
+		msg = "960 x 720"
+	} else if config.GlobalConfig.Scale == 1.33 {
+		msg = "1280 x 960"
+	} else {
+		msg = "640 x 480"
+	}
 	return []string{
 		"Text Dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
-		"Screen Width: " + strconv.Itoa(config.GlobalConfig.ScreenWidth),
-		"Screen Height: " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
+		//"Scale: " + fmt.Sprintf("%.2f", config.GlobalConfig.Scale),
+		"Scale: " + msg,
 		"FullScreen: " + strconv.FormatBool(config.GlobalConfig.Fullscreen),
 		"Reset to default",
 		"Back to options",
@@ -270,7 +278,8 @@ func updateConfigValue(option *int, min, max, step int, mode bool) {
 	}
 }
 
-func updateConfigValueFloat(option *float64, min, max, step float64, mode bool) {
+func updateConfigValueFloat(option *float64, min, max, step float64, mode bool) bool {
+	originalValue := *option
 	err := config.UpdateConfig(func(cfg *config.Config) {
 		if mode && *option < max {
 			*option += step
@@ -281,6 +290,7 @@ func updateConfigValueFloat(option *float64, min, max, step float64, mode bool) 
 	if err != nil {
 		fmt.Println("Error during option saving", err)
 	}
+	return originalValue != *option
 }
 
 func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
@@ -319,22 +329,24 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	case 0:
 		updateConfigValueFloat(&config.GlobalConfig.TextDimension, 1, 35, 1, mode)
 	case 1:
-		updateConfigValue(&config.GlobalConfig.ScreenWidth, 10, 800, 10, mode)
+		if updateConfigValueFloat(&config.GlobalConfig.Scale, 0.67, 1.33, 0.33, mode) {
+			config.BaseScale(config.GlobalConfig)    // reset ai valori base
+			config.ApplyScaling(config.GlobalConfig) // applica la nuova scala
+			config.SaveConfig(config.GlobalConfig)   // salva la nuova configurazione
+		}
 	case 2:
-		updateConfigValue(&config.GlobalConfig.ScreenHeight, 10, 800, 10, mode)
-	case 3:
 		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.Fullscreen = !cfg.Fullscreen
 		})
 		if err != nil {
 			fmt.Println("Error during option saving", err)
 		}
-	case 4:
+	case 3:
 		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.TextDimension = config.DefaultConfig.TextDimension
-			cfg.ScreenWidth = config.DefaultConfig.ScreenWidth
-			cfg.ScreenHeight = config.DefaultConfig.ScreenHeight
+			cfg.Scale = config.DefaultConfig.Scale
 			cfg.Fullscreen = config.DefaultConfig.Fullscreen
+
 		})
 		if err != nil {
 			fmt.Println("Error during option saving", err)
