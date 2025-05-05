@@ -5,6 +5,8 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 ROADMAP:
 
+- When changing scale, the new scales must be rounded to the nearest 10 (done like optionscene.go row 55)
+
 - popup.go in utils to generate confirm pop-ups ("confirm this decision?")
 
 - Add max and min values for all options

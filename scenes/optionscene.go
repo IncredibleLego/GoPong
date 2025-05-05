@@ -50,18 +50,9 @@ func (o *OptionScene) generateGameMenuOptions() []string {
 }
 
 func (o *OptionScene) generateScreenMenuOptions() []string {
-	var msg string
-	if config.GlobalConfig.Scale == 1.0 {
-		msg = "960 x 720"
-	} else if config.GlobalConfig.Scale == 1.33 {
-		msg = "1280 x 960"
-	} else {
-		msg = "640 x 480"
-	}
 	return []string{
 		"Text Dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
-		//"Scale: " + fmt.Sprintf("%.2f", config.GlobalConfig.Scale),
-		"Scale: " + msg,
+		"Screen Size: " + strconv.Itoa(((config.GlobalConfig.ScreenWidth+5)/10)*10) + " x " + strconv.Itoa(((config.GlobalConfig.ScreenHeight+5)/10)*10),
 		"FullScreen: " + strconv.FormatBool(config.GlobalConfig.Fullscreen),
 		"Reset to default",
 		"Back to options",
