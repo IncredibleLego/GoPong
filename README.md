@@ -9,8 +9,6 @@ ROADMAP:
 
 - popup.go in utils to generate confirm pop-ups ("confirm this decision?")
 
-- Add max and min values for all options
-
 - In nameinputscene, if you keep a letter or backspace pressed you should be able to delete many characters or write more characthers
 
 - Option "reset all values to default"
@@ -20,7 +18,7 @@ ROADMAP:
 
 - Make moveInterval inside menu an option calculated using menuoptions per second and remove that option
 
-- Screen drawl must be improved amd should print to the center of the screen
+- Screen draw must be improved amd should print to the center of the screen
     - Maybe doing two functions: screenDraw with less arguments for all simple inputs and screenDraw extra for all different options
 
 TODO:
@@ -36,18 +34,14 @@ SAVES:
     - Match save on file, saving data of a match on file to open it later
         . When entering a mode ask if you wanna start a new match or restart from 0
 
-- Gestione menu funzione esterna da chiamare
-
-- System to avoid ball always hitting in the same position (anche se la palla colpisce sempre al centro, dopo un po cambia angolo)
-- Cambiare aspetto delle opzioni selezionate
+- System to avoid ball always hitting in the same position (even if ball hits in the same point, it changes angle after a bit)
 - Centre menu mouse options for bigger screens
 
-- Modify nameinput textdimension
-- Colors definied ad settings? (change color of menus as option)
+- Color schemes in settings? (change color of menus as option)
 - Menu position relative to number of options?
 - Offsets to print not with simple numbers
 
-- In modalità contro computer, selezionare difficoltà dopo scelta del nome in schermata inputscene
+- In AI mode, select difficulty after nameinputscene.go in the same file with a optionmenu (or simpler)
 
 OPTIONS:
 
@@ -69,8 +63,6 @@ SCENES:
 SCENES:
 
 - ()OnExit remove?
-- Print score values: 2 sprite for all values (max value 99) with all numbers that increase
-- When you exit a mode, it shouldn't be saved the score and results
 
 - AI MODE
     AI Features:
@@ -88,32 +80,3 @@ MENU:
 - STARTMENU
     - Highscores option to show the best highScores (make player save name and save)
     - Unplayable pong playing in the background (https://richardcarter.org/)
-
-
-Print colors:  
-Colori Primari e Secondari  
-Colore	Scala (r, g, b, a)  
-Bianco	(1, 1, 1, 1)  
-Nero	(0, 0, 0, 1)  
-Rosso	(1, 0, 0, 1)  
-Verde	(0, 1, 0, 1)  
-Blu	(0, 0, 1, 1)  
-Giallo	(1, 1, 0, 1)  
-Ciano	(0, 1, 1, 1)  
-Magenta	(1, 0, 1, 1)  
-Colori Pastello e Tonalità Intermedie  
-Colore	Scala (r, g, b, a)  
-Grigio chiaro	(0.8, 0.8, 0.8, 1)  
-Grigio scuro	(0.2, 0.2, 0.2, 1)  
-Arancione	(1, 0.5, 0, 1)  
-Rosa	(1, 0.5, 0.7, 1)  
-Lime	(0.5, 1, 0, 1)  
-Azzurro	(0.3, 0.6, 1, 1)  
-Viola	(0.6, 0, 1, 1)  
-Marrone	(0.6, 0.3, 0, 1)  
-Colori Scuri  
-Colore	Scala (r, g, b, a)  
-Rosso scuro	(0.5, 0, 0, 1)  
-Verde scuro	(0, 0.5, 0, 1)  
-Blu scuro	(0, 0, 0.5, 1)  
-Viola scuro	(0.4, 0, 0.6, 1)  
