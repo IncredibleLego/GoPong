@@ -19,6 +19,7 @@ type NameInputScene struct {
 	maxLetters   int
 	maxLenght    bool
 	timer        time.Time
+	lastMoveTime time.Time
 }
 
 func NewNameInputScene(mode int) *NameInputScene {
@@ -101,6 +102,8 @@ func (n *NameInputScene) Update() SceneId {
 		return GameSceneId
 	}
 
+	moveInterval := time.Duration(time.Second / 5)
+
 	// Check if max letters has been reached
 	if len(n.playerNames[n.activePlayer]) > n.maxLetters {
 		n.maxLenght = true
@@ -108,19 +111,51 @@ func (n *NameInputScene) Update() SceneId {
 		n.maxLenght = false
 	}
 
-	// Backspace
-	if inpututil.IsKeyJustPressed(ebiten.KeyBackspace) && len(n.playerNames[n.activePlayer]) > 0 {
-		n.playerNames[n.activePlayer] = n.playerNames[n.activePlayer][:len(n.playerNames[n.activePlayer])-1]
+	backspace := inpututil.KeyPressDuration(ebiten.KeyBackspace)
+
+	var timeSinceKey []int
+	for key := ebiten.KeyA; key <= ebiten.KeyZ; key++ {
+		timeSinceKey = append(timeSinceKey, inpututil.KeyPressDuration(key))
 	}
+
+	if backspace > 0 && time.Since(n.lastMoveTime) >= moveInterval && len(n.playerNames[n.activePlayer]) > 0 {
+		n.playerNames[n.activePlayer] = n.playerNames[n.activePlayer][:len(n.playerNames[n.activePlayer])-1]
+		n.lastMoveTime = time.Now()
+	}
+	/*
+		// Backspace
+		if inpututil.IsKeyJustPressed(ebiten.KeyBackspace) && len(n.playerNames[n.activePlayer]) > 0 {
+			n.playerNames[n.activePlayer] = n.playerNames[n.activePlayer][:len(n.playerNames[n.activePlayer])-1]
+		} */
+
+	// If key is kept pressed:
+	//		- If after 1 sec you are still pressing keep adding letters
+	//		- Otherwhise do only the first one
 
 	// Alphabetic characters
 	for key := ebiten.KeyA; key <= ebiten.KeyZ; key++ {
 		if inpututil.IsKeyJustPressed(key) {
 			if !n.maxLenght {
 				n.playerNames[n.activePlayer] += string('A' + (key - ebiten.KeyA))
+				n.lastMoveTime = time.Now()
+			}
+		} else if timeSinceKey[int(key)] > 0 && time.Since(n.lastMoveTime) >= moveInterval+2 {
+			if !n.maxLenght {
+				n.playerNames[n.activePlayer] += string('A' + (key - ebiten.KeyA))
+				n.lastMoveTime = time.Now()
 			}
 		}
 	}
+
+	/*
+		// Alphabetic characters
+		for key := ebiten.KeyA; key <= ebiten.KeyZ; key++ {
+			if inpututil.IsKeyJustPressed(key) {
+				if !n.maxLenght {
+					n.playerNames[n.activePlayer] += string('A' + (key - ebiten.KeyA))
+				}
+			}
+		} */
 
 	// Numerical characters
 	for key := ebiten.Key0; key <= ebiten.Key9; key++ {
