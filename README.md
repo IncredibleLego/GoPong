@@ -26,11 +26,11 @@ TODO:
 NEXT:
 - Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
 
-GENERAL:
+### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
 
-SAVES:
+### SAVES:
     - Match save on file, saving data of a match on file to open it later
         . When entering a mode ask if you wanna start a new match or restart from 0
 
@@ -43,25 +43,22 @@ SAVES:
 
 - In AI mode, select difficulty after nameinputscene.go in the same file with a optionmenu (or simpler)
 
-OPTIONS:
+### OPTIONS:
 
 - Options scene full implementation
 - Set to default values options (for single values too, maybe a button to press)
 - Implement mouse selection
 
-GAMEPLAY:
+### GAMEPLAY:
 
 - Ball delay after time hit
 - Modify increase speed, no longer working
 
-SCENES:
+### SCENES:
 
 - Highscores saved to file
 - Sounds
 - Access time to scenes (don't start immediately but have some time)
-
-SCENES:
-
 - ()OnExit remove?
 
 - AI MODE
@@ -69,7 +66,7 @@ SCENES:
     - Doesn't always hit in the center, based on a random number generator it decides where to hit
     - Doesn't always hit the ball: difficulty based on a number of possibilities/hits
 
-MENU:
+### MENU:
 
 - ScreenDraw() method must be simpler with less passed values
 
