@@ -21,8 +21,6 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 - Screen draw must be improved amd should print to the center of the screen
     - Maybe doing two functions: screenDraw with less arguments for all simple inputs and screenDraw extra for all different options
 
-TODO:
-
 NEXT:
 - Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
 
