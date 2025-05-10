@@ -29,8 +29,9 @@ NEXT:
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
 
 ### SAVES:
-    - Match save on file, saving data of a match on file to open it later
-        . When entering a mode ask if you wanna start a new match or restart from 0
+
+- Match save on file, saving data of a match on file to open it later
+    -  When entering a mode ask if you wanna start a new match or restart from 0
 
 - System to avoid ball always hitting in the same position (even if ball hits in the same point, it changes angle after a bit)
 - Centre menu mouse options for bigger screens
