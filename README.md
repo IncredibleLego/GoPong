@@ -3,10 +3,6 @@ A simple pong implementation made in Go using Ebitengine
 
 Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
-
-- IMPLEMENT INPUT AS A GENERAL INPUT FUNCTION, ex
-utils.Input(stringToEdit, maxCharacters)
-
 - Create my own library with ebiten utils integration
 
 ## ROADMAP:
