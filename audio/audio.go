@@ -40,9 +40,9 @@ var (
 
 func Init() {
 	audioContext = audio.NewContext(44100)
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 
-	// Decodifica e salva i buffer PCM una sola volta
+	// Decode and save buffer PCM once
 	paddleBuffers = make([][]byte, 6)
 	paddleBuffers[0] = decodeToPCM(pong1)
 	paddleBuffers[1] = decodeToPCM(pong2)
@@ -56,14 +56,13 @@ func Init() {
 func decodeToPCM(mp3data []byte) []byte {
 	stream, err := mp3.DecodeWithSampleRate(44100, bytes.NewReader(mp3data))
 	if err != nil {
-		log.Println("Errore decoding mp3:", err)
+		log.Println("Error decoding mp3:", err)
 		return nil
 	}
-	// stream non ha Close(), quindi non serve defer stream.Close()
 	buf := new(bytes.Buffer)
 	_, err = buf.ReadFrom(stream)
 	if err != nil {
-		log.Println("Errore bufferizzazione stream:", err)
+		log.Println("Error buffer stream:", err)
 		return nil
 	}
 	return buf.Bytes()
