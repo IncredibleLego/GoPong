@@ -1,6 +1,7 @@
 package main
 
 import (
+	"goPong/audio"
 	"goPong/config"
 	"log"
 
@@ -11,6 +12,7 @@ var isFullscreen bool
 
 func main() {
 	config.InitConfig()
+	audio.Init()
 	//fmt.Printf("Loaded configuration: %+v\n", config.GlobalConfig)
 
 	ebiten.SetWindowTitle("GoPong")

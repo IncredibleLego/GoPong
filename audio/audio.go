@@ -33,38 +33,54 @@ var pong6 []byte
 var score []byte
 
 var (
-	audioContext *audio.Context
-	paddleSounds [][]byte
+	audioContext  *audio.Context
+	paddleBuffers [][]byte
+	scoreBuffer   []byte
 )
 
 func Init() {
 	audioContext = audio.NewContext(44100)
-	paddleSounds = [][]byte{pong1, pong2, pong3, pong4, pong5, pong6}
 	rand.Seed(time.Now().UnixNano())
+
+	// Decodifica e salva i buffer PCM una sola volta
+	paddleBuffers = make([][]byte, 6)
+	paddleBuffers[0] = decodeToPCM(pong1)
+	paddleBuffers[1] = decodeToPCM(pong2)
+	paddleBuffers[2] = decodeToPCM(pong3)
+	paddleBuffers[3] = decodeToPCM(pong4)
+	paddleBuffers[4] = decodeToPCM(pong5)
+	paddleBuffers[5] = decodeToPCM(pong6)
+	scoreBuffer = decodeToPCM(score)
+}
+
+func decodeToPCM(mp3data []byte) []byte {
+	stream, err := mp3.DecodeWithSampleRate(44100, bytes.NewReader(mp3data))
+	if err != nil {
+		log.Println("Errore decoding mp3:", err)
+		return nil
+	}
+	// stream non ha Close(), quindi non serve defer stream.Close()
+	buf := new(bytes.Buffer)
+	_, err = buf.ReadFrom(stream)
+	if err != nil {
+		log.Println("Errore bufferizzazione stream:", err)
+		return nil
+	}
+	return buf.Bytes()
 }
 
 func PlayPaddle() {
-	playMp3(paddleSounds[rand.Intn(len(paddleSounds))])
+	playPCM(paddleBuffers[rand.Intn(len(paddleBuffers))])
 }
 
 func PlayScore() {
-	playMp3(score)
+	playPCM(scoreBuffer)
 }
 
-func playMp3(data []byte) {
-	if audioContext == nil {
-		log.Println("Audio context non inizializzato")
+func playPCM(pcm []byte) {
+	if audioContext == nil || pcm == nil {
 		return
 	}
-	stream, err := mp3.DecodeWithSampleRate(44100, bytes.NewReader(data))
-	if err != nil {
-		log.Println("Errore decoding mp3:", err)
-		return
-	}
-	player, err := audioContext.NewPlayer(stream)
-	if err != nil {
-		log.Println("Errore creazione player:", err)
-		return
-	}
+	player := audioContext.NewPlayerFromBytes(pcm)
 	player.Play()
 }

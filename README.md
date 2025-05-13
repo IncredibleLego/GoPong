@@ -9,6 +9,8 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 - Turn nameimputscene in gameset scene where you select name, mode and difficulty
 
+- Insert menu selection and button press audio, pauseaudio, menu music?
+
 ## ROADMAP:
 
 - When changing scale, the new scales must be rounded to the nearest 10 (done like optionscene.go row 55)
