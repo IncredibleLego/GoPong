@@ -81,7 +81,7 @@ func (g *GameScene) FirstLoad() {
 }
 
 func (g *GameScene) OnEnter() {
-
+	g.ball.Reset(false)
 }
 
 func (g *GameScene) OnExit() {

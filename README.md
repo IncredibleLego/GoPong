@@ -5,13 +5,15 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 - Create my own library with ebiten utils integration
 
+- Schermata di selezione (in startscene?) dove puoi selezionare vari presets di gioco (es. pallina piccola racchette grandi, pallina veloce racchette lente ecc)
+
+- Turn nameimputscene in gameset scene where you select name, mode and difficulty
+
 ## ROADMAP:
 
 - When changing scale, the new scales must be rounded to the nearest 10 (done like optionscene.go row 55)
 
 - popup.go in utils to generate confirm pop-ups ("confirm this decision?")
-
-- In nameinputscene, if you keep a letter or backspace pressed you should be able to delete many characters or write more characthers
 
 - Option "reset all values to default"
 - Option to modify screen width and height together (ex 1080 x 640) etc, so uniting the two options in one

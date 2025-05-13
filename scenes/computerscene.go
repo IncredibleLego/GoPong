@@ -98,7 +98,7 @@ func (c *ComputerScene) FirstLoad() {
 }
 
 func (c *ComputerScene) OnEnter() {
-
+	c.ball.Reset(false)
 }
 
 func (c *ComputerScene) OnExit() {

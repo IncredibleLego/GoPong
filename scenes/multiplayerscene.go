@@ -102,7 +102,7 @@ func (m *MultiplayerScene) FirstLoad() {
 }
 
 func (g *MultiplayerScene) OnEnter() {
-
+	g.ball.Reset(false)
 }
 
 func (g *MultiplayerScene) OnExit() {
