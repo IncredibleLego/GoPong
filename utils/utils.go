@@ -6,6 +6,7 @@ import (
 	"goPong/config"
 	"image/color"
 	"log"
+	"sync"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
@@ -16,17 +17,26 @@ import (
 
 //go:embed PressStart2P-Regular.ttf
 var pressStart2P []byte
-var pressStart2PFaceSource *text.GoTextFaceSource
+
+var (
+	pressStart2PFaceOnce   sync.Once
+	pressStart2PFaceSource *text.GoTextFaceSource
+)
+
+func getPressStart2PFaceSource() *text.GoTextFaceSource {
+	pressStart2PFaceOnce.Do(func() {
+		s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
+		if err != nil {
+			log.Fatal(err)
+		}
+		pressStart2PFaceSource = s
+	})
+	return pressStart2PFaceSource
+}
 
 func ScreenDraw(size float64, x, y float64, colorName string, screen *ebiten.Image, line string) {
-	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
-	if err != nil {
-		log.Fatal(err)
-	}
-	pressStart2PFaceSource = s
-
 	textFace := &text.GoTextFace{
-		Source: pressStart2PFaceSource,
+		Source: getPressStart2PFaceSource(),
 		Size:   config.GlobalConfig.TextDimension + size,
 	}
 
@@ -40,14 +50,8 @@ func ScreenDraw(size float64, x, y float64, colorName string, screen *ebiten.Ima
 }
 
 func MeasureText(label string) (float64, float64) {
-	s, err := text.NewGoTextFaceSource(bytes.NewReader(pressStart2P))
-	if err != nil {
-		log.Fatal(err)
-	}
-	pressStart2PFaceSource = s
-
 	textFace := &text.GoTextFace{
-		Source: pressStart2PFaceSource,
+		Source: getPressStart2PFaceSource(),
 		Size:   config.GlobalConfig.TextDimension,
 	}
 

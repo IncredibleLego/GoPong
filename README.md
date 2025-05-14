@@ -11,6 +11,10 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 - Insert menu selection and button press audio, pauseaudio, menu music?
 
+## PERFORMANCE:
+
+- Create a static image for background (ex the net or the title) to avoid drawing it in every frame
+
 ## ROADMAP:
 
 - When changing scale, the new scales must be rounded to the nearest 10 (done like optionscene.go row 55)

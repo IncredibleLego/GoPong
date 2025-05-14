@@ -34,23 +34,33 @@ var score []byte
 
 var (
 	audioContext  *audio.Context
-	paddleBuffers [][]byte
-	scoreBuffer   []byte
+	paddlePlayers []*audio.Player
+	scorePlayer   *audio.Player
 )
 
 func Init() {
 	audioContext = audio.NewContext(44100)
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 
-	// Decode and save buffer PCM once
-	paddleBuffers = make([][]byte, 6)
-	paddleBuffers[0] = decodeToPCM(pong1)
-	paddleBuffers[1] = decodeToPCM(pong2)
-	paddleBuffers[2] = decodeToPCM(pong3)
-	paddleBuffers[3] = decodeToPCM(pong4)
-	paddleBuffers[4] = decodeToPCM(pong5)
-	paddleBuffers[5] = decodeToPCM(pong6)
-	scoreBuffer = decodeToPCM(score)
+	// Decodifica e crea i player una sola volta
+	paddlePlayers = make([]*audio.Player, 6)
+	paddleBuffers := [][]byte{
+		decodeToPCM(pong1),
+		decodeToPCM(pong2),
+		decodeToPCM(pong3),
+		decodeToPCM(pong4),
+		decodeToPCM(pong5),
+		decodeToPCM(pong6),
+	}
+	for i, pcm := range paddleBuffers {
+		if pcm != nil {
+			paddlePlayers[i] = audioContext.NewPlayerFromBytes(pcm)
+		}
+	}
+	scorePCM := decodeToPCM(score)
+	if scorePCM != nil {
+		scorePlayer = audioContext.NewPlayerFromBytes(scorePCM)
+	}
 }
 
 func decodeToPCM(mp3data []byte) []byte {
@@ -69,17 +79,21 @@ func decodeToPCM(mp3data []byte) []byte {
 }
 
 func PlayPaddle() {
-	playPCM(paddleBuffers[rand.Intn(len(paddleBuffers))])
+	if len(paddlePlayers) == 0 {
+		return
+	}
+	player := paddlePlayers[rand.Intn(len(paddlePlayers))]
+	if player == nil {
+		return
+	}
+	player.Rewind()
+	player.Play()
 }
 
 func PlayScore() {
-	playPCM(scoreBuffer)
-}
-
-func playPCM(pcm []byte) {
-	if audioContext == nil || pcm == nil {
+	if scorePlayer == nil {
 		return
 	}
-	player := audioContext.NewPlayerFromBytes(pcm)
-	player.Play()
+	scorePlayer.Rewind()
+	scorePlayer.Play()
 }
