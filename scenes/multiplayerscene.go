@@ -119,23 +119,13 @@ func (m *MultiplayerScene) Update() SceneId {
 	m.paddle1.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
 	m.paddle2.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
 	m.ball.Move()
-	m.ball.CollideWithWall(true, true)
 
 	test := m.ball.CollideWithWall(true, true)
 	if test == 1 {
-		m.score1++
-	} else if test == 2 {
 		m.score2++
+	} else if test == 2 {
+		m.score1++
 	}
-
-	/*
-		if m.ball.CollideWithWall(true, true) == 1 {
-			m.score2++
-		} else if m.ball.CollideWithWall(true, true) == 2 {
-			m.score1++
-		} */
-
-	//fmt.Print("Score1: ", m.score1, " Score2: ", m.score2, "\n")
 
 	m.ball.CollideWithPaddle(m.paddle1, true)
 	m.ball.CollideWithPaddle(m.paddle2, false)
