@@ -126,11 +126,11 @@ func (c *ComputerScene) Update() SceneId {
 	c.enemyPaddle.AiMovement(c.ball)
 
 	c.ball.Move()
-	c.ball.CollideWithWall(true, true)
 
-	if c.ball.CollideWithWall(true, true) == 1 {
+	test := c.ball.CollideWithWall(true, true)
+	if test == 1 {
 		c.score++
-	} else if c.ball.CollideWithWall(true, true) == 2 {
+	} else if test == 2 {
 		c.scoreEnemy++
 	}
 
