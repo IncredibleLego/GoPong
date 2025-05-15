@@ -52,7 +52,7 @@ func (o *OptionScene) generateGameMenuOptions() []string {
 func (o *OptionScene) generateScreenMenuOptions() []string {
 	return []string{
 		"Text Dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
-		"Screen Size: " + strconv.Itoa(((config.GlobalConfig.ScreenWidth+5)/10)*10) + " x " + strconv.Itoa(((config.GlobalConfig.ScreenHeight+5)/10)*10),
+		"Screen Size: " + strconv.Itoa(config.GlobalConfig.ScreenWidth) + " x " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
 		"FullScreen: " + strconv.FormatBool(config.GlobalConfig.Fullscreen),
 		"Reset to default",
 		"Back to options",
@@ -321,9 +321,12 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 		updateConfigValueFloat(&config.GlobalConfig.TextDimension, 1, 35, 1, mode)
 	case 1:
 		if updateConfigValueFloat(&config.GlobalConfig.Scale, 0.67, 1.33, 0.33, mode) {
-			config.BaseScale(config.GlobalConfig)    // reset ai valori base
-			config.ApplyScaling(config.GlobalConfig) // applica la nuova scala
-			config.SaveConfig(config.GlobalConfig)   // salva la nuova configurazione
+			err := config.ChangeScale(config.GlobalConfig.Scale)
+			if err != nil {
+				fmt.Println("Error during option saving", err)
+			} else {
+				// Show a message to restart the game or confirm
+			}
 		}
 	case 2:
 		err := config.UpdateConfig(func(cfg *config.Config) {
@@ -377,12 +380,5 @@ func handleGeneralMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 		fmt.Println("Error during option saving", err)
 	}
 }
-
-/*
-Reset all to default
-
-config.SaveConfig(config.DefaultConfig)
-config.InitConfig()
-*/
 
 var _ Scene = (*OptionScene)(nil)

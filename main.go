@@ -12,6 +12,7 @@ var isFullscreen bool
 
 func main() {
 	config.InitConfig()
+	config.ApplyScaleToConfig(config.GlobalConfig, config.GlobalConfig.Scale)
 	audio.Init()
 	//fmt.Printf("Loaded configuration: %+v\n", config.GlobalConfig)
 

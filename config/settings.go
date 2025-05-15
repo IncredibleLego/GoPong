@@ -64,35 +64,22 @@ var DefaultConfig = &Config{
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 }
 
-func ApplyScaling(cfg *Config) {
-	cfg.BallSpeed = ScaledInt(cfg.BallSpeed)
-	cfg.BallSize = ScaledInt(cfg.BallSize)
-	cfg.PaddleSpeed = ScaledInt(cfg.PaddleSpeed)
-	cfg.PaddleHeight = ScaledInt(cfg.PaddleHeight)
-	cfg.PaddleDistanceFromWall = ScaledInt(cfg.PaddleDistanceFromWall)
-	cfg.ScreenWidth = ScaledInt(cfg.ScreenWidth)
-	cfg.ScreenHeight = ScaledInt(cfg.ScreenHeight)
+// Applica la scala ai valori di default e aggiorna la config
+func ApplyScaleToConfig(cfg *Config, scale float64) {
+	cfg.Scale = scale
+	cfg.BallSpeed = int(math.Round(float64(DefaultConfig.BallSpeed) * scale))
+	//cfg.BallSize = int(math.Round(float64(DefaultConfig.BallSize) * scale))
+	cfg.PaddleSpeed = int(math.Round(float64(DefaultConfig.PaddleSpeed) * scale))
+	cfg.PaddleHeight = int(math.Round(float64(DefaultConfig.PaddleHeight) * scale))
+	cfg.PaddleDistanceFromWall = int(math.Round(float64(DefaultConfig.PaddleDistanceFromWall) * scale))
+	cfg.ScreenWidth = ((int(math.Round(float64(DefaultConfig.ScreenWidth)*scale)) + 5) / 10) * 10
+	cfg.ScreenHeight = ((int(math.Round(float64(DefaultConfig.ScreenHeight)*scale)) + 5) / 10) * 10
 }
 
-func BaseScale(cfg *Config) {
-	cfg.BallSpeed = DefaultConfig.BallSpeed
-	cfg.BallSize = DefaultConfig.BallSize
-	cfg.PaddleSpeed = DefaultConfig.PaddleSpeed
-	cfg.PaddleHeight = DefaultConfig.PaddleHeight
-	cfg.PaddleDistanceFromWall = DefaultConfig.PaddleDistanceFromWall
-	cfg.ScreenWidth = DefaultConfig.ScreenWidth
-	cfg.ScreenHeight = DefaultConfig.ScreenHeight
-}
-
-// ScaledInt and ScaledFloat are utility functions to scale values based on the global configuration.
-// They are used to adjust the size of game elements based on the current scale factor.
-
-func ScaledInt(value int) int {
-	return int(math.Round(float64(value) * GlobalConfig.Scale))
-}
-
-func ScaledFloat(value float64) float64 {
-	return value * GlobalConfig.Scale
+// Cambia la scala e aggiorna la configurazione globale
+func ChangeScale(newScale float64) error {
+	ApplyScaleToConfig(GlobalConfig, newScale)
+	return SaveConfig(GlobalConfig)
 }
 
 const configFilePath = "./config/settings.json" // Name of the configuration file

@@ -11,6 +11,24 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 - Insert menu selection and button press audio, pauseaudio, menu music?
 
+## SCALE REWORK
+
+I valori convertiti dovrebbero essere arrotondati alla decina come avviene per la stampa
+
+- Ogni scala ha dei valori predefiniti - che sono i vaori di base (Default values) * scala e vanno resettati ogni volta
+--> NON BISOGNA scalare i valori da quelli attuali o si creano problemi
+
+- Se resetto defaul --> prendi valori defaul moltiplica per scale
+- Altrimenti li modifico come sempre singolarmente
+
+Quando aggiorni la scala --> messaggio di conferma --> riavvia il gioco
+
+
+Update everything to be on scale
+
+- Adjust settings to best values, remember actual default options were for 640 x 480
+
+
 ## PERFORMANCE:
 
 - Create a static image for background (ex the net or the title) to avoid drawing it in every frame
