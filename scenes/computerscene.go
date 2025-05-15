@@ -95,10 +95,11 @@ func (c *ComputerScene) FirstLoad() {
 	c.ball.GenerateRandomDirection()
 	c.score = 0
 	c.highScore = 0
+	c.ball.Reset(false)
 }
 
 func (c *ComputerScene) OnEnter() {
-	c.ball.Reset(false)
+
 }
 
 func (c *ComputerScene) OnExit() {

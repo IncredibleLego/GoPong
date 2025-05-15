@@ -56,14 +56,6 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 
 	utils.ScreenDraw(0, 100, 10, "white", screen, m.player1Name)
 	utils.ScreenDraw(0, 400, 10, "white", screen, m.player2Name)
-
-	/*
-		utils.ScreenDraw(0, 10, 10, "white", screen, m.player1Name)
-		utils.ScreenDraw(0, 10, 25, "white", screen, "Score: "+strconv.Itoa(m.score2))
-		utils.ScreenDraw(0, 500, 10, "white", screen, m.player2Name)
-		utils.ScreenDraw(0, 500, 25, "white", screen, "Score: "+strconv.Itoa(m.score1))
-		utils.ScreenDraw(-3, 250, 10, "white", screen, "MULTIPLAYER MODE")
-	*/
 }
 
 // FirstLoad implements Scene.
@@ -99,13 +91,14 @@ func (m *MultiplayerScene) FirstLoad() {
 	m.ball.GenerateRandomDirection()
 	m.score1 = 0
 	m.score2 = 0
+	m.ball.Reset(false)
 }
 
-func (g *MultiplayerScene) OnEnter() {
-	g.ball.Reset(false)
+func (m *MultiplayerScene) OnEnter() {
+
 }
 
-func (g *MultiplayerScene) OnExit() {
+func (m *MultiplayerScene) OnExit() {
 
 }
 
@@ -128,11 +121,21 @@ func (m *MultiplayerScene) Update() SceneId {
 	m.ball.Move()
 	m.ball.CollideWithWall(true, true)
 
-	if m.ball.CollideWithWall(true, true) == 1 {
-		m.score2++
-	} else if m.ball.CollideWithWall(true, true) == 2 {
+	test := m.ball.CollideWithWall(true, true)
+	if test == 1 {
 		m.score1++
+	} else if test == 2 {
+		m.score2++
 	}
+
+	/*
+		if m.ball.CollideWithWall(true, true) == 1 {
+			m.score2++
+		} else if m.ball.CollideWithWall(true, true) == 2 {
+			m.score1++
+		} */
+
+	//fmt.Print("Score1: ", m.score1, " Score2: ", m.score2, "\n")
 
 	m.ball.CollideWithPaddle(m.paddle1, true)
 	m.ball.CollideWithPaddle(m.paddle2, false)

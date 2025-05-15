@@ -78,10 +78,11 @@ func (g *GameScene) FirstLoad() {
 	g.ball.GenerateRandomDirection()
 	g.score = 0
 	g.highScore = 0
+	g.ball.Reset(false)
 }
 
 func (g *GameScene) OnEnter() {
-	g.ball.Reset(false)
+
 }
 
 func (g *GameScene) OnExit() {
