@@ -51,11 +51,11 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 	utils.Net(screen)
 
 	// Draw the points
-	utils.PointsDraw(screen, 100, 50, m.score1)
-	utils.PointsDraw(screen, 400, 50, m.score2)
+	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6, 50, m.score1)
+	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4, 50, m.score2)
 
-	utils.ScreenDraw(0, 100, 10, "white", screen, m.player1Name)
-	utils.ScreenDraw(0, 400, 10, "white", screen, m.player2Name)
+	utils.ScreenDraw(0, float64(config.GlobalConfig.ScreenWidth)/6, 10, "white", screen, m.player1Name)
+	utils.ScreenDraw(0, (float64(config.GlobalConfig.ScreenWidth)/6)*4, 10, "white", screen, m.player2Name)
 }
 
 // FirstLoad implements Scene.
