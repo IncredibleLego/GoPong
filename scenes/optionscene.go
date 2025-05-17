@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goPong/config"
 	"goPong/menu"
+	"goPong/utils"
 	"image/color"
 	"strconv"
 	"time"
@@ -333,6 +334,7 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 				// Show a message to restart the game or confirm
 			}
 		}
+		utils.RestartGame()
 	case 2:
 		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.Fullscreen = !cfg.Fullscreen

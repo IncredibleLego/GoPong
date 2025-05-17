@@ -15,6 +15,8 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 - When you change scale you must reboot
 - Change menu and positioning after resizing
 - Change values change in options after scale change (ex. Paddle width can't always change by 5)
+- Try implementing other scales to see if that is working
+- Name positioning in game scenes
 
 ## SCALE REWORK
 
