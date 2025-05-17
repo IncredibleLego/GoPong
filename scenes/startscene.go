@@ -39,7 +39,7 @@ func (s *StartScene) Draw(screen *ebiten.Image) {
 
 	utils.TitleDraw(screen)
 
-	utils.ScreenDraw(-3, 175, 180, "sky blue", screen, "by IncredibleLego")
+	//utils.ScreenDraw(-3, 175, 180, "sky blue", screen, "by IncredibleLego")
 
 	s.currentMenu.Draw(screen)
 

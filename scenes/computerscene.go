@@ -70,7 +70,7 @@ func (c *ComputerScene) FirstLoad() {
 		Object: &objects.Object{
 			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,
 			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
-			W: 15,
+			W: config.GlobalConfig.PaddleWidth,
 			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
@@ -78,7 +78,7 @@ func (c *ComputerScene) FirstLoad() {
 		Object: &objects.Object{
 			X: config.GlobalConfig.PaddleDistanceFromWall,
 			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
-			W: 15,
+			W: config.GlobalConfig.PaddleWidth,
 			H: config.GlobalConfig.PaddleHeight,
 		},
 	}

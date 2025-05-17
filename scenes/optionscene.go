@@ -42,6 +42,7 @@ func (o *OptionScene) generateGameMenuOptions() []string {
 		"Ball Size: " + strconv.Itoa(config.GlobalConfig.BallSize),
 		"Paddle Speed: " + strconv.Itoa(config.GlobalConfig.PaddleSpeed),
 		"Paddle Height: " + strconv.Itoa(config.GlobalConfig.PaddleHeight),
+		"Paddle Width: " + strconv.Itoa(config.GlobalConfig.PaddleWidth),
 		"Paddle Distance: " + strconv.Itoa(config.GlobalConfig.PaddleDistanceFromWall),
 		"Enemy Difficulty: " + fmt.Sprintf("%.2f", config.GlobalConfig.Difficulty),
 		"Reset to default",
@@ -81,12 +82,12 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 			float32(config.GlobalConfig.BallSize), float32(config.GlobalConfig.BallSize),
 			color.White, false,
 		)
-	case 3, 4, 5:
+	case 3, 4, 5, 6:
 		x := config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall
 		y := config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2
 		vector.DrawFilledRect(screen,
 			float32(x), float32(y),
-			float32(15), float32(config.GlobalConfig.PaddleHeight),
+			float32(config.GlobalConfig.PaddleWidth), float32(config.GlobalConfig.PaddleHeight),
 			color.White, false,
 		)
 	}
@@ -296,16 +297,20 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	case 3:
 		updateConfigValue(&config.GlobalConfig.PaddleHeight, 10, 470, 10, mode)
 	case 4:
-		updateConfigValue(&config.GlobalConfig.PaddleDistanceFromWall, 15, config.GlobalConfig.ScreenWidth/2, 5, mode)
+		updateConfigValue(&config.GlobalConfig.PaddleWidth, 5, config.GlobalConfig.PaddleDistanceFromWall-5, 5, mode)
 	case 5:
-		updateConfigValueFloat(&config.GlobalConfig.Difficulty, 0.2, 0.9, 0.1, mode)
+		updateConfigValue(&config.GlobalConfig.PaddleDistanceFromWall, 15, config.GlobalConfig.ScreenWidth/2, 5, mode)
 	case 6:
+		updateConfigValueFloat(&config.GlobalConfig.Difficulty, 0.2, 0.9, 0.1, mode)
+	case 7:
 		err := config.UpdateConfig(func(cfg *config.Config) {
-			cfg.BallSpeed = config.DefaultConfig.BallSpeed
-			cfg.BallSize = config.DefaultConfig.BallSize
-			cfg.PaddleSpeed = config.DefaultConfig.PaddleSpeed
-			cfg.PaddleHeight = config.DefaultConfig.PaddleHeight
-			cfg.PaddleDistanceFromWall = config.DefaultConfig.PaddleDistanceFromWall
+			scale := cfg.Scale
+			cfg.BallSpeed = int(float64(config.DefaultConfig.BallSpeed) * scale)
+			cfg.BallSize = int(float64(config.DefaultConfig.BallSize) * scale)
+			cfg.PaddleSpeed = int(float64(config.DefaultConfig.PaddleSpeed) * scale)
+			cfg.PaddleHeight = int(float64(config.DefaultConfig.PaddleHeight) * scale)
+			cfg.PaddleWidth = int(float64(config.DefaultConfig.PaddleWidth) * scale)
+			cfg.PaddleDistanceFromWall = int(float64(config.DefaultConfig.PaddleDistanceFromWall) * scale)
 			cfg.Difficulty = config.DefaultConfig.Difficulty
 		})
 		if err != nil {
@@ -337,7 +342,7 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 		}
 	case 3:
 		err := config.UpdateConfig(func(cfg *config.Config) {
-			cfg.TextDimension = config.DefaultConfig.TextDimension
+			cfg.TextDimension = config.DefaultConfig.TextDimension * config.GlobalConfig.Scale
 			cfg.Scale = config.DefaultConfig.Scale
 			cfg.Fullscreen = config.DefaultConfig.Fullscreen
 

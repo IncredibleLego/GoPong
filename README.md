@@ -11,6 +11,11 @@ Started watiching this youtube video https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R
 
 - Insert menu selection and button press audio, pauseaudio, menu music?
 
+
+- When you change scale you must reboot
+- Change menu and positioning after resizing
+- Change values change in options after scale change (ex. Paddle width can't always change by 5)
+
 ## SCALE REWORK
 
 I valori convertiti dovrebbero essere arrotondati alla decina come avviene per la stampa

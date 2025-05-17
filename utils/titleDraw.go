@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"goPong/config"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -13,11 +14,11 @@ func TitleDraw(screen *ebiten.Image) {
 	// Draw Options
 
 	//var X float32 = 21     // Starting X position
-	var Y float32 = 60     // Y of the letters
-	var border float32 = 9 // Border size
-	var space float32 = 40 // Space between letters
-	var letterHeight float32 = 80
-	var letterWidth float32 = 60
+	var Y float32 = float32(config.GlobalConfig.ScreenHeight / 8)       // Y of the letters
+	var border float32 = float32(config.GlobalConfig.ScreenHeight / 48) // Border size
+	var space float32 = float32(config.GlobalConfig.ScreenHeight / 12)  // Space between letters
+	var letterHeight float32 = float32(config.GlobalConfig.ScreenHeight / 6)
+	var letterWidth float32 = float32(config.GlobalConfig.ScreenHeight / 8)
 
 	//var titleColor1 = color.RGBA{240, 45, 60, 255}
 
@@ -144,4 +145,6 @@ func TitleDraw(screen *ebiten.Image) {
 		space*6+letterWidth*6-border, Y+letterHeight/2-border/2, border, letterHeight/2,
 		titleColor2, false,
 	)
+	// Draw title
+	ScreenDraw(-3, float64(config.GlobalConfig.ScreenWidth)/3.6, float64(Y+letterHeight+letterHeight/2), "sky blue", screen, "by IncredibleLego")
 }

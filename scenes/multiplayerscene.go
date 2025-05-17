@@ -51,8 +51,8 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 	utils.Net(screen)
 
 	// Draw the points
-	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6, 50, m.score1)
-	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4, 50, m.score2)
+	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6, float32(50*config.DefaultConfig.Scale), m.score1)
+	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4, float32(50*config.DefaultConfig.Scale), m.score2)
 
 	utils.ScreenDraw(0, float64(config.GlobalConfig.ScreenWidth)/6, 10, "white", screen, m.player1Name)
 	utils.ScreenDraw(0, (float64(config.GlobalConfig.ScreenWidth)/6)*4, 10, "white", screen, m.player2Name)
@@ -66,7 +66,7 @@ func (m *MultiplayerScene) FirstLoad() {
 		Object: &objects.Object{
 			X: config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall,
 			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
-			W: 15,
+			W: config.GlobalConfig.PaddleWidth,
 			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
@@ -74,7 +74,7 @@ func (m *MultiplayerScene) FirstLoad() {
 		Object: &objects.Object{
 			X: config.GlobalConfig.PaddleDistanceFromWall,
 			Y: config.GlobalConfig.ScreenHeight/2 - config.GlobalConfig.PaddleHeight/2,
-			W: 15,
+			W: config.GlobalConfig.PaddleWidth,
 			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
