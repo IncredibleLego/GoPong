@@ -6,6 +6,7 @@ import (
 	"goPong/menu"
 	"goPong/utils"
 	"image/color"
+	"math"
 	"strconv"
 	"time"
 
@@ -306,12 +307,12 @@ func handleGameMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	case 7:
 		err := config.UpdateConfig(func(cfg *config.Config) {
 			scale := cfg.Scale
-			cfg.BallSpeed = int(float64(config.DefaultConfig.BallSpeed) * scale)
-			cfg.BallSize = int(float64(config.DefaultConfig.BallSize) * scale)
-			cfg.PaddleSpeed = int(float64(config.DefaultConfig.PaddleSpeed) * scale)
-			cfg.PaddleHeight = int(float64(config.DefaultConfig.PaddleHeight) * scale)
-			cfg.PaddleWidth = int(float64(config.DefaultConfig.PaddleWidth) * scale)
-			cfg.PaddleDistanceFromWall = int(float64(config.DefaultConfig.PaddleDistanceFromWall) * scale)
+			cfg.BallSpeed = int(math.Round(float64(config.DefaultConfig.BallSpeed) * scale))
+			cfg.BallSize = int(math.Round(float64(config.DefaultConfig.BallSize) * scale))
+			cfg.PaddleSpeed = int(math.Round(float64(config.DefaultConfig.PaddleSpeed) * scale))
+			cfg.PaddleHeight = int(math.Round(float64(config.DefaultConfig.PaddleHeight) * scale))
+			cfg.PaddleWidth = int(math.Round(float64(config.DefaultConfig.PaddleWidth) * scale))
+			cfg.PaddleDistanceFromWall = int(math.Round(float64(config.DefaultConfig.PaddleDistanceFromWall) * scale))
 			cfg.Difficulty = config.DefaultConfig.Difficulty
 		})
 		if err != nil {
@@ -344,7 +345,7 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 		}
 	case 3:
 		err := config.UpdateConfig(func(cfg *config.Config) {
-			cfg.TextDimension = config.DefaultConfig.TextDimension * config.GlobalConfig.Scale
+			cfg.TextDimension = math.Round(config.DefaultConfig.TextDimension * config.GlobalConfig.Scale)
 			cfg.Scale = config.DefaultConfig.Scale
 			cfg.Fullscreen = config.DefaultConfig.Fullscreen
 
