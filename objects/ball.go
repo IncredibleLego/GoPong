@@ -47,6 +47,7 @@ func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides 
 			b.Reset(true) //true = left player got scored
 			return 1
 		} else {
+			audio.PlayPaddle()
 			b.Dxdt = -b.Dxdt
 		}
 	} else if b.X+b.W >= config.GlobalConfig.ScreenWidth {
@@ -58,8 +59,10 @@ func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides 
 			b.Dxdt = -b.Dxdt
 		}
 	} else if b.Y <= 0 {
+		audio.PlayPaddle()
 		b.Dydt = -b.Dydt
 	} else if b.Y+b.H >= config.GlobalConfig.ScreenHeight {
+		audio.PlayPaddle()
 		b.Dydt = -b.Dydt
 	}
 	return 0
