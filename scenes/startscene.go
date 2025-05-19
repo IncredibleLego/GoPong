@@ -33,16 +33,11 @@ func NewStartScene() *StartScene {
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
 
-	//utils.ScreenDraw(-7, 250, 60, "white", screen, "Pong in Go")
-
-	//Lettere 82 spazio 21 dimensione 14
+	//Letter 82 space 21 dimension 14
 
 	utils.TitleDraw(screen)
 
-	//utils.ScreenDraw(-3, 175, 180, "sky blue", screen, "by IncredibleLego")
-
 	s.currentMenu.Draw(screen)
-
 }
 
 func (s *StartScene) FirstLoad() {
@@ -50,6 +45,7 @@ func (s *StartScene) FirstLoad() {
 		Options: []menu.MenuOption{
 			{Label: "PLAY"},
 			{Label: "OPTIONS"},
+			{Label: "HIGHSCORES"},
 			{Label: "CREDITS"},
 			{Label: "QUIT"},
 		},
@@ -110,7 +106,6 @@ func (s *StartScene) Update() SceneId {
 	if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 		s.actionExecuted = false
 	}
-
 	return StartSceneId
 }
 
@@ -129,6 +124,8 @@ func (s *StartScene) handleMenuSelection() SceneId {
 		s.playMenu.Selected = 0
 	case "OPTIONS":
 		return OptionsSceneId
+	case "HIGHSCORES":
+		fmt.Println("HIGHSCORES NOT YET IMPLEMENTED")
 	case "CREDITS":
 		fmt.Println("CREDITS NOT YET IMPLEMENTED")
 	case "QUIT":
