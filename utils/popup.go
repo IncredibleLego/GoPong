@@ -59,18 +59,12 @@ func (p *Popup) Draw(screen *ebiten.Image) {
 		textWidth, _ := MeasureText(optText)
 		drawX := x - float64(textWidth)/2
 
-		if p.Selected == 0 {
-			if i == 0 {
-				ScreenDraw(0, drawX-20, y, "green", screen, "◀"+optText+"▶")
-			} else {
-				ScreenDraw(0, drawX, y, "white", screen, optText)
-			}
+		if p.Selected == 0 && i == 0 {
+			ScreenDraw(0, drawX-20, y, "green", screen, "◀"+optText+"▶")
+		} else if p.Selected == 1 && i == 1 {
+			ScreenDraw(0, drawX-20, y, "red", screen, "◀"+optText+"▶")
 		} else {
-			if i == 1 {
-				ScreenDraw(0, drawX-20, y, "red", screen, "◀"+optText+"▶")
-			} else {
-				ScreenDraw(0, drawX, y, "white", screen, optText)
-			}
+			ScreenDraw(0, drawX, y, "white", screen, optText)
 		}
 	}
 
