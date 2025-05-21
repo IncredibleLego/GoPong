@@ -22,6 +22,8 @@ type Config struct {
 	TextDimension          float64
 	ScreenWidth            int
 	ScreenHeight           int
+	PopupWidth             int
+	PopupHeight            int
 	MenuOptionsPerSecond   time.Duration
 	OptionsPerSecond       time.Duration
 	MaxBounceAngle         float64
@@ -42,6 +44,8 @@ var GlobalConfig = &Config{
 	TextDimension:          30,
 	ScreenWidth:            960,
 	ScreenHeight:           720,
+	PopupWidth:             528, // 55% of height
+	PopupHeight:            216, // 30% of height
 	MenuOptionsPerSecond:   4,
 	OptionsPerSecond:       90,
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
@@ -62,6 +66,8 @@ var DefaultConfig = &Config{
 	TextDimension:          30,
 	ScreenWidth:            960,
 	ScreenHeight:           720,
+	PopupWidth:             528, // 55% of height
+	PopupHeight:            216, // 30% of height
 	MenuOptionsPerSecond:   4,
 	OptionsPerSecond:       90,
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
@@ -78,6 +84,8 @@ func ApplyScaleToConfig(cfg *Config, scale float64) {
 	cfg.PaddleWidth = int(math.Round(float64(DefaultConfig.PaddleWidth) * scale))
 	cfg.ScreenWidth = ((int(math.Round(float64(DefaultConfig.ScreenWidth)*scale)) + 5) / 10) * 10
 	cfg.ScreenHeight = ((int(math.Round(float64(DefaultConfig.ScreenHeight)*scale)) + 5) / 10) * 10
+	cfg.PopupWidth = int(math.Round(float64(DefaultConfig.PopupWidth) * scale))
+	cfg.PopupHeight = int(math.Round(float64(DefaultConfig.PopupHeight) * scale))
 	cfg.TextDimension = math.Round(DefaultConfig.TextDimension * scale)
 }
 

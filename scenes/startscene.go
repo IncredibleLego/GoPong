@@ -14,6 +14,7 @@ type StartScene struct { // is the scene loaded now
 	currentMenu        *menu.RegularMenu
 	mainMenu           *menu.RegularMenu
 	playMenu           *menu.RegularMenu
+	exitPopup          *utils.Popup
 	lastEnterPressTime time.Time
 	actionExecuted     bool
 	selectedMode       int
@@ -32,12 +33,15 @@ func NewStartScene() *StartScene {
 }
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
-
 	//Letter 82 space 21 dimension 14
 
 	utils.TitleDraw(screen)
 
 	s.currentMenu.Draw(screen)
+
+	if s.exitPopup.Active {
+		s.exitPopup.Draw(screen)
+	}
 }
 
 func (s *StartScene) FirstLoad() {
@@ -64,10 +68,20 @@ func (s *StartScene) FirstLoad() {
 		LastMoveTime: time.Now(),
 		Offset:       100,
 	}
+	s.exitPopup = &utils.Popup{
+		Active:  false,
+		Text:    "Are you sure you want to quit?",
+		Options: []string{"YES", "NO"},
+	}
 	s.currentMenu = s.mainMenu
 	s.lastEnterPressTime = time.Now()
 	s.actionExecuted = false
 }
+
+/*
+popupWidth := int(float64(config.GlobalConfig.ScreenWidth) * 0.4)  // 40% della larghezza
+popupHeight := int(float64(config.GlobalConfig.ScreenHeight) * 0.2) // 20% dell'altezza
+*/
 
 func (s *StartScene) OnEnter() {
 
@@ -78,33 +92,41 @@ func (s *StartScene) OnExit() {
 }
 
 func (s *StartScene) Update() SceneId {
-	nextMenu := s.currentMenu.Update()
-	if nextMenu != nil {
-		if regularMenu, ok := nextMenu.(*menu.RegularMenu); ok {
-			s.currentMenu = regularMenu
-		} else {
-			fmt.Println("Error: nextMenu is not of type *menu.RegularMenu")
+	if s.exitPopup.Active {
+		//fmt.Println("ExitPopup Selected:", s.exitPopup.Selected)
+		s.exitPopup.Update()
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+			id := s.handleExitPopup()
+			return id
 		}
-		s.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
-		s.actionExecuted = false
 	} else {
-		// Evita l'esecuzione immediata dopo il cambio menu
-		if time.Since(s.lastEnterPressTime) > 200*time.Millisecond {
-			// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
-			if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !s.actionExecuted {
-				id := s.handleMenuSelection()
-				s.actionExecuted = true // Evita che venga eseguito più volte
-				if id != StartSceneId {
-					s.currentMenu = s.mainMenu
-					return id
+		nextMenu := s.currentMenu.Update()
+		if nextMenu != nil {
+			if regularMenu, ok := nextMenu.(*menu.RegularMenu); ok {
+				s.currentMenu = regularMenu
+			} else {
+				fmt.Println("Error: nextMenu is not of type *menu.RegularMenu")
+			}
+			s.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
+			s.actionExecuted = false
+		} else {
+			// Evita l'esecuzione immediata dopo il cambio menu
+			if time.Since(s.lastEnterPressTime) > 200*time.Millisecond {
+				// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
+				if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !s.actionExecuted {
+					id := s.handleMenuSelection()
+					s.actionExecuted = true // Evita che venga eseguito più volte
+					if id != StartSceneId {
+						s.currentMenu = s.mainMenu
+						return id
+					}
 				}
 			}
 		}
-	}
-
-	// Se Enter viene rilasciato, permetti nuove azioni
-	if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-		s.actionExecuted = false
+		// Se Enter viene rilasciato, permetti nuove azioni
+		if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+			s.actionExecuted = false
+		}
 	}
 	return StartSceneId
 }
@@ -129,7 +151,9 @@ func (s *StartScene) handleMenuSelection() SceneId {
 	case "CREDITS":
 		fmt.Println("CREDITS NOT YET IMPLEMENTED")
 	case "QUIT":
-		return ExitSceneId
+		s.exitPopup.Active = true
+		s.exitPopup.Selected = 0
+		//return ExitSceneId
 	case "SOLO MODE":
 		s.selectedMode = 1
 		return NameInputSceneId
@@ -142,6 +166,15 @@ func (s *StartScene) handleMenuSelection() SceneId {
 	case "BACK":
 		s.currentMenu = s.mainMenu
 	}
+	return StartSceneId
+}
 
+func (s *StartScene) handleExitPopup() SceneId {
+	//fmt.Println("ExitPopup Selected:", s.exitPopup.Selected)
+	if s.exitPopup.Selected == 0 {
+		return ExitSceneId
+	} else {
+		s.exitPopup.Active = false
+	}
 	return StartSceneId
 }

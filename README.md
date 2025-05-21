@@ -6,6 +6,8 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 ## ROADMAP:
 
 - popup.go in utils to generate confirm pop-ups ("confirm this decision?")
+- Add mouse managment in popup
+- Remove all magic numbers from popup, make it adapt to all options inserted
 
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
@@ -25,6 +27,11 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 - Color schemes in settings? (change color of menus as option). Color Presets
 - Game presets: ex. slow ball fast paddle ecc.
 - Possibility to change commands? example choose the pause button?
+
+- Don't restart immediately when selecting the new scale
+    - Let user select the preferred scale
+    - When exiting --> Popup message asking to reload (or just reload)
+    - This makes users able to jump from a scale to one not immediately after it
 
 ### GAMEPLAY:
 - Ball delay after time hit
@@ -48,7 +55,7 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 - Make moveInterval inside menu an option calculated using menuoptions per second and remove that option
 
 - PAUSEMENU
-    - Gamescene blurred in the background
+    - Gamescene blurred in the background (like popups)
     - Choose if the scene must be saved or not
 
 - STARTMENU
