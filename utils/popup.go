@@ -19,9 +19,6 @@ type Popup struct {
 	LastMoveTime time.Time
 }
 
-// Popup should be a structure? How to add the options that will activate during the popup?
-// Popup graphics choose. Different popups for different situations?
-
 func (p *Popup) Draw(screen *ebiten.Image) {
 	popupWidth := config.GlobalConfig.PopupWidth
 	popupHeight := config.GlobalConfig.PopupHeight
