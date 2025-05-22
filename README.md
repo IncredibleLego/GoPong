@@ -5,7 +5,6 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ## ROADMAP:
 
-- popup.go in utils to generate confirm pop-ups ("confirm this decision?")
 - Add mouse managment in popup
 - Remove all magic numbers from popup, make it adapt to all options inserted
 

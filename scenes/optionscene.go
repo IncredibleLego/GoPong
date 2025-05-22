@@ -15,6 +15,12 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+const (
+	gameOptionsMenuName    = "GAME OPTIONS"
+	screenOptionsMenuName  = "SCREEN OPTIONS"
+	generalOptionsMenuName = "GENERAL OPTIONS"
+)
+
 type OptionScene struct {
 	currentMenu        menu.Menu
 	mainMenu           *menu.RegularMenu
@@ -123,21 +129,21 @@ func (o *OptionScene) FirstLoad() {
 		Options:      o.generateGameMenuOptions(),
 		Selected:     0,
 		LastMoveTime: time.Now(),
-		MenuName:     "GAME OPTIONS",
+		MenuName:     gameOptionsMenuName,
 		Position:     100,
 	}
 	o.screenMenu = &menu.OptionMenu{
 		Options:      o.generateScreenMenuOptions(),
 		Selected:     0,
 		LastMoveTime: time.Now(),
-		MenuName:     "SCREEN OPTIONS",
+		MenuName:     screenOptionsMenuName,
 		Position:     150,
 	}
 	o.generalMenu = &menu.OptionMenu{
 		Options:      o.generateGeneralMenuOptions(),
 		Selected:     0,
 		LastMoveTime: time.Now(),
-		MenuName:     "GENERAL OPTIONS",
+		MenuName:     generalOptionsMenuName,
 		Position:     200,
 	}
 	o.scalePopup = &utils.Popup{
@@ -199,7 +205,7 @@ func (o *OptionScene) Update() SceneId {
 					}
 
 					// Make it print only if the menu is the gameMenu
-					if optionMenu.MenuName == "GAME OPTIONS" {
+					if optionMenu.MenuName == gameOptionsMenuName {
 						o.showOption = optionMenu.Selected + 1
 					}
 
@@ -216,7 +222,7 @@ func (o *OptionScene) Update() SceneId {
 
 					//If enter is pressed AND label = Back? universal
 					if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && optionMenu.Selected == len(optionMenu.Options)-1 {
-						if optionMenu.MenuName == "SCREEN OPTIONS" {
+						if optionMenu.MenuName == screenOptionsMenuName {
 							if o.savedScale != config.GlobalConfig.Scale {
 								// Ad esempio mostra un popup di conferma riavvio, oppure riavvia direttamente
 								// Esempio: mostra popup
@@ -271,11 +277,11 @@ func handleOptionSelection(o *OptionScene, mode bool) {
 
 	// Gestisci le opzioni in base al menu corrente
 	switch optionMenu.MenuName {
-	case "GAME OPTIONS":
+	case gameOptionsMenuName:
 		handleGameMenuOptions(o, optionMenu.Selected, mode)
-	case "SCREEN OPTIONS":
+	case screenOptionsMenuName:
 		handleScreenMenuOptions(o, optionMenu.Selected, mode)
-	case "GENERAL OPTIONS":
+	case generalOptionsMenuName:
 		handleGeneralMenuOptions(o, optionMenu.Selected, mode)
 	default:
 		fmt.Println("Menu non riconosciuto:", optionMenu.MenuName)
