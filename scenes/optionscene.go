@@ -21,10 +21,12 @@ type OptionScene struct {
 	gameMenu           *menu.OptionMenu
 	screenMenu         *menu.OptionMenu
 	generalMenu        *menu.OptionMenu
+	scalePopup         *utils.Popup
 	lastEnterPressTime time.Time
 	actionExecuted     bool
 	previousSceneId    SceneId
 	showOption         int
+	savedScale         float64
 }
 
 func NewOptionScene(previous SceneId) *OptionScene {
@@ -53,9 +55,14 @@ func (o *OptionScene) generateGameMenuOptions() []string {
 }
 
 func (o *OptionScene) generateScreenMenuOptions() []string {
+	// Calculate the screen size based on the current scale (even if not yet applied)
+	scale := config.GlobalConfig.Scale
+	width := ((int(math.Round(float64(config.DefaultConfig.ScreenWidth)*scale)) + 5) / 10) * 10
+	height := ((int(math.Round(float64(config.DefaultConfig.ScreenHeight)*scale)) + 5) / 10) * 10
+
 	return []string{
 		"Text Dimension: " + strconv.Itoa(int(config.GlobalConfig.TextDimension)),
-		"Screen Size: " + strconv.Itoa(config.GlobalConfig.ScreenWidth) + " x " + strconv.Itoa(config.GlobalConfig.ScreenHeight),
+		"Screen Size: " + strconv.Itoa(width) + " x " + strconv.Itoa(height),
 		"FullScreen: " + strconv.FormatBool(config.GlobalConfig.Fullscreen),
 		"Reset to default",
 		"Back to options",
@@ -95,6 +102,10 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 	}
 
 	o.currentMenu.Draw(screen)
+
+	if o.scalePopup.Active {
+		o.scalePopup.Draw(screen)
+	}
 }
 
 func (o *OptionScene) FirstLoad() {
@@ -129,6 +140,11 @@ func (o *OptionScene) FirstLoad() {
 		MenuName:     "GENERAL OPTIONS",
 		Position:     200,
 	}
+	o.scalePopup = &utils.Popup{
+		Active:  false,
+		Text:    "Scale has changed, restart the game to apply changes",
+		Options: []string{"YES", "NO"},
+	}
 	o.currentMenu = o.mainMenu
 	o.lastEnterPressTime = time.Now()
 	o.actionExecuted = false
@@ -143,99 +159,106 @@ func (o *OptionScene) ShouldPreserveState(reason SceneChangeReason) bool {
 }
 
 func (o *OptionScene) Update() SceneId {
+
 	// Updates the current menu to print correctly the options
 	o.gameMenu.Options = o.generateGameMenuOptions()
 	o.screenMenu.Options = o.generateScreenMenuOptions()
 	o.generalMenu.Options = o.generateGeneralMenuOptions()
 
-	nextMenu := o.currentMenu.Update()
-	if nextMenu != nil {
-		o.currentMenu = nextMenu
-		o.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
-		o.actionExecuted = false
+	if o.scalePopup.Active {
+		o.scalePopup.Update()
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+			id := o.handleExitPopup()
+			return id
+		}
 	} else {
-		// Evita l'esecuzione immediata dopo il cambio menu
-		if time.Since(o.lastEnterPressTime) > 200*time.Millisecond {
-			// Controlla se il menu corrente è un OptionMenu
-			if _, ok := o.currentMenu.(*menu.OptionMenu); ok {
+		nextMenu := o.currentMenu.Update()
+		if nextMenu != nil {
+			o.currentMenu = nextMenu
+			o.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
+			o.actionExecuted = false
+		} else {
+			// Evita l'esecuzione immediata dopo il cambio menu
+			if time.Since(o.lastEnterPressTime) > 200*time.Millisecond {
+				// Controlla se il menu corrente è un OptionMenu
+				if _, ok := o.currentMenu.(*menu.OptionMenu); ok {
 
-				moveInterval := time.Duration(time.Second / config.GlobalConfig.OptionsPerSecond)
+					moveInterval := time.Duration(time.Second / config.GlobalConfig.OptionsPerSecond)
 
-				arrowRight := inpututil.KeyPressDuration(ebiten.KeyArrowRight)
-				keyD := inpututil.KeyPressDuration(ebiten.KeyD)
+					arrowRight := inpututil.KeyPressDuration(ebiten.KeyArrowRight)
+					keyD := inpututil.KeyPressDuration(ebiten.KeyD)
 
-				arrowLeft := inpututil.KeyPressDuration(ebiten.KeyArrowLeft)
-				keyA := inpututil.KeyPressDuration(ebiten.KeyA)
+					arrowLeft := inpututil.KeyPressDuration(ebiten.KeyArrowLeft)
+					keyA := inpututil.KeyPressDuration(ebiten.KeyA)
 
-				// Effettua un'asserzione di tipo per accedere a OptionMenu
+					// Effettua un'asserzione di tipo per accedere a OptionMenu
 
-				optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
-				if !ok {
-					fmt.Println("Errore: currentMenu non è un OptionMenu")
-				}
-
-				// Make it print only if the menu is the gameMenu
-				if optionMenu.MenuName == "GAME OPTIONS" {
-					o.showOption = optionMenu.Selected + 1
-				}
-
-				// Modifica l'opzione selezionata
-				/*
-					if inpututil.IsKeyJustPressed(ebiten.KeyArrowRight) || inpututil.IsKeyJustPressed(ebiten.KeyD) {
-						handleOptionSelection(o, true)
+					optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
+					if !ok {
+						fmt.Println("Errore: currentMenu non è un OptionMenu")
 					}
 
-					if inpututil.IsKeyJustPressed(ebiten.KeyArrowLeft) || inpututil.IsKeyJustPressed(ebiten.KeyA) {
+					// Make it print only if the menu is the gameMenu
+					if optionMenu.MenuName == "GAME OPTIONS" {
+						o.showOption = optionMenu.Selected + 1
+					}
+
+					if (arrowRight > 0 || keyD > 0) && time.Since(o.lastEnterPressTime) >= moveInterval {
+						handleOptionSelection(o, true)
+						o.lastEnterPressTime = time.Now()
+					}
+					if (arrowLeft > 0 || keyA > 0) && time.Since(o.lastEnterPressTime) >= moveInterval {
 						handleOptionSelection(o, false)
-					} */
+						o.lastEnterPressTime = time.Now()
+					}
 
-				if (arrowRight > 0 || keyD > 0) && time.Since(o.lastEnterPressTime) >= moveInterval {
-					handleOptionSelection(o, true)
-					o.lastEnterPressTime = time.Now()
-				}
-				if (arrowLeft > 0 || keyA > 0) && time.Since(o.lastEnterPressTime) >= moveInterval {
-					handleOptionSelection(o, false)
-					o.lastEnterPressTime = time.Now()
-				}
+					// Torna al menu principale
 
-				// Torna al menu principale
+					//If enter is pressed AND label = Back? universal
+					if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && optionMenu.Selected == len(optionMenu.Options)-1 {
+						if optionMenu.MenuName == "SCREEN OPTIONS" {
+							if o.savedScale != config.GlobalConfig.Scale {
+								// Ad esempio mostra un popup di conferma riavvio, oppure riavvia direttamente
+								// Esempio: mostra popup
+								o.scalePopup.Active = true
+								o.scalePopup.Selected = 0
+							}
+						}
+						o.currentMenu = o.mainMenu
+						o.showOption = 0
+					}
+				} else {
+					// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
+					if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !o.actionExecuted {
+						o.actionExecuted = true // Evita che venga eseguito più volte
 
-				//If enter is pressed AND label = Back? universal
-				if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && optionMenu.Selected == len(optionMenu.Options)-1 {
-					o.currentMenu = o.mainMenu
-					o.showOption = 0
-				}
-			} else {
-				// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
-				if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !o.actionExecuted {
-					o.actionExecuted = true // Evita che venga eseguito più volte
-
-					// Gestisci il passaggio dal mainMenu a un OptionMenu
-					if o.currentMenu == o.mainMenu {
-						switch o.mainMenu.Selected {
-						case 0: // Prima opzione del mainMenu
-							o.currentMenu = o.gameMenu
-							o.gameMenu.Selected = 0
-						case 1:
-							o.currentMenu = o.screenMenu
-							o.screenMenu.Selected = 0
-						case 2:
-							o.currentMenu = o.generalMenu
-							o.generalMenu.Selected = 0
-						case 3:
-							return o.previousSceneId
+						// Gestisci il passaggio dal mainMenu a un OptionMenu
+						if o.currentMenu == o.mainMenu {
+							switch o.mainMenu.Selected {
+							case 0: // Prima opzione del mainMenu
+								o.currentMenu = o.gameMenu
+								o.gameMenu.Selected = 0
+							case 1:
+								o.currentMenu = o.screenMenu
+								o.screenMenu.Selected = 0
+								o.savedScale = config.GlobalConfig.Scale
+							case 2:
+								o.currentMenu = o.generalMenu
+								o.generalMenu.Selected = 0
+							case 3:
+								return o.previousSceneId
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
-	// Se Enter viene rilasciato, permetti nuove azioni
-	if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
-		o.actionExecuted = false
+		// Se Enter viene rilasciato, permetti nuove azioni
+		if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
+			o.actionExecuted = false
+		}
 	}
-
 	return OptionsSceneId
 }
 
@@ -327,15 +350,7 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	case 0:
 		updateConfigValueFloat(&config.GlobalConfig.TextDimension, 1, 35, 1, mode)
 	case 1:
-		if updateConfigValueFloat(&config.GlobalConfig.Scale, 0.67, 1.33, 0.33, mode) {
-			err := config.ChangeScale(config.GlobalConfig.Scale)
-			if err != nil {
-				fmt.Println("Error during option saving", err)
-			} else {
-				// Show a message to restart the game or confirm
-			}
-		}
-		utils.RestartGame()
+		updateConfigValueFloat(&config.GlobalConfig.Scale, 0.67, 1.33, 0.33, mode)
 	case 2:
 		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.Fullscreen = !cfg.Fullscreen
@@ -387,6 +402,21 @@ func handleGeneralMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	if err != nil {
 		fmt.Println("Error during option saving", err)
 	}
+}
+
+func (o *OptionScene) handleExitPopup() SceneId {
+	if o.scalePopup.Selected == 0 {
+		err := config.ChangeScale(config.GlobalConfig.Scale)
+		if err != nil {
+			fmt.Println("Error during option saving", err)
+		}
+		utils.RestartGame()
+	} else {
+		o.scalePopup.Active = false
+		o.currentMenu = o.screenMenu
+		config.GlobalConfig.Scale = o.savedScale
+	}
+	return OptionsSceneId
 }
 
 var _ Scene = (*OptionScene)(nil)
