@@ -5,9 +5,6 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ## ROADMAP:
 
-- Add mouse managment in popup
-- Remove all magic numbers from popup, make it adapt to all options inserted
-
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
@@ -65,6 +62,10 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 - 2 menus on top: one to choose gamemode (solo, multi, ai) and one to change the difficulty: so I have 1 page for all leaderboards
 - Hilights show date/time, name and points. For mode against AI is also shown difficulty
 - Different leaderboards for different difficulties? Maybe to choose between an option above like
+
+### POPUPS:
+- Add mouse managment in popup
+- Remove all magic numbers from popup, make it adapt to all options inserted
 
 ## PERFORMANCE:
 - Create a static image for background (ex the net or the title) to avoid drawing it in every frame
