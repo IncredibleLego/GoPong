@@ -33,7 +33,6 @@ func (m *RegularMenu) Draw(screen *ebiten.Image) {
 
 		if i == m.Selected {
 			utils.ScreenDraw(0, x-20, y+m.Offset+float64(i)*spacing-5, "yellow", screen, "◀"+option.Label+"▶")
-			//ScreenDraw(0, x, y+float64(i)*spacing-5, "yellow", screen, option.Label)
 		} else {
 			utils.ScreenDraw(0, x, y+m.Offset+float64(i)*spacing, "white", screen, option.Label)
 		}
