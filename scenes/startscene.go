@@ -2,6 +2,7 @@ package scenes
 
 import (
 	"fmt"
+	"goPong/config"
 	"goPong/menu"
 	"goPong/utils"
 	"time"
@@ -55,7 +56,7 @@ func (s *StartScene) FirstLoad() {
 		},
 		Selected:     0,
 		LastMoveTime: time.Now(),
-		Offset:       100,
+		Offset:       (float64(config.GlobalConfig.ScreenHeight) * 0.20833),
 	}
 	s.playMenu = &menu.RegularMenu{
 		Options: []menu.MenuOption{
@@ -66,7 +67,7 @@ func (s *StartScene) FirstLoad() {
 		},
 		Selected:     0,
 		LastMoveTime: time.Now(),
-		Offset:       100,
+		Offset:       (float64(config.GlobalConfig.ScreenHeight) * 0.20833),
 	}
 	s.exitPopup = &utils.Popup{
 		Active:  false,

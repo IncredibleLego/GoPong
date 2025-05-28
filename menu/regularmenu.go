@@ -26,13 +26,13 @@ func (m *RegularMenu) Draw(screen *ebiten.Image) {
 
 		textWidth, textHeight := utils.MeasureText(m.Options[i].Label)
 
-		x := float64(config.GlobalConfig.ScreenWidth)/2 - textWidth/2     // Centra orizzontalmente
-		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Centra verticalmente
+		x := float64(config.GlobalConfig.ScreenWidth)/2 - textWidth/2     // Center orizontally
+		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Center vertically
 
 		spacing := config.GlobalConfig.TextDimension * 1.5
 
 		if i == m.Selected {
-			utils.ScreenDraw(0, x-20, y+m.Offset+float64(i)*spacing-5, "yellow", screen, "◀"+option.Label+"▶")
+			utils.ScreenDraw(0, x-(config.GlobalConfig.TextDimension), y+m.Offset+float64(i)*spacing-5, "yellow", screen, "◀"+option.Label+"▶")
 		} else {
 			utils.ScreenDraw(0, x, y+m.Offset+float64(i)*spacing, "white", screen, option.Label)
 		}
@@ -71,24 +71,24 @@ func (m *RegularMenu) Update() Menu {
 		}
 	}
 
-	// **Gestione del mouse**
+	// Mouse management
 	mouseX, mouseY := ebiten.CursorPosition()
 
-	baseY := config.GlobalConfig.ScreenHeight / 3 // Punto di partenza delle opzioni (centrato)
-	spacing := 30                                 // Spazio tra le opzioni
+	baseY := config.GlobalConfig.ScreenHeight / 3      // Starting Y position for the first option
+	spacing := config.GlobalConfig.TextDimension * 1.5 // Spacing between options
 
 	for i, option := range m.Options {
 		textWidth, textHeight := utils.MeasureText(option.Label)
 		x := (float64(config.GlobalConfig.ScreenWidth) - textWidth) / 2
-		y := baseY + i*spacing + int(m.Offset)
+		y := baseY + i*int(spacing) + int(m.Offset)
 
-		// Controllo se il mouse è sopra il testo
+		// Check if the mouse is over the option
 		if float64(mouseX) >= x && float64(mouseX) <= x+textWidth &&
 			float64(mouseY) >= float64(y)-textHeight && float64(mouseY) <= float64(y) {
 
-			m.Selected = i // Evidenzia l'opzione sotto il mouse
+			m.Selected = i // Hilights the option under the mouse
 
-			// Se il tasto sinistro viene premuto, cambia menu o esegui azione
+			// If the left mouse button is pressed, select the option and return the submenu if it exists
 			if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 				if option.SubMenu != nil {
 					return option.SubMenu
