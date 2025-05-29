@@ -15,24 +15,27 @@ type OptionMenu struct {
 	Options      []string
 	Selected     int
 	LastMoveTime time.Time
-	Position     int
+	Position     float64
 }
 
 func (o *OptionMenu) Draw(screen *ebiten.Image) {
-	x := utils.XCentered(o.MenuName, config.GlobalConfig.TextDimension)
-	utils.ScreenDraw(0, x, float64(o.Position)-50, "white", screen, o.MenuName)
+	textDim := config.GlobalConfig.TextDimension
+	spacing := textDim * 1.5
+
+	x := utils.XCentered(o.MenuName, textDim)
+	utils.ScreenDraw(0, x, float64(o.Position)-textDim/0.4, "white", screen, o.MenuName)
 
 	for i, option := range o.Options {
-		x = utils.XCentered(option, config.GlobalConfig.TextDimension)
+		x = utils.XCentered(option, textDim)
 		if i == o.Selected {
 			j := strings.Index(option, ": ")
 			if j > 0 {
 				option = option[:j+2] + "◀" + option[j+2:] + "▶"
-				x = x - 20
+				x = x - textDim
 			}
-			utils.ScreenDraw(0, x, float64(o.Position+30*i-5), "cyan", screen, option)
+			utils.ScreenDraw(0, x, o.Position+float64(i)*spacing-textDim/4, "cyan", screen, option)
 		} else {
-			utils.ScreenDraw(0, x, float64(o.Position+30*i), "white", screen, option)
+			utils.ScreenDraw(0, x, o.Position+float64(i)*spacing, "white", screen, option)
 		}
 	}
 }

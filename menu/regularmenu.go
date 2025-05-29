@@ -29,10 +29,11 @@ func (m *RegularMenu) Draw(screen *ebiten.Image) {
 		x := float64(config.GlobalConfig.ScreenWidth)/2 - textWidth/2     // Center orizontally
 		y := (float64(config.GlobalConfig.ScreenHeight) - textHeight) / 3 // Center vertically
 
-		spacing := config.GlobalConfig.TextDimension * 1.5
+		textDim := config.GlobalConfig.TextDimension
+		spacing := textDim * 1.5
 
 		if i == m.Selected {
-			utils.ScreenDraw(0, x-(config.GlobalConfig.TextDimension), y+m.Offset+float64(i)*spacing-5, "yellow", screen, "◀"+option.Label+"▶")
+			utils.ScreenDraw(0, x-(textDim), y+m.Offset+float64(i)*spacing-textDim/4, "yellow", screen, "◀"+option.Label+"▶")
 		} else {
 			utils.ScreenDraw(0, x, y+m.Offset+float64(i)*spacing, "white", screen, option.Label)
 		}

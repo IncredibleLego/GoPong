@@ -93,7 +93,7 @@ func (o *OptionScene) Draw(screen *ebiten.Image) {
 	case 1, 2:
 		x := config.GlobalConfig.ScreenWidth/2 - config.GlobalConfig.BallSize/2
 		vector.DrawFilledRect(screen,
-			float32(x), float32(400-config.GlobalConfig.BallSize/2),
+			float32(x), float32(config.GlobalConfig.ScreenHeight)*0.8333-float32(config.GlobalConfig.BallSize/2),
 			float32(config.GlobalConfig.BallSize), float32(config.GlobalConfig.BallSize),
 			color.White, false,
 		)
@@ -130,21 +130,21 @@ func (o *OptionScene) FirstLoad() {
 		Selected:     0,
 		LastMoveTime: time.Now(),
 		MenuName:     gameOptionsMenuName,
-		Position:     100,
+		Position:     (float64(config.GlobalConfig.ScreenHeight) * 0.20833),
 	}
 	o.screenMenu = &menu.OptionMenu{
 		Options:      o.generateScreenMenuOptions(),
 		Selected:     0,
 		LastMoveTime: time.Now(),
 		MenuName:     screenOptionsMenuName,
-		Position:     150,
+		Position:     (float64(config.GlobalConfig.ScreenHeight) * 0.3125),
 	}
 	o.generalMenu = &menu.OptionMenu{
 		Options:      o.generateGeneralMenuOptions(),
 		Selected:     0,
 		LastMoveTime: time.Now(),
 		MenuName:     generalOptionsMenuName,
-		Position:     200,
+		Position:     (float64(config.GlobalConfig.ScreenHeight) * 0.41666),
 	}
 	o.scalePopup = &utils.Popup{
 		Active:  false,
