@@ -19,7 +19,7 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 - Change values change in options after scale change (ex. Paddle width can't always change by 5)
 
 ### OPTIONS:
-- Implement mouse selection
+- Implement mouse selection in optionscene (not optionmenu)
 - Color schemes in settings? (change color of menus as option). Color Presets
 - Game presets: ex. slow ball fast paddle ecc.
 - Possibility to change commands? example choose the pause button?

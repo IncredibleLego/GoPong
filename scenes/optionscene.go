@@ -356,7 +356,7 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	case 0:
 		updateConfigValueFloat(&config.GlobalConfig.TextDimension, 1, 35, 1, mode)
 	case 1:
-		updateConfigValueFloat(&config.GlobalConfig.Scale, 0.67, 1.33, 0.33, mode)
+		updateConfigValueFloat(&config.GlobalConfig.Scale, 0.67, 1.99, 0.33, mode)
 	case 2:
 		err := config.UpdateConfig(func(cfg *config.Config) {
 			cfg.Fullscreen = !cfg.Fullscreen
