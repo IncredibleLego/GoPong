@@ -48,26 +48,26 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 	}
 	l := float64(len(n.playerNames[n.activePlayer]))
 	height := float64(config.GlobalConfig.ScreenHeight)
-	d := 20 - config.GlobalConfig.TextDimension
+	d := config.GlobalConfig.TextDimension
 
 	playerMessage := "Player " + strconv.Itoa(n.activePlayer+1) + ", insert your name:"
 	x1 := utils.XCentered(playerMessage, config.GlobalConfig.TextDimension)
-	utils.ScreenDraw(d, x1, height/3, "yellow", screen, playerMessage)
+	utils.ScreenDraw(0, x1, height/3, "yellow", screen, playerMessage)
 
 	message := n.playerNames[n.activePlayer]
 	if time.Since(n.timer) < time.Second && !n.maxLenght {
 		message += "_"
 	}
-	utils.ScreenDraw(d, float64(config.GlobalConfig.ScreenWidth)/2-(l*20/2), height/2, "white", screen, message)
+	utils.ScreenDraw(0, float64(config.GlobalConfig.ScreenWidth)/2-(l*d/2), height/2, "white", screen, message)
 
 	confirmMessage := "Press Enter to confirm"
 	x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
-	utils.ScreenDraw(d, x2, (height/3)*2, "yellow", screen, confirmMessage)
+	utils.ScreenDraw(0, x2+d, (height/3)*2, "yellow", screen, confirmMessage)
 
 	if n.maxLenght {
 		errorMessage := "The name can be max " + strconv.Itoa(n.maxLetters) + " letters"
 		x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
-		utils.ScreenDraw(d-5, x2, (height/3)*2+50, "red", screen, errorMessage)
+		utils.ScreenDraw(-(d / 4), x2, (height/10)*8, "red", screen, errorMessage)
 	}
 
 }
