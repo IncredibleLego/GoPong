@@ -39,14 +39,15 @@ func (p *Popup) Draw(screen *ebiten.Image) {
 	screen.DrawImage(rect, op)
 
 	// Draw wrapped text
-	maxChars := popupWidth / 15
+	maxChars := int(float64(popupWidth) / (float64(popupWidth) * 0.053030303))
 	lines := wrapText(p.Text, maxChars)
+	space := float64(popupHeight) * 0.137931034
 	for i, line := range lines {
-		ScreenDraw(-5, X+20, Y+40+float64(i*20), "yellow", screen, line)
+		ScreenDraw(-5, X+space, Y+40+float64(i)*space, "yellow", screen, line)
 	}
 
 	// Draw options
-	spacing := 80.0
+	spacing := space * 4
 	startX := X + float64(popupWidth)/2 - spacing*float64(len(p.Options)-1)/2
 	y := Y + float64(popupHeight)*0.75
 
@@ -57,9 +58,9 @@ func (p *Popup) Draw(screen *ebiten.Image) {
 		drawX := x - float64(textWidth)/2
 
 		if p.Selected == 0 && i == 0 {
-			ScreenDraw(0, drawX-20, y, "green", screen, "◀"+optText+"▶")
+			ScreenDraw(0, drawX-space, y, "green", screen, "◀"+optText+"▶")
 		} else if p.Selected == 1 && i == 1 {
-			ScreenDraw(0, drawX-20, y, "red", screen, "◀"+optText+"▶")
+			ScreenDraw(0, drawX-space, y, "red", screen, "◀"+optText+"▶")
 		} else {
 			ScreenDraw(0, drawX, y, "white", screen, optText)
 		}
