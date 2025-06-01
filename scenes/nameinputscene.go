@@ -96,7 +96,7 @@ func (n *NameInputScene) Update() SceneId {
 	utils.Input(&n.playerNames[n.activePlayer], n.maxLetters)
 
 	// Check if max letters has been reached to print the error message
-	n.maxLenght = len(n.playerNames[n.activePlayer]) > n.maxLetters
+	n.maxLenght = len(n.playerNames[n.activePlayer]) >= n.maxLetters
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		n.activePlayer++

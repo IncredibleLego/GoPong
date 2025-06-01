@@ -5,6 +5,8 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ## ROADMAP:
 
+ALL OPERATIONS THAT CAN BE DONE ONCE, MUST BE DONE ONCE IN DRAW AND UPDATE
+
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 

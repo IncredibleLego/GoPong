@@ -45,13 +45,10 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 	// Draw the points
 	utils.PointsDraw(screen, 100, 50, g.score)
 
-	utils.ScreenDraw(0, 400, 10, "white", screen, g.playerName)
+	X := float64(config.GlobalConfig.ScreenWidth/4*3) - ((config.GlobalConfig.TextDimension - 3) * float64(len(g.playerName)/2))
 
-	/*
-		utils.ScreenDraw(0, 10, 10, "white", screen, "Score "+g.playerName+":"+strconv.Itoa(g.score))
-		utils.ScreenDraw(0, 10, 30, "white", screen, "High Score: "+strconv.Itoa(g.highScore))
-		utils.ScreenDraw(0, 500, 10, "white", screen, "SOLO MODE")
-	*/
+	//Testing
+	utils.ScreenDraw(-3, X, 10, "white", screen, g.playerName)
 }
 
 // FirstLoad implements Scene.

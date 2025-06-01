@@ -68,10 +68,14 @@ func XCentered(message string, fontSize float64) float64 {
 
 // NEED TO ADAPT
 func Net(screen *ebiten.Image) {
-	for i := 0; i < config.GlobalConfig.ScreenHeight; i += 24 {
+
+	dim := config.GlobalConfig.ScreenHeight / 30
+	width := 3 * config.GlobalConfig.Scale
+
+	for i := 0; i < config.GlobalConfig.ScreenHeight; i += dim {
 		vector.DrawFilledRect(screen,
 			float32(config.GlobalConfig.ScreenWidth/2), float32(i),
-			float32(3), float32(12),
+			float32(width), float32(dim/2),
 			color.White, false,
 		)
 	}

@@ -13,7 +13,7 @@ var lastMoveTime time.Time
 func Input(inputString *string, maxChar int) {
 	inputText := *inputString
 	moveInterval := time.Duration(time.Second / 8)
-	maxLength := len(inputText) > maxChar
+	maxLength := len(inputText) >= maxChar
 
 	// Backspace
 	if len(inputText) > 0 {
