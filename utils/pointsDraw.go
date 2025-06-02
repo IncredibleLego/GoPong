@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"goPong/config"
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -9,7 +10,7 @@ import (
 
 func PointsDraw(screen *ebiten.Image, X, Y float32, score int) {
 	// Draw the points
-	printPoint(screen, X+70, Y, score%10)
+	printPoint(screen, X+70*float32(config.GlobalConfig.Scale), Y, score%10)
 	if score/10 != 0 {
 		printPoint(screen, X, Y, score/10)
 	}
@@ -17,9 +18,9 @@ func PointsDraw(screen *ebiten.Image, X, Y float32, score int) {
 
 func printPoint(screen *ebiten.Image, X, Y float32, number int) {
 
-	var border float32 = 9
-	var numHeight float32 = 80
-	var numWidth float32 = 40
+	var border float32 = 9 * float32(config.GlobalConfig.Scale)
+	var numHeight float32 = 80 * float32(config.GlobalConfig.Scale)
+	var numWidth float32 = 40 * float32(config.GlobalConfig.Scale)
 
 	switch number {
 	case 0:

@@ -50,9 +50,11 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 	// Draw the net
 	utils.Net(screen)
 
+	measure := float32(70 * config.DefaultConfig.Scale)
+
 	// Draw the points
-	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6, float32(50*config.DefaultConfig.Scale), m.score1)
-	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4, float32(50*config.DefaultConfig.Scale), m.score2)
+	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6+measure/2, measure, m.score1)
+	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4+measure/2, measure, m.score2)
 
 	X1 := float64(config.GlobalConfig.ScreenWidth/4) - ((config.GlobalConfig.TextDimension - 3) * float64(len(m.player1Name)/2))
 	X2 := float64(config.GlobalConfig.ScreenWidth/4*3) - ((config.GlobalConfig.TextDimension - 3) * float64(len(m.player2Name)/2))
