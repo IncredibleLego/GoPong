@@ -43,12 +43,12 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 	utils.Net(screen)
 
 	// Draw the points
-	utils.PointsDraw(screen, 100, 50, g.score)
+	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6+float32(70*config.DefaultConfig.Scale)/2, float32(config.GlobalConfig.ScreenHeight)/14, g.score)
 
 	X := float64(config.GlobalConfig.ScreenWidth/4*3) - ((config.GlobalConfig.TextDimension - 3) * float64(len(g.playerName)/2))
 
-	//Testing
-	utils.ScreenDraw(-3, X, 10, "white", screen, g.playerName)
+	// Player name
+	utils.ScreenDraw(-3, X, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, g.playerName)
 }
 
 // FirstLoad implements Scene.

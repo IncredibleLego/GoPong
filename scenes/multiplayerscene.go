@@ -53,14 +53,14 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 	measure := float32(70 * config.DefaultConfig.Scale)
 
 	// Draw the points
-	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6+measure/2, measure, m.score1)
-	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4+measure/2, measure, m.score2)
+	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6+measure/2, float32(config.GlobalConfig.ScreenHeight)/14, m.score1)
+	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4+measure/2, float32(config.GlobalConfig.ScreenHeight)/14, m.score2)
 
 	X1 := float64(config.GlobalConfig.ScreenWidth/4) - ((config.GlobalConfig.TextDimension - 3) * float64(len(m.player1Name)/2))
 	X2 := float64(config.GlobalConfig.ScreenWidth/4*3) - ((config.GlobalConfig.TextDimension - 3) * float64(len(m.player2Name)/2))
 
-	utils.ScreenDraw(-3, X1, 10, "white", screen, m.player1Name)
-	utils.ScreenDraw(-3, X2, 10, "white", screen, m.player2Name)
+	utils.ScreenDraw(-3, X1, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, m.player1Name)
+	utils.ScreenDraw(-3, X2, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, m.player2Name)
 }
 
 // FirstLoad implements Scene.

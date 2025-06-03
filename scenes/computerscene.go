@@ -48,15 +48,17 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	// Draw the net
 	utils.Net(screen)
 
+	measure := float32(70 * config.DefaultConfig.Scale)
+
 	// Draw the points
-	utils.PointsDraw(screen, 100, 50, c.scoreEnemy)
-	utils.PointsDraw(screen, 400, 50, c.score)
+	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6+measure/2, float32(config.GlobalConfig.ScreenHeight)/14, c.scoreEnemy)
+	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4+measure/2, float32(config.GlobalConfig.ScreenHeight)/14, c.score)
 
 	X1 := float64(config.GlobalConfig.ScreenWidth/4) - ((config.GlobalConfig.TextDimension - 3) * float64(len("COMPUTER")/2))
 	X2 := float64(config.GlobalConfig.ScreenWidth/4*3) - ((config.GlobalConfig.TextDimension - 3) * float64(len(c.playerName)/2))
 
-	utils.ScreenDraw(-3, X1, 10, "white", screen, "COMPUTER")
-	utils.ScreenDraw(-3, X2, 10, "white", screen, c.playerName)
+	utils.ScreenDraw(-3, X1, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, "COMPUTER")
+	utils.ScreenDraw(-3, X2, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, c.playerName)
 
 }
 
