@@ -15,6 +15,7 @@ const (
 	MultiplayerSceneId
 	OptionsSceneId
 	NameInputSceneId
+	HighScoresSceneId
 )
 
 type Scene interface {

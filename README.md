@@ -39,7 +39,6 @@ Auto-calcolate positions of points names etc in a table and pass those values to
 
 ### SCENES:
 - ()OnExit remove?
-- Name positioning in game scenes
 - Turn nameimputscene in gameset scene where you select name, mode and difficulty
 
 - AI MODE

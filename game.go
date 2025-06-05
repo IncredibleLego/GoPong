@@ -24,6 +24,7 @@ func NewGame() *Game {
 		scenes.MultiplayerSceneId: scenes.NewMultiplayerScene(),
 		scenes.OptionsSceneId:     nil,
 		scenes.NameInputSceneId:   nil,
+		scenes.HighScoresSceneId:  nil,
 	}
 	activeSceneId := scenes.StartSceneId
 	sceneMap[activeSceneId].FirstLoad()
@@ -77,8 +78,12 @@ func (g *Game) Update() error {
 			// A new name input scene is created with the selected mode from the start scene
 			g.sceneMap[scenes.NameInputSceneId] = scenes.NewNameInputScene(selectedMode)
 			reason = scenes.Other
+		} else if nextSceneId == scenes.HighScoresSceneId {
+			// If the next scene is the high scores scene, it is created and the reason is set to "other"
+			g.sceneMap[scenes.HighScoresSceneId] = scenes.NewHighScoresScene()
+			reason = scenes.Other
 		} else {
-			// If the next scene is not the pause scene, the name input scene or the exit scene, the reason is set to "exit"
+			// If the next scene is not the pause scene, the name input scene, the highscoresscene or the exit scene, the reason is set to "exit"
 			reason = scenes.Exit
 		}
 

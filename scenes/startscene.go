@@ -148,13 +148,12 @@ func (s *StartScene) handleMenuSelection() SceneId {
 	case "OPTIONS":
 		return OptionsSceneId
 	case "HIGHSCORES":
-		fmt.Println("HIGHSCORES NOT YET IMPLEMENTED")
+		return HighScoresSceneId
 	case "CREDITS":
 		fmt.Println("CREDITS NOT YET IMPLEMENTED")
 	case "QUIT":
 		s.exitPopup.Active = true
 		s.exitPopup.Selected = 0
-		//return ExitSceneId
 	case "SOLO MODE":
 		s.selectedMode = 1
 		return NameInputSceneId
