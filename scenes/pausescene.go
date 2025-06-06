@@ -76,15 +76,13 @@ func (p *PauseScene) Update() SceneId {
 var _ Scene = (*PauseScene)(nil)
 
 func (p *PauseScene) handleMenuSelection() SceneId {
-	selectedOption := p.pauseMenu.Options[p.pauseMenu.Selected].Label
-
-	switch selectedOption {
-	case "UNPAUSE":
+	switch p.pauseMenu.Selected {
+	case 0:
 		p.pauseMenu.Selected = 0
 		return p.previousSceneId
-	case "OPTIONS":
+	case 1:
 		return OptionsSceneId
-	case "EXIT":
+	case 2:
 		p.pauseMenu.Selected = 0
 		return StartSceneId
 	}
