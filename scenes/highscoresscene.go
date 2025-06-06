@@ -48,8 +48,10 @@ func (h *HighScoresScene) FirstLoad() {
 			{Label: "MULTIPLAYER MODE HIGHSCORES"},
 			{Label: "BACK"},
 		},
-		Selected:     0,
-		LastMoveTime: time.Now(),
+		Selected:      0,
+		LastMoveTime:  time.Now(),
+		MainColor:     "blue",
+		SelectedColor: "orange",
 	}
 }
 

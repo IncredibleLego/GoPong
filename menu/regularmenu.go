@@ -15,10 +15,12 @@ type MenuOption struct {
 }
 
 type RegularMenu struct {
-	Options      []MenuOption
-	Selected     int
-	LastMoveTime time.Time
-	Offset       float64
+	Options       []MenuOption
+	Selected      int
+	LastMoveTime  time.Time
+	Offset        float64
+	MainColor     string
+	SelectedColor string
 }
 
 func (m *RegularMenu) Draw(screen *ebiten.Image) {
@@ -32,10 +34,17 @@ func (m *RegularMenu) Draw(screen *ebiten.Image) {
 		textDim := config.GlobalConfig.TextDimension
 		spacing := textDim * 1.5
 
+		if m.MainColor == "" {
+			m.MainColor = "white"
+		}
+		if m.SelectedColor == "" {
+			m.SelectedColor = "yellow"
+		}
+
 		if i == m.Selected {
-			utils.ScreenDraw(0, x-(textDim), y+m.Offset+float64(i)*spacing-textDim/4, "yellow", screen, "◀"+option.Label+"▶")
+			utils.ScreenDraw(0, x-(textDim), y+m.Offset+float64(i)*spacing-textDim/4, m.SelectedColor, screen, "◀"+option.Label+"▶")
 		} else {
-			utils.ScreenDraw(0, x, y+m.Offset+float64(i)*spacing, "white", screen, option.Label)
+			utils.ScreenDraw(0, x, y+m.Offset+float64(i)*spacing, m.MainColor, screen, option.Label)
 		}
 	}
 }

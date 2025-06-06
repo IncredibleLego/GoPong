@@ -9,6 +9,8 @@ ALL OPERATIONS THAT CAN BE DONE ONCE, MUST BE DONE ONCE IN DRAW AND UPDATE
 
 Auto-calcolate positions of points names etc in a table and pass those values to game scenes
 
+Add Options to personalize menus colors and maybe even difference
+
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
@@ -60,11 +62,14 @@ Auto-calcolate positions of points names etc in a table and pass those values to
 - STARTMENU
     - Unplayable pong playing in the background (https://richardcarter.org/)
 
-### HILIGHTS:
+### HIGHSCORES:
 - Saved to file like options
 - 2 menus on top: one to choose gamemode (solo, multi, ai) and one to change the difficulty: so I have 1 page for all leaderboards
 - Hilights show date/time, name and points. For mode against AI is also shown difficulty
 - Different leaderboards for different difficulties? Maybe to choose between an option above like
+
+- Update and draw for the 3 will be in common except for the shown data and title
+- Turn highscoreSelected in bool: menu or not menu?
 
 ### POPUPS:
 - Add mouse managment in popup
