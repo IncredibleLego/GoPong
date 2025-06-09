@@ -2,12 +2,13 @@ package scenes
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"sort"
 	"time"
 )
 
-const highscoresFile = "highscores.json"
+const highscoresFile = "./scenes/highscores.json"
 const maxScores = 10
 
 type SoloScore struct {
@@ -36,12 +37,12 @@ type Highscores struct {
 	Multiplayer []MultiplayerScore `json:"multiplayer"`
 }
 
-// Carica gli highscores dal file JSON
+// Load all highscores from the JSON file
 func loadHighscores() (*Highscores, error) {
 	file, err := os.Open(highscoresFile)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return &Highscores{}, nil // Nessun file, ritorna vuoto
+			return &Highscores{}, nil // No highscores file exists, return empty highscores
 		}
 		return nil, err
 	}
@@ -54,7 +55,7 @@ func loadHighscores() (*Highscores, error) {
 	return &hs, nil
 }
 
-// Salva gli highscores nel file JSON
+// Save highscores to the JSON file
 func saveHighscores(hs *Highscores) error {
 	file, err := os.Create(highscoresFile)
 	if err != nil {
@@ -66,7 +67,7 @@ func saveHighscores(hs *Highscores) error {
 	return encoder.Encode(hs)
 }
 
-// Aggiungi un punteggio solo mode
+// Add a solo score
 func AddSoloScore(player string, score int) error {
 	hs, err := loadHighscores()
 	if err != nil {
@@ -86,7 +87,7 @@ func AddSoloScore(player string, score int) error {
 	return saveHighscores(hs)
 }
 
-// Aggiungi un punteggio computer mode
+// Add a computer score
 func AddComputerScore(player, aiLevel string, score int) error {
 	hs, err := loadHighscores()
 	if err != nil {
@@ -107,7 +108,7 @@ func AddComputerScore(player, aiLevel string, score int) error {
 	return saveHighscores(hs)
 }
 
-// Aggiungi un punteggio multiplayer mode
+// Add a multiplayer score
 func AddMultiplayerScore(player1, player2 string, score int) error {
 	hs, err := loadHighscores()
 	if err != nil {
@@ -128,7 +129,26 @@ func AddMultiplayerScore(player1, player2 string, score int) error {
 	return saveHighscores(hs)
 }
 
-// Ottieni tutti gli highscores
-func GetHighscores() (*Highscores, error) {
-	return loadHighscores()
+// Get all highscores as a formatted string
+func GetPrintableHighscores() string {
+	hs, err := loadHighscores()
+	if err != nil {
+		return ""
+	}
+	result := "=== Solo Highscores ===\n"
+	for i, s := range hs.Solo {
+		result +=
+			fmt.Sprintf("%d. %s - %d (%s)\n", i+1, s.Player, s.Score, s.DateTime)
+	}
+	result += "\n=== Computer Highscores ===\n"
+	for i, s := range hs.Computer {
+		result +=
+			fmt.Sprintf("%d. %s vs %s - %d (%s)\n", i+1, s.Player, s.AILevel, s.Score, s.DateTime)
+	}
+	result += "\n=== Multiplayer Highscores ===\n"
+	for i, s := range hs.Multiplayer {
+		result +=
+			fmt.Sprintf("%d. %s & %s - %d (%s)\n", i+1, s.Player1, s.Player2, s.Score, s.DateTime)
+	}
+	return result
 }
