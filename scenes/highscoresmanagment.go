@@ -129,6 +129,7 @@ func AddMultiplayerScore(player1, player2 string, score int) error {
 	return saveHighscores(hs)
 }
 
+// Not working as expected, needs to be fixed
 // Get all highscores as a formatted string
 func GetPrintableHighscores() string {
 	hs, err := loadHighscores()
