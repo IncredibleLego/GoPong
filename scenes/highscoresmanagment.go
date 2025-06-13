@@ -73,6 +73,7 @@ func AddSoloScore(player string, score int) error {
 	if err != nil {
 		return err
 	}
+	// Store the date in RFC3339 for consistency, but display will format it
 	hs.Solo = append(hs.Solo, SoloScore{
 		DateTime: time.Now().Format(time.RFC3339),
 		Player:   player,
@@ -137,7 +138,13 @@ func GetSoloHighscoresStrings() []string {
 	}
 	var result []string
 	for i, s := range hs.Solo {
-		result = append(result, fmt.Sprintf("%d. %s - %d (%s)", i+1, s.Player, s.Score, s.DateTime))
+		// Parse the RFC3339 date to time.Time
+		t, err := time.Parse(time.RFC3339, s.DateTime)
+		dateStr := s.DateTime
+		if err == nil {
+			dateStr = t.Format("02-01-2006 15:04")
+		}
+		result = append(result, fmt.Sprintf("%d. %s - Score %d    %s", i+1, s.Player, s.Score, dateStr))
 	}
 	return result
 }
@@ -149,8 +156,32 @@ func GetComputerHighscoresStrings() []string {
 		return []string{"Error loading highscores"}
 	}
 	var result []string
+
+	// Find max lengths for alignment
+	maxPlayerLen := 0
+	maxAILevelLen := 0
+	for _, s := range hs.Computer {
+		if len(s.Player) > maxPlayerLen {
+			maxPlayerLen = len(s.Player)
+		}
+		if len(s.AILevel) > maxAILevelLen {
+			maxAILevelLen = len(s.AILevel)
+		}
+	}
 	for i, s := range hs.Computer {
-		result = append(result, fmt.Sprintf("%d. %s vs %s - %d (%s)", i+1, s.Player, s.AILevel, s.Score, s.DateTime))
+		t, err := time.Parse(time.RFC3339, s.DateTime)
+		dateStr := s.DateTime
+		if err == nil {
+			dateStr = t.Format("02-01-2006 15:04")
+		}
+		result = append(result, fmt.Sprintf(
+			"%2d. %-*s  Score %-4d  Difficulty: %-*s  %s",
+			i+1,
+			maxPlayerLen, s.Player,
+			s.Score,
+			maxAILevelLen, s.AILevel,
+			dateStr,
+		))
 	}
 	return result
 }
@@ -162,8 +193,33 @@ func GetMultiplayerHighscoresStrings() []string {
 		return []string{"Error loading highscores"}
 	}
 	var result []string
+
+	// Find max lengths for alignment
+	maxPlayer1Len := 0
+	maxPlayer2Len := 0
+	for _, s := range hs.Multiplayer {
+		if len(s.Player1) > maxPlayer1Len {
+			maxPlayer1Len = len(s.Player1)
+		}
+		if len(s.Player2) > maxPlayer2Len {
+			maxPlayer2Len = len(s.Player2)
+		}
+	}
+
 	for i, s := range hs.Multiplayer {
-		result = append(result, fmt.Sprintf("%d. %s & %s - %d (%s)", i+1, s.Player1, s.Player2, s.Score, s.DateTime))
+		t, err := time.Parse(time.RFC3339, s.DateTime)
+		dateStr := s.DateTime
+		if err == nil {
+			dateStr = t.Format("02-01-2006 15:04")
+		}
+		result = append(result, fmt.Sprintf(
+			"%2d. %-*s  Score %-4d vs %-*s  %s",
+			i+1,
+			maxPlayer1Len, s.Player1,
+			s.Score,
+			maxPlayer2Len, s.Player2,
+			dateStr,
+		))
 	}
 	return result
 }

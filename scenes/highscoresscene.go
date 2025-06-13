@@ -36,12 +36,22 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 
 		scores := GetSoloHighscoresStrings()
 		for i := 0; i < len(scores); i++ {
-			utils.ScreenDraw(-15, 100, float64(120+i*40), "white", screen, scores[i])
+			utils.ScreenDraw(-15, 100, float64(150+i*40), "white", screen, scores[i])
 		}
 	case 2:
 		utils.ScreenDraw(5, 100, 100, "white", screen, "Computer Mode High Scores")
+
+		scores := GetComputerHighscoresStrings()
+		for i := 0; i < len(scores); i++ {
+			utils.ScreenDraw(-15, 100, float64(150+i*40), "white", screen, scores[i])
+		}
 	case 3:
 		utils.ScreenDraw(5, 100, 100, "white", screen, "Multiplayer Mode High Scores")
+
+		scores := GetMultiplayerHighscoresStrings()
+		for i := 0; i < len(scores); i++ {
+			utils.ScreenDraw(-15, 100, float64(150+i*40), "white", screen, scores[i])
+		}
 	}
 }
 

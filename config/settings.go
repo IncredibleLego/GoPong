@@ -95,6 +95,17 @@ func ChangeScale(newScale float64) error {
 	return SaveConfig(GlobalConfig)
 }
 
+// DifficultyString returns a string representation of the difficulty level.
+func DifficultyString() string {
+	if GlobalConfig.Difficulty < 0.33 {
+		return "Easy"
+	}
+	if GlobalConfig.Difficulty >= 0.33 && GlobalConfig.Difficulty < 0.66 {
+		return "Medium"
+	}
+	return "Hard"
+}
+
 const configFilePath = "./config/settings.json" // Name of the configuration file
 
 // SaveConfig saves the configuration to a JSON file.

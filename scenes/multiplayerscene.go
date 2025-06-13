@@ -127,6 +127,7 @@ func (m *MultiplayerScene) Update() SceneId {
 
 	test := m.ball.CollideWithWall(true, true)
 	if test == 1 {
+		AddMultiplayerScore(m.player2Name, m.player1Name, m.score2)
 		m.score2++
 	} else if test == 2 {
 		m.score1++
