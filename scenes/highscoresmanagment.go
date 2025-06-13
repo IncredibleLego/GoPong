@@ -129,27 +129,41 @@ func AddMultiplayerScore(player1, player2 string, score int) error {
 	return saveHighscores(hs)
 }
 
-// Not working as expected, needs to be fixed
-// Get all highscores as a formatted string -> change this func
-func GetPrintableHighscores() string {
+// Get formatted solo highscores as a slice of strings (error handled internally)
+func GetSoloHighscoresStrings() []string {
 	hs, err := loadHighscores()
 	if err != nil {
-		return ""
+		return []string{"Error loading highscores"}
 	}
-	result := "=== Solo Highscores ===\n"
+	var result []string
 	for i, s := range hs.Solo {
-		result +=
-			fmt.Sprintf("%d. %s - %d (%s)\n", i+1, s.Player, s.Score, s.DateTime)
+		result = append(result, fmt.Sprintf("%d. %s - %d (%s)", i+1, s.Player, s.Score, s.DateTime))
 	}
-	result += "\n=== Computer Highscores ===\n"
+	return result
+}
+
+// Get formatted computer highscores as a slice of strings (error handled internally)
+func GetComputerHighscoresStrings() []string {
+	hs, err := loadHighscores()
+	if err != nil {
+		return []string{"Error loading highscores"}
+	}
+	var result []string
 	for i, s := range hs.Computer {
-		result +=
-			fmt.Sprintf("%d. %s vs %s - %d (%s)\n", i+1, s.Player, s.AILevel, s.Score, s.DateTime)
+		result = append(result, fmt.Sprintf("%d. %s vs %s - %d (%s)", i+1, s.Player, s.AILevel, s.Score, s.DateTime))
 	}
-	result += "\n=== Multiplayer Highscores ===\n"
+	return result
+}
+
+// Get formatted multiplayer highscores as a slice of strings (error handled internally)
+func GetMultiplayerHighscoresStrings() []string {
+	hs, err := loadHighscores()
+	if err != nil {
+		return []string{"Error loading highscores"}
+	}
+	var result []string
 	for i, s := range hs.Multiplayer {
-		result +=
-			fmt.Sprintf("%d. %s & %s - %d (%s)\n", i+1, s.Player1, s.Player2, s.Score, s.DateTime)
+		result = append(result, fmt.Sprintf("%d. %s & %s - %d (%s)", i+1, s.Player1, s.Player2, s.Score, s.DateTime))
 	}
 	return result
 }

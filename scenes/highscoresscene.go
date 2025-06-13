@@ -33,6 +33,11 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 		h.chooseMenu.Draw(screen)
 	case 1:
 		utils.ScreenDraw(5, 100, 100, "white", screen, "Solo Mode High Scores")
+
+		scores := GetSoloHighscoresStrings()
+		for i := 0; i < len(scores); i++ {
+			utils.ScreenDraw(-15, 100, float64(120+i*40), "white", screen, scores[i])
+		}
 	case 2:
 		utils.ScreenDraw(5, 100, 100, "white", screen, "Computer Mode High Scores")
 	case 3:
