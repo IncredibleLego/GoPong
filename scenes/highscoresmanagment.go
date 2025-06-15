@@ -210,7 +210,7 @@ func GetMultiplayerHighscoresStrings() []string {
 		t, err := time.Parse(time.RFC3339, s.DateTime)
 		dateStr := s.DateTime
 		if err == nil {
-			dateStr = t.Format("02-01-2006 15:04")
+			dateStr = t.Format("02-01-2006 15:10")
 		}
 		result = append(result, fmt.Sprintf(
 			"%2d. %-*s  Score %-4d vs %-*s  %s",
