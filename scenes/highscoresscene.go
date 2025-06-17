@@ -1,6 +1,7 @@
 package scenes
 
 import (
+	"goPong/config"
 	"goPong/menu"
 	"goPong/utils"
 	"time"
@@ -32,14 +33,26 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 	case 0:
 		h.chooseMenu.Draw(screen)
 	case 1:
-		utils.ScreenDraw(5, 100, 100, "white", screen, "Solo Mode High Scores")
+		utils.HighscoresTableDraw(screen)
+
+		utils.ScreenDraw(5, float64(config.GlobalConfig.ScreenHeight)/7.2, 65, "sky blue", screen, "Solo Mode HighScores")
 
 		scores := GetSoloHighscoresStrings()
 		for i := 0; i < len(scores); i++ {
-			utils.ScreenDraw(-15, 100, float64(150+i*40), "white", screen, scores[i])
+			var color string
+			if i == 0 {
+				color = "gold"
+			} else if i == 1 {
+				color = "silver"
+			} else if i == 2 {
+				color = "bronze"
+			} else {
+				color = "soft yellow"
+			}
+			utils.ScreenDraw(-15, 100, float64(150+i*54), color, screen, scores[i])
 		}
 	case 2:
-		utils.ScreenDraw(5, 100, 100, "white", screen, "Computer Mode High Scores")
+		utils.ScreenDraw(5, 100, 100, "white", screen, "Computer Mode HighScores")
 
 		scores := GetComputerHighscoresStrings()
 		for i := 0; i < len(scores); i++ {

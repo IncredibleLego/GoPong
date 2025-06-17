@@ -143,6 +143,18 @@ func Color(colorName string) (float32, float32, float32, float32) {
 	case "dark purple":
 		// RGBA: 102, 0, 153, 255
 		return 0.4, 0, 0.6, 1
+	case "gold":
+		// RGBA: 255, 215, 0, 255
+		return 1, 0.84, 0, 1
+	case "silver":
+		// RGBA: 192, 192, 192, 255
+		return 0.75, 0.75, 0.75, 1
+	case "bronze":
+		// RGBA: 205, 127, 50, 255
+		return 0.8, 0.5, 0.2, 1
+	case "soft yellow":
+		// RGBA: 255, 255, 204, 1.0
+		return 1, 1, 0.8, 1
 	default:
 		log.Printf("Unknown color: %s", colorName)
 		return 0, 0, 0, 255 // Default to black

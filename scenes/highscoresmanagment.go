@@ -137,14 +137,27 @@ func GetSoloHighscoresStrings() []string {
 		return []string{"Error loading highscores"}
 	}
 	var result []string
+
+	maxPlayerLen := 0
+	for _, s := range hs.Solo {
+		if len(s.Player) > maxPlayerLen {
+			maxPlayerLen = len(s.Player)
+		}
+	}
 	for i, s := range hs.Solo {
 		// Parse the RFC3339 date to time.Time
 		t, err := time.Parse(time.RFC3339, s.DateTime)
 		dateStr := s.DateTime
 		if err == nil {
-			dateStr = t.Format("02-01-2006 15:04")
+			dateStr = t.Format("02/01/2006 15:04")
 		}
-		result = append(result, fmt.Sprintf("%d. %s - Score %d    %s", i+1, s.Player, s.Score, dateStr))
+		result = append(result, fmt.Sprintf(
+			"%2d. %-*s  Score %-4d    %s",
+			i+1,
+			maxPlayerLen, s.Player,
+			s.Score,
+			dateStr,
+		))
 	}
 	return result
 }
@@ -172,7 +185,7 @@ func GetComputerHighscoresStrings() []string {
 		t, err := time.Parse(time.RFC3339, s.DateTime)
 		dateStr := s.DateTime
 		if err == nil {
-			dateStr = t.Format("02-01-2006 15:04")
+			dateStr = t.Format("02/01/2006 15:04")
 		}
 		result = append(result, fmt.Sprintf(
 			"%2d. %-*s  Score %-4d  Difficulty: %-*s  %s",
@@ -210,7 +223,7 @@ func GetMultiplayerHighscoresStrings() []string {
 		t, err := time.Parse(time.RFC3339, s.DateTime)
 		dateStr := s.DateTime
 		if err == nil {
-			dateStr = t.Format("02-01-2006 15:10")
+			dateStr = t.Format("02/01/2006 15:10")
 		}
 		result = append(result, fmt.Sprintf(
 			"%2d. %-*s  Score %-4d vs %-*s  %s",
