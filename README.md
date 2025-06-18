@@ -11,6 +11,8 @@ Auto-calcolate positions of points names etc in a table and pass those values to
 
 Add Options to personalize menus colors and maybe even difference the dimenions between text
 
+Adjust max textDimension value (now 35)
+
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
