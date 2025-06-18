@@ -35,7 +35,10 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 	case 1:
 		utils.HighscoresTableDraw(screen)
 
-		utils.ScreenDraw(5, float64(config.GlobalConfig.ScreenHeight)/7.2, 65, "sky blue", screen, "Solo Mode HighScores")
+		X := float64(config.GlobalConfig.ScreenHeight) / 7.2
+		I := float64(config.GlobalConfig.ScreenHeight) * 0.075
+
+		utils.ScreenDraw(5, X, 65, "sky blue", screen, "Solo Mode HighScores")
 
 		scores := GetSoloHighscoresStrings()
 		for i := 0; i < len(scores); i++ {
@@ -49,7 +52,7 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 			} else {
 				color = "soft yellow"
 			}
-			utils.ScreenDraw(-15, 100, float64(150+i*54), color, screen, scores[i])
+			utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 2), X, X+X/2+float64(i)*I, color, screen, scores[i])
 		}
 	case 2:
 		utils.ScreenDraw(5, 100, 100, "white", screen, "Computer Mode HighScores")
