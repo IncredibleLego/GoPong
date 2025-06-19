@@ -36,9 +36,10 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 		utils.HighscoresTableDraw(screen)
 
 		X := float64(config.GlobalConfig.ScreenHeight) / 7.2
+		Y := float64(config.GlobalConfig.ScreenHeight) * 0.090277778
 		I := float64(config.GlobalConfig.ScreenHeight) * 0.075
 
-		utils.ScreenDraw(5, X, 65, "sky blue", screen, "Solo Mode HighScores")
+		utils.ScreenDraw(5, X, Y, "sky blue", screen, "Solo Mode HighScores")
 
 		scores := GetSoloHighscoresStrings()
 		for i := 0; i < len(scores); i++ {
