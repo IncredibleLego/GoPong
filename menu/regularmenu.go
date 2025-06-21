@@ -49,7 +49,42 @@ func (m *RegularMenu) Draw(screen *ebiten.Image) {
 	}
 }
 
+var lastMouseX, lastMouseY int
+
 func (m *RegularMenu) Update() Menu {
+
+	// Mouse management
+	mouseX, mouseY := ebiten.CursorPosition()
+	baseY := config.GlobalConfig.ScreenHeight / 3      // Starting Y position for the first option
+	spacing := config.GlobalConfig.TextDimension * 1.5 // Spacing between options
+	mouseMoved := false
+	if mouseX != lastMouseX || mouseY != lastMouseY {
+		mouseMoved = true
+		lastMouseX, lastMouseY = mouseX, mouseY
+	}
+	mouseOverOption := -1
+	for i, option := range m.Options {
+		textWidth, textHeight := utils.MeasureText(option.Label)
+		x := (float64(config.GlobalConfig.ScreenWidth) - textWidth) / 2
+		y := baseY + i*int(spacing) + int(m.Offset)
+
+		// Check if the mouse is over the option
+		if float64(mouseX) >= x && float64(mouseX) <= x+textWidth &&
+			float64(mouseY) >= float64(y)-textHeight && float64(mouseY) <= float64(y) {
+			mouseOverOption = i
+			break
+		}
+	}
+	// Only update selection with mouse if the mouse moved
+	if mouseOverOption != -1 && mouseMoved {
+		m.Selected = mouseOverOption
+	}
+	// If the left mouse button is pressed, select the option and return the submenu if it exists
+	if mouseOverOption != -1 && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		if m.Options[mouseOverOption].SubMenu != nil {
+			return m.Options[mouseOverOption].SubMenu
+		}
+	}
 
 	// moveInterval could be a constant
 	moveInterval := time.Duration(time.Second / config.GlobalConfig.MenuOptionsPerSecond)
@@ -81,31 +116,6 @@ func (m *RegularMenu) Update() Menu {
 		}
 	}
 
-	// Mouse management
-	mouseX, mouseY := ebiten.CursorPosition()
-
-	baseY := config.GlobalConfig.ScreenHeight / 3      // Starting Y position for the first option
-	spacing := config.GlobalConfig.TextDimension * 1.5 // Spacing between options
-
-	for i, option := range m.Options {
-		textWidth, textHeight := utils.MeasureText(option.Label)
-		x := (float64(config.GlobalConfig.ScreenWidth) - textWidth) / 2
-		y := baseY + i*int(spacing) + int(m.Offset)
-
-		// Check if the mouse is over the option
-		if float64(mouseX) >= x && float64(mouseX) <= x+textWidth &&
-			float64(mouseY) >= float64(y)-textHeight && float64(mouseY) <= float64(y) {
-
-			m.Selected = i // Hilights the option under the mouse
-
-			// If the left mouse button is pressed, select the option and return the submenu if it exists
-			if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-				if option.SubMenu != nil {
-					return option.SubMenu
-				}
-			}
-		}
-	}
 	return nil
 }
 
