@@ -16,8 +16,6 @@ Adjust max textDimension value (now 35)
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
-- Screen draw must be improved amd should print to the center of the screen
-    - Maybe doing two functions: screenDraw with less arguments for all simple inputs and screenDraw extra for all different options
 - Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
 - Try implementing other scales to see if that is working
 
