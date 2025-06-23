@@ -57,13 +57,11 @@ Adjust max textDimension value (now 35)
 
 - PAUSEMENU
     - Gamescene blurred in the background (like popups)
-    - Choose if the scene must be saved or not
 
 - STARTMENU
     - Unplayable pong playing in the background (https://richardcarter.org/)
 
 ### HIGHSCORES:
-- Saved to file like options
 - 2 menus on top: one to choose gamemode (solo, multi, ai) and one to change the difficulty: so I have 1 page for all leaderboards
 - Hilights show date/time, name and points. For mode against AI is also shown difficulty
 - Different leaderboards for different difficulties? Maybe to choose between an option above like
