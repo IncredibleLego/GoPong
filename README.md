@@ -30,11 +30,6 @@ Adjust max textDimension value (now 35)
 - Game presets: ex. slow ball fast paddle ecc.
 - Possibility to change commands? example choose the pause button?
 
-- Don't restart immediately when selecting the new scale
-    - Let user select the preferred scale
-    - When exiting --> Popup message asking to reload (or just reload)
-    - This makes users able to jump from a scale to one not immediately after it
-
 ### GAMEPLAY:
 - Ball delay after time hit
 - Modify increase speed, no longer working
