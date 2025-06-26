@@ -14,7 +14,6 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
 - Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
-- Try implementing other scales to see if that is working
 
 ### SAVES:
 - Match save on file, saving data of a match on file to open it later?  --> idk if it might make sense
