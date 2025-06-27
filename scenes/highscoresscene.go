@@ -39,7 +39,7 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 		Y := float64(config.GlobalConfig.ScreenHeight) * 0.090277778
 		I := float64(config.GlobalConfig.ScreenHeight) * 0.075
 
-		utils.ScreenDraw(5, X, Y, "sky blue", screen, "Solo Mode HighScores")
+		utils.ScreenDraw(5, X, Y, "sky blue", screen, "Solo Mode High Scores")
 
 		scores := GetSoloHighscoresStrings()
 		for i := 0; i < len(scores); i++ {
@@ -56,12 +56,29 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 			utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 2), X, X+X/2+float64(i)*I, color, screen, scores[i])
 		}
 	case 2:
-		utils.ScreenDraw(5, 100, 100, "white", screen, "Computer Mode HighScores")
+		utils.HighscoresTableDraw(screen)
+
+		X := float64(config.GlobalConfig.ScreenHeight) / 7.2
+		Y := float64(config.GlobalConfig.ScreenHeight) * 0.090277778
+		I := float64(config.GlobalConfig.ScreenHeight) * 0.075
+
+		utils.ScreenDraw(5, X, Y, "sky blue", screen, "Computer Mode HighScores")
 
 		scores := GetComputerHighscoresStrings()
 		for i := 0; i < len(scores); i++ {
-			utils.ScreenDraw(-15, 100, float64(150+i*40), "white", screen, scores[i])
+			var color string
+			if i == 0 {
+				color = "gold"
+			} else if i == 1 {
+				color = "silver"
+			} else if i == 2 {
+				color = "bronze"
+			} else {
+				color = "soft yellow"
+			}
+			utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 1.66), X, X+X/2+float64(i)*I, color, screen, scores[i])
 		}
+
 	case 3:
 		utils.ScreenDraw(5, 100, 100, "white", screen, "Multiplayer Mode High Scores")
 
