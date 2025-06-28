@@ -29,19 +29,31 @@ func NewHighScoresScene() *HighScoresScene {
 
 func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 
-	switch h.highscoreSelected {
-	case 0:
+	if h.highscoreSelected == 0 {
 		h.chooseMenu.Draw(screen)
-	case 1:
+	} else {
 		utils.HighscoresTableDraw(screen)
 
 		X := float64(config.GlobalConfig.ScreenHeight) / 7.2
 		Y := float64(config.GlobalConfig.ScreenHeight) * 0.090277778
 		I := float64(config.GlobalConfig.ScreenHeight) * 0.075
 
-		utils.ScreenDraw(5, X, Y, "sky blue", screen, "Solo Mode High Scores")
+		var scores []string
+		var dimension float64
+		if h.highscoreSelected == 1 {
+			utils.ScreenDraw(5, X, Y, "sky blue", screen, "Solo Mode High Scores")
+			scores = GetSoloHighscoresStrings()
+			dimension = config.GlobalConfig.TextDimension / 2
+		} else if h.highscoreSelected == 2 {
+			utils.ScreenDraw(5, X, Y, "sky blue", screen, "Computer Mode High Scores")
+			scores = GetComputerHighscoresStrings()
+			dimension = config.GlobalConfig.TextDimension / 1.66
+		} else if h.highscoreSelected == 3 {
+			utils.ScreenDraw(5, X, Y, "sky blue", screen, "Multiplayer Mode High Scores")
+			scores = GetMultiplayerHighscoresStrings()
+			dimension = config.GlobalConfig.TextDimension / 2
+		}
 
-		scores := GetSoloHighscoresStrings()
 		for i := 0; i < len(scores); i++ {
 			var color string
 			if i == 0 {
@@ -53,38 +65,7 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 			} else {
 				color = "soft yellow"
 			}
-			utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 2), X, X+X/2+float64(i)*I, color, screen, scores[i])
-		}
-	case 2:
-		utils.HighscoresTableDraw(screen)
-
-		X := float64(config.GlobalConfig.ScreenHeight) / 7.2
-		Y := float64(config.GlobalConfig.ScreenHeight) * 0.090277778
-		I := float64(config.GlobalConfig.ScreenHeight) * 0.075
-
-		utils.ScreenDraw(5, X, Y, "sky blue", screen, "Computer Mode HighScores")
-
-		scores := GetComputerHighscoresStrings()
-		for i := 0; i < len(scores); i++ {
-			var color string
-			if i == 0 {
-				color = "gold"
-			} else if i == 1 {
-				color = "silver"
-			} else if i == 2 {
-				color = "bronze"
-			} else {
-				color = "soft yellow"
-			}
-			utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 1.66), X, X+X/2+float64(i)*I, color, screen, scores[i])
-		}
-
-	case 3:
-		utils.ScreenDraw(5, 100, 100, "white", screen, "Multiplayer Mode High Scores")
-
-		scores := GetMultiplayerHighscoresStrings()
-		for i := 0; i < len(scores); i++ {
-			utils.ScreenDraw(-15, 100, float64(150+i*40), "white", screen, scores[i])
+			utils.ScreenDraw(-dimension, X, X+X/2+float64(i)*I, color, screen, scores[i])
 		}
 	}
 }
@@ -92,9 +73,9 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 func (h *HighScoresScene) FirstLoad() {
 	h.chooseMenu = &menu.RegularMenu{
 		Options: []menu.MenuOption{
-			{Label: "SOLO MODE HIGHSCORES"},
-			{Label: "COMPUTER MODE HIGHSCORES"},
-			{Label: "MULTIPLAYER MODE HIGHSCORES"},
+			{Label: "SOLO MODE HIGH SCORES"},
+			{Label: "COMPUTER MODE HIGH SCORES"},
+			{Label: "MULTIPLAYER MODE HIGH SCORES"},
 			{Label: "BACK"},
 		},
 		Selected:      0,
