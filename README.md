@@ -58,7 +58,6 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ### HIGHSCORES:
 - 2 menus on top: one to choose gamemode (solo, multi, ai) and one to change the difficulty: so I have 1 page for all leaderboards
-- Hilights show date/time, name and points. For mode against AI is also shown difficulty
 - Different leaderboards for different difficulties? Maybe to choose between an option above like
 
 - Update and draw for the 3 will be in common except for the shown data and title
