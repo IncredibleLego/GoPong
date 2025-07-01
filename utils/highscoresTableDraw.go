@@ -13,9 +13,12 @@ func HighscoresTableDraw(screen *ebiten.Image) {
 	var X float32 = float32(config.GlobalConfig.ScreenWidth / 18)
 	var Y float32 = float32(config.GlobalConfig.ScreenHeight / 13)
 	var offset float32 = float32(config.GlobalConfig.ScreenHeight / 12)
-	var border float32 = float32(config.GlobalConfig.ScreenHeight / 72)
-	//var color = color.RGBA{77, 153, 255, 255}
-	var color = color.RGBA{102, 255, 102, 1.0}
+	//var border float32 = float32(config.GlobalConfig.ScreenHeight / 72) ORIGINAL
+
+	var border float32 = float32(config.GlobalConfig.ScreenHeight / 110)
+	var color = color.RGBA{255, 128, 0, 255}
+
+	//var color = color.RGBA{102, 255, 102, 1.0}  LIME
 
 	vector.DrawFilledRect(screen,
 		X+border, Y-Y/2, X*16-border*2, border,

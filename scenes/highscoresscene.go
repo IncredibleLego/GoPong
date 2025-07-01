@@ -41,15 +41,15 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 		var scores []string
 		var dimension float64
 		if h.highscoreSelected == 1 {
-			utils.ScreenDraw(5, X, Y, "sky blue", screen, "Solo Mode High Scores")
+			utils.ScreenDraw(config.GlobalConfig.TextDimension/6, X, Y, "sky blue", screen, "Solo Mode High Scores")
 			scores = GetSoloHighscoresStrings()
 			dimension = config.GlobalConfig.TextDimension / 2
 		} else if h.highscoreSelected == 2 {
-			utils.ScreenDraw(5, X, Y, "sky blue", screen, "Computer Mode High Scores")
+			utils.ScreenDraw(config.GlobalConfig.TextDimension/30, X, Y, "sky blue", screen, "Computer Mode High Scores")
 			scores = GetComputerHighscoresStrings()
 			dimension = config.GlobalConfig.TextDimension / 1.66
 		} else if h.highscoreSelected == 3 {
-			utils.ScreenDraw(5, X, Y, "sky blue", screen, "Multiplayer Mode High Scores")
+			utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 15), X, Y, "sky blue", screen, "Multiplayer Mode High Scores")
 			scores = GetMultiplayerHighscoresStrings()
 			dimension = config.GlobalConfig.TextDimension / 2
 		}

@@ -5,6 +5,8 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ## ROADMAP:
 
+- Multiplayer highscores need adjustment -> When names are max possible it goes out of scale
+
 - ALL OPERATIONS THAT CAN BE DONE ONCE, MUST BE DONE ONCE IN DRAW AND UPDATE
 - Add Options to personalize menus colors and maybe even difference the dimenions between text
 - Adjust max textDimension value (now 35)
