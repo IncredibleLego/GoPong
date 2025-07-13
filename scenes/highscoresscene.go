@@ -51,7 +51,7 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 		} else if h.highscoreSelected == 3 {
 			utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 15), X, Y, "sky blue", screen, "Multiplayer Mode High Scores")
 			scores = GetMultiplayerHighscoresStrings()
-			dimension = config.GlobalConfig.TextDimension / 2
+			dimension = config.GlobalConfig.TextDimension / 1.56
 		}
 
 		for i := 0; i < len(scores); i++ {

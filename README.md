@@ -67,4 +67,3 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ## PERFORMANCE:
 - Create a static image for background (ex the net or the title) to avoid drawing it in every frame
-
