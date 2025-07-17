@@ -5,15 +5,9 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ## ROADMAP:
 
-- Multiplayer highscores need adjustment -> When names are max possible it goes out of scale
-- ALL OPERATIONS THAT CAN BE DONE ONCE, MUST BE DONE ONCE IN DRAW AND UPDATE
-- Add Options to personalize menus colors and maybe even difference the dimenions between text
-- Adjust max textDimension value (now 35)
-- Multiplayer highscores reach errors like "16:60"
-- Adjust highscores scenes to make them more centrated and scaled
-
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
+- ALL OPERATIONS THAT CAN BE DONE ONCE, MUST BE DONE ONCE IN DRAW AND UPDATE
 - Modify draw on screen options to make text (menu ecc.) related to textDimension 
 - Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
 
@@ -27,6 +21,7 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 - Color schemes in settings? (change color of menus as option). Color Presets
 - Game presets: ex. slow ball fast paddle ecc.
 - Possibility to change commands? example choose the pause button?
+- Adjust max textDimension value (now 35)
 
 ### GAMEPLAY:
 - Ball delay after time hit
@@ -57,6 +52,9 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 ### HIGHSCORES:
 - 2 menus on top: one to choose gamemode (solo, multi, ai) and one to change the difficulty: so I have 1 page for all leaderboards
 - Different leaderboards for different difficulties? Maybe to choose between an option above like
+
+- Multiplayer highscores need adjustment -> When names are max possible it goes out of scale
+- Multiplayer highscores reach errors like "16:60"
 
 - Update and draw for the 3 will be in common except for the shown data and title
 - Turn highscoreSelected in bool: menu or not menu?
