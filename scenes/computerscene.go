@@ -134,8 +134,8 @@ func (c *ComputerScene) Update() SceneId {
 		c.scoreEnemy++
 	}
 
-	c.ball.CollideWithPaddle(c.paddle, true)
-	c.ball.CollideWithPaddle(c.enemyPaddle, false)
+	c.ball.CollideWithPaddle(c.paddle, true, 0)
+	c.ball.CollideWithPaddle(c.enemyPaddle, false, 0)
 
 	return ComputerSceneId
 }

@@ -31,14 +31,6 @@ func (b *Ball) Move() { // Move the ball
 	b.Y += b.Dydt
 }
 
-func (b *Ball) IncreaseSpeed(increase int) { // Increase the speed of the ball
-	if b.Dxdt > 0 {
-		b.Dxdt += increase
-	} else {
-		b.Dxdt -= increase
-	}
-}
-
 // w1 and w2 are the horizontal walls options that the ball can collide with
 func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides with the wall
 	if b.X <= 0 {
@@ -68,7 +60,7 @@ func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides 
 	return 0
 }
 
-func (b *Ball) CollideWithPaddle(p *Paddle, direction bool) bool { // Check if the ball collides with the paddle
+func (b *Ball) CollideWithPaddle(p *Paddle, direction bool, increase int) bool { // Check if the ball collides with the paddle
 	check := false
 
 	// direction is true if the ball is moving to the left, false otherwise
@@ -108,12 +100,12 @@ func (b *Ball) CollideWithPaddle(p *Paddle, direction bool) bool { // Check if t
 		}
 
 		// Update the ball's velocity
-		b.Dydt = -int(newDydt)
+		b.Dydt = -int(newDydt) + increase
 
 		if !direction {
-			b.Dxdt = int(newDxdt)
+			b.Dxdt = int(newDxdt) + increase
 		} else {
-			b.Dxdt = -int(newDxdt)
+			b.Dxdt = -int(newDxdt) - increase
 		}
 
 		return true

@@ -15,8 +15,6 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 - Global variables such as: lastGameSceneId, lastSceneId, isInOptions to make easier menu managment
 
 ### SAVES:
-- Match save on file, saving data of a match on file to open it later?  --> idk if it might make sense
-    -  When entering a mode ask if you wanna start a new match or restart from 0
 - Change values change in options after scale change (ex. Paddle width can't always change by 5)
 
 ### OPTIONS:

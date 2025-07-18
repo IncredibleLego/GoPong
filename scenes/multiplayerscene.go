@@ -133,8 +133,8 @@ func (m *MultiplayerScene) Update() SceneId {
 		m.score1++
 	}
 
-	m.ball.CollideWithPaddle(m.paddle1, true)
-	m.ball.CollideWithPaddle(m.paddle2, false)
+	m.ball.CollideWithPaddle(m.paddle1, true, 0)
+	m.ball.CollideWithPaddle(m.paddle2, false, 0)
 
 	return MultiplayerSceneId
 }

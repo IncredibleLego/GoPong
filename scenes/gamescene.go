@@ -15,6 +15,7 @@ type GameScene struct {
 	ball       *objects.Ball
 	score      int
 	highScore  int
+	increase   int
 }
 
 func (g *GameScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -28,6 +29,7 @@ func NewGameScene() *GameScene {
 		ball:       nil,
 		score:      0,
 		highScore:  0,
+		increase:   0,
 	}
 }
 
@@ -108,14 +110,15 @@ func (g *GameScene) Update() SceneId {
 
 	if g.ball.X+g.ball.W >= config.GlobalConfig.ScreenWidth {
 		g.score = 0
+		g.increase = 0
 	}
 	g.ball.CollideWithWall(false, true)
 
-	if g.ball.CollideWithPaddle(g.paddle, true) {
+	if g.ball.CollideWithPaddle(g.paddle, true, g.increase) {
 		g.IncreaseScore()
 		AddSoloScore(g.playerName, g.score)
 		if g.score%5 == 0 {
-			g.ball.IncreaseSpeed(2)
+			g.increase += 2
 		}
 	}
 
