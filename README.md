@@ -5,6 +5,9 @@ First Inspiration: https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk
 
 ## ROADMAP:
 
+- Il mouse può cliccare un opzione se essa è selezionata anche non essendoci direttamente sopra
+- Highscores must be adjusted to always be in the center of the screen
+
 ### GENERAL:
 - Make game scalable: all that is drawn on screen must be adapted to the options
 - ALL OPERATIONS THAT CAN BE DONE ONCE, MUST BE DONE ONCE IN DRAW AND UPDATE
