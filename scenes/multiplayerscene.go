@@ -125,7 +125,7 @@ func (m *MultiplayerScene) Update() SceneId {
 	m.paddle2.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
 	m.ball.Move()
 
-	test := m.ball.CollideWithWall(true, true)
+	test := m.ball.CollideWithWall(true, true, 0)
 	if test == 1 {
 		AddMultiplayerScore(m.player2Name, m.player1Name, m.score2)
 		m.score2++

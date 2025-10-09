@@ -4,9 +4,11 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
+	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 type GameScene struct {
@@ -51,6 +53,13 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 
 	// Player name
 	utils.ScreenDraw(-3, X, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, g.playerName)
+
+	// Draw Wall on left
+	vector.DrawFilledRect(screen,
+		0, 0,
+		float32(config.GlobalConfig.PaddleWidth), float32(config.GlobalConfig.ScreenHeight),
+		color.White, false,
+	)
 }
 
 // FirstLoad implements Scene.
@@ -112,7 +121,7 @@ func (g *GameScene) Update() SceneId {
 		g.score = 0
 		g.increase = 0
 	}
-	g.ball.CollideWithWall(false, true)
+	g.ball.CollideWithWall(false, true, config.GlobalConfig.PaddleWidth)
 
 	if g.ball.CollideWithPaddle(g.paddle, true, g.increase) {
 		g.IncreaseScore()

@@ -126,7 +126,7 @@ func (c *ComputerScene) Update() SceneId {
 
 	c.ball.Move()
 
-	test := c.ball.CollideWithWall(true, true)
+	test := c.ball.CollideWithWall(true, true, 0)
 	if test == 1 {
 		AddComputerScore(c.playerName, config.DifficultyString(), c.score)
 		c.score++

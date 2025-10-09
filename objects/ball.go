@@ -32,8 +32,8 @@ func (b *Ball) Move() { // Move the ball
 }
 
 // w1 and w2 are the horizontal walls options that the ball can collide with
-func (b *Ball) CollideWithWall(w1, w2 bool) int { // Check if the ball collides with the wall
-	if b.X <= 0 {
+func (b *Ball) CollideWithWall(w1, w2 bool, wallDistance int) int { // Check if the ball collides with the wall
+	if b.X <= wallDistance {
 		if w1 {
 			audio.PlayScore()
 			b.Reset(true) //true = left player got scored
