@@ -88,23 +88,20 @@ func (m *RegularMenu) Update() Menu {
 			}
 		} */
 
-	// moveInterval could be a constant
-	moveInterval := time.Duration(time.Second / config.GlobalConfig.MenuOptionsPerSecond)
-
 	arrowUp := inpututil.KeyPressDuration(ebiten.KeyArrowUp)
 	keyW := inpututil.KeyPressDuration(ebiten.KeyW)
 
 	arrowDown := inpututil.KeyPressDuration(ebiten.KeyArrowDown)
 	keyS := inpututil.KeyPressDuration(ebiten.KeyS)
 
-	if (arrowUp > 0 || keyW > 0) && time.Since(m.LastMoveTime) >= moveInterval {
+	if (arrowUp > 0 || keyW > 0) && time.Since(m.LastMoveTime) >= config.GlobalConfig.OptionsPerSecond {
 		m.Selected--
 		if m.Selected < 0 {
 			m.Selected = len(m.Options) - 1
 		}
 		m.LastMoveTime = time.Now()
 	}
-	if (arrowDown > 0 || keyS > 0) && time.Since(m.LastMoveTime) >= moveInterval {
+	if (arrowDown > 0 || keyS > 0) && time.Since(m.LastMoveTime) >= config.GlobalConfig.OptionsPerSecond {
 		m.Selected++
 		if m.Selected >= len(m.Options) {
 			m.Selected = 0

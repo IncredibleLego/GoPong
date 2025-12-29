@@ -24,7 +24,6 @@ type Config struct {
 	ScreenHeight           int
 	PopupWidth             int
 	PopupHeight            int
-	MenuOptionsPerSecond   time.Duration
 	OptionsPerSecond       time.Duration
 	MaxBounceAngle         float64
 }
@@ -46,8 +45,7 @@ var GlobalConfig = &Config{
 	ScreenHeight:           720,
 	PopupWidth:             528, // 55% of height
 	PopupHeight:            216, // 30% of height
-	MenuOptionsPerSecond:   4,
-	OptionsPerSecond:       90,
+	OptionsPerSecond:       time.Duration(time.Second / 4),
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 }
 
@@ -68,8 +66,7 @@ var DefaultConfig = &Config{
 	ScreenHeight:           720,
 	PopupWidth:             528, // 55% of height
 	PopupHeight:            216, // 30% of height
-	MenuOptionsPerSecond:   4,
-	OptionsPerSecond:       90,
+	OptionsPerSecond:       time.Duration(time.Second / 4),
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 }
 

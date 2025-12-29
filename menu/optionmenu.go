@@ -23,7 +23,7 @@ func (o *OptionMenu) Draw(screen *ebiten.Image) {
 	spacing := textDim * 1.5
 
 	x := utils.XCentered(o.MenuName, textDim)
-	utils.ScreenDraw(0, x, float64(o.Position)-textDim/0.4, "white", screen, o.MenuName)
+	utils.ScreenDraw(0, x, float64(o.Position)-textDim/0.4, "yellow", screen, o.MenuName)
 
 	for i, option := range o.Options {
 		x = utils.XCentered(option, textDim)
@@ -41,24 +41,20 @@ func (o *OptionMenu) Draw(screen *ebiten.Image) {
 }
 
 func (o *OptionMenu) Update() Menu {
-
-	// moveInterval could be a constant
-	moveInterval := time.Duration(time.Second / config.GlobalConfig.MenuOptionsPerSecond)
-
 	arrowUp := inpututil.KeyPressDuration(ebiten.KeyArrowUp)
 	keyW := inpututil.KeyPressDuration(ebiten.KeyW)
 
 	arrowDown := inpututil.KeyPressDuration(ebiten.KeyArrowDown)
 	keyS := inpututil.KeyPressDuration(ebiten.KeyS)
 
-	if (arrowUp > 0 || keyW > 0) && time.Since(o.LastMoveTime) >= moveInterval {
+	if (arrowUp > 0 || keyW > 0) && time.Since(o.LastMoveTime) >= config.GlobalConfig.OptionsPerSecond {
 		o.Selected--
 		if o.Selected < 0 {
 			o.Selected = len(o.Options) - 1
 		}
 		o.LastMoveTime = time.Now()
 	}
-	if (arrowDown > 0 || keyS > 0) && time.Since(o.LastMoveTime) >= moveInterval {
+	if (arrowDown > 0 || keyS > 0) && time.Since(o.LastMoveTime) >= config.GlobalConfig.OptionsPerSecond {
 		o.Selected++
 		if o.Selected >= len(o.Options) {
 			o.Selected = 0

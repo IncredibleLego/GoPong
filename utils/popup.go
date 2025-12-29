@@ -69,23 +69,20 @@ func (p *Popup) Draw(screen *ebiten.Image) {
 }
 
 func (p *Popup) Update() {
-
-	moveInterval := time.Duration(time.Second / config.GlobalConfig.MenuOptionsPerSecond)
-
 	arrowLeft := inpututil.KeyPressDuration(ebiten.KeyArrowLeft)
 	keyA := inpututil.KeyPressDuration(ebiten.KeyA)
 
 	arrowRight := inpututil.KeyPressDuration(ebiten.KeyArrowRight)
 	keyD := inpututil.KeyPressDuration(ebiten.KeyD)
 
-	if (arrowLeft > 0 || keyA > 0) && time.Since(p.LastMoveTime) >= moveInterval {
+	if (arrowLeft > 0 || keyA > 0) && time.Since(p.LastMoveTime) >= config.GlobalConfig.OptionsPerSecond {
 		p.Selected--
 		if p.Selected < 0 {
 			p.Selected = len(p.Options) - 1
 		}
 		p.LastMoveTime = time.Now()
 	}
-	if (arrowRight > 0 || keyD > 0) && time.Since(p.LastMoveTime) >= moveInterval {
+	if (arrowRight > 0 || keyD > 0) && time.Since(p.LastMoveTime) >= config.GlobalConfig.OptionsPerSecond {
 		p.Selected++
 		if p.Selected >= len(p.Options) {
 			p.Selected = 0
