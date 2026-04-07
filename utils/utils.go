@@ -81,6 +81,47 @@ func Net(screen *ebiten.Image) {
 	}
 }
 
+// Prints the table used to show the highscores
+func HighscoresTableDraw(screen *ebiten.Image) {
+
+	var X float32 = float32(config.GlobalConfig.ScreenWidth / 18)
+	var Y float32 = float32(config.GlobalConfig.ScreenHeight / 13)
+	var offset float32 = float32(config.GlobalConfig.ScreenHeight / 12)
+	//var border float32 = float32(config.GlobalConfig.ScreenHeight / 72) ORIGINAL
+
+	var border float32 = float32(config.GlobalConfig.ScreenHeight / 110)
+	var color = color.RGBA{88, 235, 243, 8.0}
+
+	vector.DrawFilledRect(screen,
+		X+border, Y-Y/2, X*16-border*2, border,
+		color, false,
+	)
+
+	vector.DrawFilledRect(screen,
+		X, Y-Y/2, border, Y*11+offset-Y/2+border,
+		color, false,
+	)
+	vector.DrawFilledRect(screen,
+		X*17-border, Y-Y/2, border, Y*11+offset-Y/2+border,
+		color, false,
+	)
+
+	for i := 0; i < 11; i++ {
+		vector.DrawFilledRect(screen,
+			X+border, Y+float32(i)*Y+offset, X*16-border*2, border,
+			color, false,
+		)
+	}
+}
+
+func Kubrick(name string) string {
+	if name == "COMPUTER" {
+		return "HAL 9000"
+	} else {
+		return "COMPUTER"
+	}
+}
+
 func Color(colorName string) (float32, float32, float32, float32) {
 	switch colorName {
 	case "white":

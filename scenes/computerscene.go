@@ -11,6 +11,7 @@ import (
 
 type ComputerScene struct {
 	playerName  string
+	enemyName   string
 	paddle      *objects.Paddle
 	enemyPaddle *objects.Paddle
 	ball        *objects.Ball
@@ -26,6 +27,7 @@ func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
 func NewComputerScene() *ComputerScene {
 	return &ComputerScene{
 		playerName:  "",
+		enemyName:   "Computer",
 		paddle:      nil,
 		enemyPaddle: nil,
 		ball:        nil,
@@ -54,10 +56,10 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	utils.PointsDraw(screen, float32(config.GlobalConfig.ScreenWidth)/6+measure/2, float32(config.GlobalConfig.ScreenHeight)/14, c.scoreEnemy)
 	utils.PointsDraw(screen, (float32(config.GlobalConfig.ScreenWidth)/6)*4+measure/2, float32(config.GlobalConfig.ScreenHeight)/14, c.score)
 
-	X1 := float64(config.GlobalConfig.ScreenWidth/4) - ((config.GlobalConfig.TextDimension - 3) * float64(len("COMPUTER")/2))
+	X1 := float64(config.GlobalConfig.ScreenWidth/4) - ((config.GlobalConfig.TextDimension - 3) * float64(len(c.enemyName)/2))
 	X2 := float64(config.GlobalConfig.ScreenWidth/4*3) - ((config.GlobalConfig.TextDimension - 3) * float64(len(c.playerName)/2))
 
-	utils.ScreenDraw(-3, X1, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, "COMPUTER")
+	utils.ScreenDraw(-3, X1, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, c.enemyName)
 	utils.ScreenDraw(-3, X2, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, c.playerName)
 
 }
@@ -136,6 +138,10 @@ func (c *ComputerScene) Update() SceneId {
 
 	c.ball.CollideWithPaddle(c.paddle, true, 0)
 	c.ball.CollideWithPaddle(c.enemyPaddle, false, 0)
+
+	if inpututil.IsKeyJustPressed(ebiten.KeyH) {
+		c.enemyName = utils.Kubrick(c.enemyName)
+	}
 
 	return ComputerSceneId
 }
