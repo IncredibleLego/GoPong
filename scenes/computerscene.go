@@ -27,7 +27,7 @@ func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
 func NewComputerScene() *ComputerScene {
 	return &ComputerScene{
 		playerName:  "",
-		enemyName:   "Computer",
+		enemyName:   "COMPUTER",
 		paddle:      nil,
 		enemyPaddle: nil,
 		ball:        nil,
