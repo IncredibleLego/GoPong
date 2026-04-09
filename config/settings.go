@@ -95,12 +95,12 @@ func ChangeScale(newScale float64) error {
 // DifficultyString returns a string representation of the difficulty level.
 func DifficultyString() string {
 	if GlobalConfig.Difficulty < 0.33 {
-		return "Easy"
+		return "EASY"
 	}
 	if GlobalConfig.Difficulty >= 0.33 && GlobalConfig.Difficulty < 0.66 {
-		return "Medium"
+		return "DEFAULT"
 	}
-	return "Hard"
+	return "HARD"
 }
 
 const configFilePath = "./config/settings.json" // Name of the configuration file
