@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+var IsFullscreen bool
+
 type Config struct {
 	Scale                  float64
 	Fullscreen             bool

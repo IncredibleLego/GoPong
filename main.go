@@ -8,20 +8,17 @@ import (
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
-var isFullscreen bool
-
 func main() {
 	config.InitConfig()
 	config.ApplyScaleToConfig(config.GlobalConfig, config.GlobalConfig.Scale)
 	audio.Init()
-	//fmt.Printf("Loaded configuration: %+v\n", config.GlobalConfig)
 
 	ebiten.SetWindowTitle("GoPong")
 	ebiten.SetWindowSize(config.GlobalConfig.ScreenWidth, config.GlobalConfig.ScreenHeight)
 	ebiten.SetWindowResizingMode(ebiten.WindowResizingModeEnabled)
 
-	isFullscreen = config.GlobalConfig.Fullscreen
-	ebiten.SetFullscreen(isFullscreen)
+	config.IsFullscreen = config.GlobalConfig.Fullscreen
+	ebiten.SetFullscreen(config.IsFullscreen)
 
 	game := NewGame()
 

@@ -39,8 +39,8 @@ func (g *Game) Update() error {
 
 	// Using "Esc" you can enter or exit fullscreen
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		isFullscreen = !isFullscreen
-		ebiten.SetFullscreen(isFullscreen)
+		config.IsFullscreen = !config.IsFullscreen
+		ebiten.SetFullscreen(config.IsFullscreen)
 	}
 
 	// Updates the current scene and checks if the scene has changed if nextSceneId is different from the current scene
