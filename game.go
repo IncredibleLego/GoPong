@@ -11,7 +11,7 @@ import (
 type Game struct {
 	sceneMap      map[scenes.SceneId]scenes.Scene
 	activeSceneId scenes.SceneId
-	lastSceneId   scenes.SceneId
+	lastSceneId   scenes.SceneId // ID of the last played scene between solo, computer and multiplayer
 	loadedScenes  map[scenes.SceneId]bool
 }
 
@@ -52,7 +52,20 @@ func (g *Game) Update() error {
 	}
 	// Instead, if the scene has changed:
 	if nextSceneId != g.activeSceneId {
-
+		// Saves Highscores if you're returing to menu after playing a game
+		if g.lastSceneId != 0 && nextSceneId == scenes.StartSceneId {
+			if g.lastSceneId == scenes.GameSceneId && scenes.DirtySoloScore.Score > 0 {
+				scenes.AddSoloScore(scenes.DirtySoloScore)
+				scenes.DirtySoloScore = scenes.SoloScore{}
+			} else if g.lastSceneId == scenes.ComputerSceneId && scenes.DirtyComputerScore.Score > 0 {
+				scenes.AddComputerScore(scenes.DirtyComputerScore)
+				scenes.DirtyComputerScore = scenes.ComputerScore{}
+			} else if g.lastSceneId == scenes.MultiplayerSceneId && scenes.DirtyMultiplayerScore.Score > 0 {
+				scenes.AddMultiplayerScore(scenes.DirtyMultiplayerScore)
+				scenes.DirtyMultiplayerScore = scenes.MultiplayerScore{}
+			}
+			g.lastSceneId = 0
+		}
 		var reason scenes.SceneChangeReason
 		if nextSceneId == scenes.PauseSceneId {
 			// If the next scene is the pause scene, it is created and the reason is set to "other"
@@ -97,7 +110,7 @@ func (g *Game) Update() error {
 		// The current scene is exited
 		g.sceneMap[g.activeSceneId].OnExit()
 		// If the current scene is not the pause scene or the options scene, the last scene id is saved
-		if g.activeSceneId != scenes.PauseSceneId && g.activeSceneId != scenes.OptionsSceneId {
+		if g.activeSceneId == scenes.GameSceneId || g.activeSceneId == scenes.ComputerSceneId || g.activeSceneId == scenes.MultiplayerSceneId {
 			g.lastSceneId = g.activeSceneId
 		}
 		// The new scene is entered

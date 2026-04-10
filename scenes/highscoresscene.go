@@ -9,7 +9,8 @@ import (
 )
 
 type HighScoresScene struct {
-	highscoreSelected int // 0 for menu, 1 for solo, 2 for computer, 3 for multiplayer
+	highscoreSelected int // 0 for solo, 1 for computer, 2 for mulitplayer
+	computerSelected  int // 0 for easy, 1 for default, 2 for hard
 }
 
 func (h *HighScoresScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -19,6 +20,7 @@ func (h *HighScoresScene) ShouldPreserveState(reason SceneChangeReason) bool {
 func NewHighScoresScene() *HighScoresScene {
 	return &HighScoresScene{
 		highscoreSelected: 0,
+		computerSelected:  0,
 	}
 }
 
@@ -38,7 +40,7 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 		dimension = config.GlobalConfig.TextDimension / 2
 	} else if h.highscoreSelected == 1 {
 		utils.ScreenDraw(config.GlobalConfig.TextDimension/30, X, Y, "sky blue", screen, "Computer Mode High Scores")
-		scores = GetComputerHighscoresStrings()
+		scores = GetComputerHighscoresStrings(h.computerSelected)
 		dimension = config.GlobalConfig.TextDimension / 1.56
 	} else if h.highscoreSelected == 2 {
 		utils.ScreenDraw(-(config.GlobalConfig.TextDimension / 15), X, Y, "sky blue", screen, "Multiplayer Mode High Scores")
@@ -77,11 +79,16 @@ func (h *HighScoresScene) Update() SceneId {
 		h.highscoreSelected--
 	}
 
-	if h.highscoreSelected < 0 {
-		h.highscoreSelected = 2
-	} else if h.highscoreSelected > 2 {
-		h.highscoreSelected = 0
+	h.highscoreSelected = utils.Adjust(h.highscoreSelected)
+
+	if h.highscoreSelected != 1 {
+		h.computerSelected = 0
+	} else if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
+		h.computerSelected++
+	} else if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
+		h.computerSelected--
 	}
+	h.computerSelected = utils.Adjust(h.computerSelected)
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		return StartSceneId

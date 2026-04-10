@@ -4,6 +4,7 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -17,7 +18,6 @@ type ComputerScene struct {
 	ball        *objects.Ball
 	score       int
 	scoreEnemy  int
-	highScore   int
 }
 
 func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -33,7 +33,6 @@ func NewComputerScene() *ComputerScene {
 		ball:        nil,
 		score:       0,
 		scoreEnemy:  0,
-		highScore:   0,
 	}
 }
 
@@ -95,17 +94,13 @@ func (c *ComputerScene) FirstLoad() {
 	}
 	c.ball.GenerateRandomDirection()
 	c.score = 0
-	c.highScore = 0
+	c.scoreEnemy = 0
 	c.ball.Reset(false)
 }
 
-func (c *ComputerScene) OnEnter() {
+func (c *ComputerScene) OnEnter() {}
 
-}
-
-func (c *ComputerScene) OnExit() {
-
-}
+func (c *ComputerScene) OnExit() {}
 
 func (c *ComputerScene) updateDimensions() {
 	c.ball.W = config.GlobalConfig.BallSize
@@ -119,18 +114,24 @@ func (c *ComputerScene) Update() SceneId {
 	c.updateDimensions()
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		highScore, maxAdded := getTopComputerScore()
+		if maxAdded == false || c.score >= highScore.Score {
+			DirtyComputerScore = ComputerScore{
+				DateTime: time.Now().Format(time.RFC3339),
+				Player:   c.playerName,
+				AILevel:  config.DifficultyString(),
+				Score:    c.score,
+			}
+		}
 		return PauseSceneId
 	}
 
 	c.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
-	//c.enemyPaddle.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
 	c.enemyPaddle.AiMovement(c.ball)
-
 	c.ball.Move()
 
 	test := c.ball.CollideWithWall(true, true, 0)
 	if test == 1 {
-		AddComputerScore(c.playerName, config.DifficultyString(), c.score)
 		c.score++
 	} else if test == 2 {
 		c.scoreEnemy++
@@ -147,28 +148,3 @@ func (c *ComputerScene) Update() SceneId {
 }
 
 var _ Scene = (*ComputerScene)(nil)
-
-func (c *ComputerScene) CollideWithWall() { // Check if the ball collides with the wall
-	if c.ball.X >= config.GlobalConfig.ScreenWidth {
-		c.Reset()
-	} else if c.ball.X <= 0 {
-		c.ball.Dxdt = config.GlobalConfig.BallSpeed
-	} else if c.ball.Y <= 0 {
-		c.ball.Dydt = config.GlobalConfig.BallSpeed
-	} else if c.ball.Y >= config.GlobalConfig.ScreenHeight {
-		c.ball.Dydt = -config.GlobalConfig.BallSpeed
-	}
-}
-
-func (c *ComputerScene) IncreaseScore() {
-	c.score++
-	if c.score > c.highScore {
-		c.highScore = c.score
-	}
-}
-
-func (c *ComputerScene) Reset() { // Reset the game
-	c.ball.X = config.GlobalConfig.ScreenWidth / 2
-	c.ball.Y = config.GlobalConfig.ScreenHeight / 2
-	c.score = 0
-}

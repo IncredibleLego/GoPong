@@ -4,6 +4,7 @@ import (
 	"goPong/config"
 	"goPong/objects"
 	"goPong/utils"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -17,7 +18,6 @@ type MultiplayerScene struct {
 	ball        *objects.Ball
 	score1      int
 	score2      int
-	highScore   int
 }
 
 func (m *MultiplayerScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -33,7 +33,6 @@ func NewMultiplayerScene() *MultiplayerScene {
 		ball:        nil,
 		score1:      0,
 		score2:      0,
-		highScore:   0,
 	}
 }
 
@@ -99,13 +98,9 @@ func (m *MultiplayerScene) FirstLoad() {
 	m.ball.Reset(false)
 }
 
-func (m *MultiplayerScene) OnEnter() {
+func (m *MultiplayerScene) OnEnter() {}
 
-}
-
-func (m *MultiplayerScene) OnExit() {
-
-}
+func (m *MultiplayerScene) OnExit() {}
 
 func (m *MultiplayerScene) updateDimensions() {
 	m.ball.W = config.GlobalConfig.BallSize
@@ -119,15 +114,35 @@ func (m *MultiplayerScene) Update() SceneId {
 	m.updateDimensions()
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		highScore, maxAdded := getTopMultiplayerScore()
+		if maxAdded == false || (m.score1 >= highScore.Score || m.score2 >= highScore.Score) {
+			var score int
+			var player1, player2 string
+			if m.score1 >= m.score2 {
+				score = m.score1
+				player1 = m.player1Name
+				player2 = m.player2Name
+			} else {
+				score = m.score2
+				player1 = m.player2Name
+				player2 = m.player1Name
+			}
+			DirtyMultiplayerScore = MultiplayerScore{
+				DateTime: time.Now().Format(time.RFC3339),
+				Player1:  player1,
+				Player2:  player2,
+				Score:    score,
+			}
+		}
 		return PauseSceneId
 	}
+
 	m.paddle1.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
 	m.paddle2.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
 	m.ball.Move()
 
 	test := m.ball.CollideWithWall(true, true, 0)
 	if test == 1 {
-		AddMultiplayerScore(m.player2Name, m.player1Name, m.score2)
 		m.score2++
 	} else if test == 2 {
 		m.score1++

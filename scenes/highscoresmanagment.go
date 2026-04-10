@@ -3,6 +3,7 @@ package scenes
 import (
 	"encoding/json"
 	"fmt"
+	"goPong/config"
 	"os"
 	"sort"
 	"time"
@@ -10,6 +11,10 @@ import (
 
 const highscoresFile = "./scenes/highscores.json"
 const maxScores = 10
+
+var DirtySoloScore SoloScore
+var DirtyComputerScore ComputerScore
+var DirtyMultiplayerScore MultiplayerScore
 
 type SoloScore struct {
 	DateTime string `json:"date_time"`
@@ -32,9 +37,11 @@ type MultiplayerScore struct {
 }
 
 type Highscores struct {
-	Solo        []SoloScore        `json:"solo"`
-	Computer    []ComputerScore    `json:"computer"`
-	Multiplayer []MultiplayerScore `json:"multiplayer"`
+	Solo            []SoloScore        `json:"solo"`
+	ComputerEasy    []ComputerScore    `json:"computer_easy"`
+	ComputerDefault []ComputerScore    `json:"computer_default"`
+	ComputerHard    []ComputerScore    `json:"computer_hard"`
+	Multiplayer     []MultiplayerScore `json:"multiplayer"`
 }
 
 // Load all highscores from the JSON file
@@ -55,6 +62,50 @@ func loadHighscores() (*Highscores, error) {
 	return &hs, nil
 }
 
+// Returns the score to beat to achieve a new Solo Highscore
+func getTopSoloScore() (SoloScore, bool) {
+	hs, _ := loadHighscores()
+	if len(hs.Solo) == 0 {
+		return SoloScore{}, false
+	}
+	if len(hs.Solo) == maxScores {
+		return hs.Solo[len(hs.Solo)-1], true
+	}
+	return hs.Solo[len(hs.Solo)-1], false
+}
+
+// Returns the score to beat to achieve a new Computer Highscore
+func getTopComputerScore() (ComputerScore, bool) {
+	hs, _ := loadHighscores()
+	var topScore []ComputerScore
+	if config.GlobalConfig.Difficulty < 0.33 {
+		topScore = hs.ComputerEasy
+	} else if config.GlobalConfig.Difficulty >= 0.33 && config.GlobalConfig.Difficulty < 0.66 {
+		topScore = hs.ComputerDefault
+	} else {
+		topScore = hs.ComputerHard
+	}
+	if len(topScore) == 0 {
+		return ComputerScore{}, false
+	}
+	if len(topScore) == maxScores {
+		return topScore[len(topScore)-1], true
+	}
+	return topScore[len(topScore)-1], false
+}
+
+// Returns the score to beat to achieve a new Multiplayer Highscore
+func getTopMultiplayerScore() (MultiplayerScore, bool) {
+	hs, _ := loadHighscores()
+	if len(hs.Multiplayer) == 0 {
+		return MultiplayerScore{}, false
+	}
+	if len(hs.Multiplayer) == maxScores {
+		return hs.Multiplayer[len(hs.Multiplayer)-1], true
+	}
+	return hs.Multiplayer[len(hs.Multiplayer)-1], false
+}
+
 // Save highscores to the JSON file
 func saveHighscores(hs *Highscores) error {
 	file, err := os.Create(highscoresFile)
@@ -64,21 +115,18 @@ func saveHighscores(hs *Highscores) error {
 	defer file.Close()
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ")
+	//fmt.Println("Salvo i punteggi: ", hs)
 	return encoder.Encode(hs)
 }
 
 // Add a solo score
-func AddSoloScore(player string, score int) error {
+func AddSoloScore(score SoloScore) error {
 	hs, err := loadHighscores()
 	if err != nil {
 		return err
 	}
 	// Store the date in RFC3339 for consistency, but display will format it
-	hs.Solo = append(hs.Solo, SoloScore{
-		DateTime: time.Now().Format(time.RFC3339),
-		Player:   player,
-		Score:    score,
-	})
+	hs.Solo = append(hs.Solo, score)
 	sort.Slice(hs.Solo, func(i, j int) bool {
 		return hs.Solo[i].Score > hs.Solo[j].Score
 	})
@@ -89,38 +137,50 @@ func AddSoloScore(player string, score int) error {
 }
 
 // Add a computer score
-func AddComputerScore(player, aiLevel string, score int) error {
+func AddComputerScore(score ComputerScore) error {
 	hs, err := loadHighscores()
 	if err != nil {
 		return err
 	}
-	hs.Computer = append(hs.Computer, ComputerScore{
-		DateTime: time.Now().Format(time.RFC3339),
-		Player:   player,
-		AILevel:  aiLevel,
-		Score:    score,
-	})
-	sort.Slice(hs.Computer, func(i, j int) bool {
-		return hs.Computer[i].Score > hs.Computer[j].Score
-	})
-	if len(hs.Computer) > maxScores {
-		hs.Computer = hs.Computer[:maxScores]
+	if config.GlobalConfig.Difficulty < 0.33 {
+
+		hs.ComputerEasy = append(hs.ComputerEasy, score)
+		sort.Slice(hs.ComputerEasy, func(i, j int) bool {
+			return hs.ComputerEasy[i].Score > hs.ComputerEasy[j].Score
+		})
+		if len(hs.ComputerEasy) > maxScores {
+			hs.ComputerEasy = hs.ComputerEasy[:maxScores]
+		}
+		return saveHighscores(hs)
+
+	} else if config.GlobalConfig.Difficulty >= 0.33 && config.GlobalConfig.Difficulty < 0.66 {
+		hs.ComputerDefault = append(hs.ComputerDefault, score)
+		sort.Slice(hs.ComputerDefault, func(i, j int) bool {
+			return hs.ComputerDefault[i].Score > hs.ComputerDefault[j].Score
+		})
+		if len(hs.ComputerDefault) > maxScores {
+			hs.ComputerDefault = hs.ComputerDefault[:maxScores]
+		}
+		return saveHighscores(hs)
+	} else {
+		hs.ComputerHard = append(hs.ComputerHard, score)
+		sort.Slice(hs.ComputerHard, func(i, j int) bool {
+			return hs.ComputerHard[i].Score > hs.ComputerHard[j].Score
+		})
+		if len(hs.ComputerHard) > maxScores {
+			hs.ComputerHard = hs.ComputerHard[:maxScores]
+		}
+		return saveHighscores(hs)
 	}
-	return saveHighscores(hs)
 }
 
 // Add a multiplayer score
-func AddMultiplayerScore(player1, player2 string, score int) error {
+func AddMultiplayerScore(score MultiplayerScore) error {
 	hs, err := loadHighscores()
 	if err != nil {
 		return err
 	}
-	hs.Multiplayer = append(hs.Multiplayer, MultiplayerScore{
-		DateTime: time.Now().Format(time.RFC3339),
-		Player1:  player1,
-		Player2:  player2,
-		Score:    score,
-	})
+	hs.Multiplayer = append(hs.Multiplayer, score)
 	sort.Slice(hs.Multiplayer, func(i, j int) bool {
 		return hs.Multiplayer[i].Score > hs.Multiplayer[j].Score
 	})
@@ -163,17 +223,25 @@ func GetSoloHighscoresStrings() []string {
 }
 
 // Get formatted computer highscores as a slice of strings (error handled internally)
-func GetComputerHighscoresStrings() []string {
+func GetComputerHighscoresStrings(selected int) []string {
 	hs, err := loadHighscores()
 	if err != nil {
 		return []string{"Error loading highscores"}
 	}
 	var result []string
+	var computer []ComputerScore
+	if selected == 0 {
+		computer = hs.ComputerEasy
+	} else if selected == 1 {
+		computer = hs.ComputerDefault
+	} else {
+		computer = hs.ComputerHard
+	}
 
 	// Find max lengths for alignment
 	maxPlayerLen := 0
 	maxAILevelLen := 0
-	for _, s := range hs.Computer {
+	for _, s := range computer {
 		if len(s.Player) > maxPlayerLen {
 			maxPlayerLen = len(s.Player)
 		}
@@ -181,7 +249,7 @@ func GetComputerHighscoresStrings() []string {
 			maxAILevelLen = len(s.AILevel)
 		}
 	}
-	for i, s := range hs.Computer {
+	for i, s := range computer {
 		t, err := time.Parse(time.RFC3339, s.DateTime)
 		dateStr := s.DateTime
 		if err == nil {

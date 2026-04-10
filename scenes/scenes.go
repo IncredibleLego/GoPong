@@ -7,10 +7,10 @@ import (
 type SceneId uint
 
 const (
-	GameSceneId SceneId = iota
-	StartSceneId
+	StartSceneId SceneId = iota
 	ExitSceneId
 	PauseSceneId
+	GameSceneId
 	ComputerSceneId
 	MultiplayerSceneId
 	OptionsSceneId

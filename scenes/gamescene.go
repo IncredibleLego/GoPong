@@ -5,6 +5,7 @@ import (
 	"goPong/objects"
 	"goPong/utils"
 	"image/color"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -16,7 +17,6 @@ type GameScene struct {
 	paddle     *objects.Paddle
 	ball       *objects.Ball
 	score      int
-	highScore  int
 	increase   int
 }
 
@@ -30,7 +30,6 @@ func NewGameScene() *GameScene {
 		paddle:     nil,
 		ball:       nil,
 		score:      0,
-		highScore:  0,
 		increase:   0,
 	}
 }
@@ -85,17 +84,12 @@ func (g *GameScene) FirstLoad() {
 	}
 	g.ball.GenerateRandomDirection()
 	g.score = 0
-	g.highScore = 0
 	g.ball.Reset(false)
 }
 
-func (g *GameScene) OnEnter() {
+func (g *GameScene) OnEnter() {}
 
-}
-
-func (g *GameScene) OnExit() {
-
-}
+func (g *GameScene) OnExit() {}
 
 func (g *GameScene) updateDimensions() {
 	g.ball.W = config.GlobalConfig.BallSize
@@ -108,6 +102,14 @@ func (g *GameScene) Update() SceneId {
 	g.updateDimensions()
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		highScore, maxAdded := getTopSoloScore()
+		if maxAdded == false || g.score >= highScore.Score {
+			DirtySoloScore = SoloScore{
+				DateTime: time.Now().Format(time.RFC3339),
+				Player:   g.playerName,
+				Score:    g.score,
+			}
+		}
 		return PauseSceneId
 	}
 
@@ -124,8 +126,7 @@ func (g *GameScene) Update() SceneId {
 	g.ball.CollideWithWall(false, true, config.GlobalConfig.PaddleWidth)
 
 	if g.ball.CollideWithPaddle(g.paddle, true, g.increase) {
-		g.IncreaseScore()
-		AddSoloScore(g.playerName, g.score)
+		g.score++
 		if g.score%5 == 0 {
 			g.increase += 2
 		}
@@ -135,10 +136,3 @@ func (g *GameScene) Update() SceneId {
 }
 
 var _ Scene = (*GameScene)(nil)
-
-func (g *GameScene) IncreaseScore() {
-	g.score++
-	if g.score > g.highScore {
-		g.highScore = g.score
-	}
-}
