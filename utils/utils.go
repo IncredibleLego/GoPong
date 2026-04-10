@@ -114,12 +114,23 @@ func HighscoresTableDraw(screen *ebiten.Image) {
 	}
 }
 
+// Who knows
 func Kubrick(name string) string {
 	if name == "COMPUTER" {
 		return "HAL 9000"
 	} else {
 		return "COMPUTER"
 	}
+}
+
+// Simple 3 values loop
+func Adjust(value int) int {
+	if value < 0 {
+		return 2
+	} else if value > 2 {
+		return 0
+	}
+	return value
 }
 
 func Color(colorName string) (float32, float32, float32, float32) {
