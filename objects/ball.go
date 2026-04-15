@@ -52,9 +52,11 @@ func (b *Ball) CollideWithWall(w1, w2 bool, wallDistance int) int { // Check if 
 		}
 	} else if b.Y <= 0 {
 		audio.PlayPaddle()
+		b.Y = 0
 		b.Dydt = -b.Dydt
 	} else if b.Y+b.H >= config.GlobalConfig.ScreenHeight {
 		audio.PlayPaddle()
+		b.Y = config.GlobalConfig.ScreenHeight - b.H
 		b.Dydt = -b.Dydt
 	}
 	return 0
