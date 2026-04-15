@@ -18,15 +18,13 @@ import (
 const (
 	gameOptionsMenuName   = "GAME OPTIONS"
 	screenOptionsMenuName = "SCREEN OPTIONS"
-	//generalOptionsMenuName = "GENERAL OPTIONS"
 )
 
 type OptionScene struct {
-	currentMenu menu.Menu
-	mainMenu    *menu.RegularMenu
-	gameMenu    *menu.OptionMenu
-	screenMenu  *menu.OptionMenu
-	//generalMenu        *menu.OptionMenu
+	currentMenu        menu.Menu
+	mainMenu           *menu.RegularMenu
+	gameMenu           *menu.OptionMenu
+	screenMenu         *menu.OptionMenu
 	scalePopup         *utils.Popup
 	lastEnterPressTime time.Time
 	actionExecuted     bool
@@ -37,11 +35,10 @@ type OptionScene struct {
 
 func NewOptionScene(previous SceneId) *OptionScene {
 	return &OptionScene{
-		currentMenu: nil,
-		mainMenu:    nil,
-		gameMenu:    nil,
-		screenMenu:  nil,
-		//generalMenu:     nil,
+		currentMenu:     nil,
+		mainMenu:        nil,
+		gameMenu:        nil,
+		screenMenu:      nil,
 		previousSceneId: previous,
 	}
 }
@@ -75,20 +72,9 @@ func (o *OptionScene) generateScreenMenuOptions() []string {
 	}
 }
 
-/*
-func (o *OptionScene) generateGeneralMenuOptions() []string {
-	return []string{
-		"Menu opt. per second: " + strconv.Itoa(int(config.GlobalConfig.MenuOptionsPerSecond)),
-		"Reset to default",
-		"Back to options",
-	}
-} */
-
 func (o *OptionScene) Draw(screen *ebiten.Image) {
 
-	//If selected menu is main menu print relative options
-	//When changing ball and paddle dimension, print relative on the screen
-
+	//If selected menu is main menu print relative options. When changing ball and paddle dimension, print relative on the screen
 	switch o.showOption {
 	case 1, 2:
 		x := config.GlobalConfig.ScreenWidth/2 - config.GlobalConfig.BallSize/2
@@ -119,7 +105,6 @@ func (o *OptionScene) FirstLoad() {
 		Options: []menu.MenuOption{
 			{Label: "GAME"},
 			{Label: "SCREEN"},
-			//{Label: "GENERAL"},
 			{Label: "BACK"},
 		},
 		Selected:     0,
@@ -138,14 +123,7 @@ func (o *OptionScene) FirstLoad() {
 		LastMoveTime: time.Now(),
 		MenuName:     screenOptionsMenuName,
 		Position:     (float64(config.GlobalConfig.ScreenHeight) * 0.3125),
-	} /*
-		o.generalMenu = &menu.OptionMenu{
-			Options:      o.generateGeneralMenuOptions(),
-			Selected:     0,
-			LastMoveTime: time.Now(),
-			MenuName:     generalOptionsMenuName,
-			Position:     (float64(config.GlobalConfig.ScreenHeight) * 0.41666),
-		} */
+	}
 	o.scalePopup = &utils.Popup{
 		Active:  false,
 		Text:    "Scale has changed, restart the game to apply changes",
@@ -169,7 +147,6 @@ func (o *OptionScene) Update() SceneId {
 	// Updates the current menu to print correctly the options
 	o.gameMenu.Options = o.generateGameMenuOptions()
 	o.screenMenu.Options = o.generateScreenMenuOptions()
-	//o.generalMenu.Options = o.generateGeneralMenuOptions()
 
 	if o.scalePopup.Active {
 		o.scalePopup.Update()
@@ -276,8 +253,6 @@ func handleOptionSelection(o *OptionScene, mode bool) {
 		handleGameMenuOptions(o, optionMenu.Selected, mode)
 	case screenOptionsMenuName:
 		handleScreenMenuOptions(o, optionMenu.Selected, mode)
-	/*case generalOptionsMenuName:
-	handleGeneralMenuOptions(o, optionMenu.Selected, mode)*/
 	default:
 		fmt.Println("Menu non riconosciuto:", optionMenu.MenuName)
 	}
@@ -349,7 +324,7 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 	// If mode is true = +, if false = -
 	switch selectedOption {
 	case 0:
-		updateConfigValueFloat(&config.GlobalConfig.TextDimension, 1, 35, 1, mode)
+		updateConfigValueFloat(&config.GlobalConfig.TextDimension, 1, 80, 1, mode)
 	case 1:
 		updateConfigValueFloat(&config.GlobalConfig.Scale, 0.67, 1.99, 0.33, mode)
 	case 2:
@@ -371,33 +346,6 @@ func handleScreenMenuOptions(o *OptionScene, selectedOption int, mode bool) {
 		}
 	}
 }
-
-/*
-func handleGeneralMenuOptions(o *OptionScene, selectedOption int, mode bool) {
-	// If mode is true = +, if false = -
-	var err error
-
-	switch selectedOption {
-	case 0:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			if mode && cfg.MenuOptionsPerSecond < 35 {
-				cfg.MenuOptionsPerSecond += 1
-			} else if !mode && cfg.MenuOptionsPerSecond > 1 {
-				cfg.MenuOptionsPerSecond -= 1
-			}
-			cfg.OptionsPerSecond += time.Duration(time.Second / cfg.MenuOptionsPerSecond)
-		})
-	case 1:
-		err = config.UpdateConfig(func(cfg *config.Config) {
-			cfg.MenuOptionsPerSecond = config.DefaultConfig.MenuOptionsPerSecond
-			cfg.OptionsPerSecond = config.DefaultConfig.OptionsPerSecond
-		})
-	}
-
-	if err != nil {
-		fmt.Println("Error during option saving", err)
-	}
-} */
 
 func (o *OptionScene) handleExitPopup() SceneId {
 	if o.scalePopup.Selected == 0 {
