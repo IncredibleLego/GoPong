@@ -82,11 +82,11 @@ func (h *HighScoresScene) Update() SceneId {
 	h.highscoreSelected = utils.Adjust(h.highscoreSelected)
 
 	if h.highscoreSelected != 1 {
-		h.computerSelected = 0
+		h.computerSelected = 1
 	} else if inpututil.IsKeyJustPressed(ebiten.KeyUp) {
-		h.computerSelected++
-	} else if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
 		h.computerSelected--
+	} else if inpututil.IsKeyJustPressed(ebiten.KeyDown) {
+		h.computerSelected++
 	}
 	h.computerSelected = utils.Adjust(h.computerSelected)
 
