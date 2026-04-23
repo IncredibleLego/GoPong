@@ -82,6 +82,8 @@ func (c *ComputerScene) FirstLoad() {
 			H: config.GlobalConfig.PaddleHeight,
 		},
 	}
+	c.enemyPaddle.InitAIStateFromCurrentY()
+
 	c.ball = &objects.Ball{
 		Object: &objects.Object{
 			X: config.GlobalConfig.ScreenWidth / 2,

@@ -3,7 +3,9 @@ package objects
 import (
 	"goPong/config"
 	"image/color"
+	"math"
 	"math/rand"
+	"time"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/vector"
@@ -11,6 +13,12 @@ import (
 
 type Paddle struct {
 	*Object
+	aiTargetY     float64
+	aiY           float64
+	aiVelocityY   float64
+	aiNextThink   time.Time
+	aiOffset      int
+	aiApproaching bool
 }
 
 func (p *Paddle) Draw(screen *ebiten.Image) {
@@ -21,67 +29,179 @@ func (p *Paddle) Draw(screen *ebiten.Image) {
 	)
 }
 
-func (p *Paddle) MoveOnKeyPress(keyUp, keyDown ebiten.Key) bool { // Move the paddle based on keypress
-	if ebiten.IsKeyPressed(keyDown) && p.Y+p.H < config.GlobalConfig.ScreenHeight { // can't go below the screen
+func (p *Paddle) MoveOnKeyPress(keyUp, keyDown ebiten.Key) bool {
+	if ebiten.IsKeyPressed(keyDown) && p.Y+p.H < config.GlobalConfig.ScreenHeight {
 		p.Y += config.GlobalConfig.PaddleSpeed
 		return true
 	}
-	if ebiten.IsKeyPressed(keyUp) && p.Y > 0 { // can't go above the screen
+	if ebiten.IsKeyPressed(keyUp) && p.Y > 0 {
 		p.Y -= config.GlobalConfig.PaddleSpeed
 		return true
 	}
 	return false
 }
 
-var aiTargetY int
-
+// AiMovement moves the paddle based on the ball's position and the current difficulty level
 func (p *Paddle) AiMovement(b *Ball) {
-	// Difficulty: 0.1 (easy) to 1.0 (hard)
-	// The main difference between difficulties is the % of hits, not speed.
+	now := time.Now()
+	difficulty := config.GlobalConfig.Difficulty
 
-	// Calculate max error based on difficulty (easy = more error)
-	maxError := int(float64(config.GlobalConfig.PaddleHeight) * (1.1 - config.GlobalConfig.Difficulty) * 0.7)
+	var reactionDelay time.Duration
+	var maxErrorPct float64
+	var speedMultiplier float64
+	var accelMultiplier float64
+
+	switch {
+	case difficulty < 0.33:
+		reactionDelay = 200 * time.Millisecond
+		maxErrorPct = 0.26
+		speedMultiplier = 0.78
+		accelMultiplier = 0.13
+	case difficulty < 0.66:
+		reactionDelay = 125 * time.Millisecond
+		maxErrorPct = 0.16
+		speedMultiplier = 1.00
+		accelMultiplier = 0.16
+	default:
+		reactionDelay = 70 * time.Millisecond
+		maxErrorPct = 0.08
+		speedMultiplier = 1.22
+		accelMultiplier = 0.20
+	}
+
+	// Generate min and max values for error, speed and acceleration based on the difficulty level
+	maxError := int(float64(p.H) * maxErrorPct)
 	if maxError < 4 {
 		maxError = 4
 	}
 
-	// AI reaction: only update target if ball is moving towards AI
-	if b.Dxdt < 0 {
-		randomOffset := randomInRange(-maxError, maxError)
-		aiTargetY = b.Y + randomOffset - p.H/2
+	maxSpeed := float64(config.GlobalConfig.PaddleSpeed) * speedMultiplier
+	if maxSpeed < 1 {
+		maxSpeed = 1
 	}
 
-	// Paddle speed: only slightly affected by difficulty
-	baseSpeed := float64(config.GlobalConfig.PaddleSpeed)
-	aiSpeed := int(baseSpeed * (0.85 + 0.3*config.GlobalConfig.Difficulty)) // 0.85x to 1.15x
-	if aiSpeed < 1 {
-		aiSpeed = 1
+	acceleration := maxSpeed * accelMultiplier
+	if acceleration < 0.25 {
+		acceleration = 0.25
 	}
 
-	// Main difficulty: chance to "miss" the ball
-	hitChance := config.GlobalConfig.Difficulty*0.7 + 0.25 // 0.25 (easy) to 0.95 (hard)
-	if rand.Float64() > hitChance {
-		// AI "misses" this frame: move less or not at all
+	centerY := float64(config.GlobalConfig.ScreenHeight/2 - p.H/2)
+
+	// If the ball is moving towards the paddle, it tries to intercept it
+	if b.Dxdt >= 0 {
+		p.aiApproaching = false
+		p.aiOffset = 0
+		p.aiTargetY = centerY
+
+		delta := p.aiTargetY - p.aiY
+		desiredVelocity := clampFloat(delta*0.08, -maxSpeed*0.55, maxSpeed*0.55)
+		p.aiVelocityY = approachFloat(p.aiVelocityY, desiredVelocity, acceleration)
+		p.aiY += p.aiVelocityY
+		p.syncPosition()
+		p.clampToScreen()
 		return
 	}
 
-	// Stop if the impact point has been reached (within 1 pixel)
-	delta := aiTargetY - p.Y
-	if abs(delta) <= 1 {
+	// If the ball is moving away from the paddle and the AI is not already approaching it calculates a new target position with some randomness
+	if !p.aiApproaching {
+		p.aiApproaching = true
+		p.aiOffset = randomInRange(-maxError, maxError)
+		p.aiTargetY = float64(b.Y + p.aiOffset - p.H/2)
+		p.aiNextThink = now
+	}
+
+	// Update the target position at certain intervals so simulate human-like reaction time
+	if now.After(p.aiNextThink) {
+		p.aiTargetY = float64(b.Y + p.aiOffset - p.H/2)
+		p.aiNextThink = now.Add(reactionDelay)
+	}
+
+	delta := p.aiTargetY - p.aiY
+
+	// If the paddle is close enough to the target it will slow down to avoid overshooting and make the movement more human-like
+	if math.Abs(delta) <= 1 {
+		p.aiVelocityY = approachFloat(p.aiVelocityY, 0, acceleration)
+		p.aiY += p.aiVelocityY
+		p.syncPosition()
+		p.clampToScreen()
 		return
 	}
 
-	// Move towards target, but not too fast
-	move := clamp(delta, -aiSpeed, aiSpeed)
-	p.Y += move
+	// Calculate the desired velocity based on the distance to the target with a maximum speed limit
+	desiredVelocity := clampFloat(delta*0.12, -maxSpeed, maxSpeed)
+	p.aiVelocityY = approachFloat(p.aiVelocityY, desiredVelocity, acceleration)
 
-	// Clamp to screen
+	p.aiY += p.aiVelocityY
+	p.syncPosition()
+	p.clampToScreen()
+}
+
+// Updates the paddle's Y to match the AI's calculated position
+func (p *Paddle) syncPosition() {
+	p.Y = int(math.Round(p.aiY))
+}
+
+// Mantein the paddle between the boundaries of the screen
+func (p *Paddle) clampToScreen() {
 	if p.Y < 0 {
 		p.Y = 0
+		p.aiY = 0
+		p.aiVelocityY = 0
 	}
 	if p.Y+p.H > config.GlobalConfig.ScreenHeight {
 		p.Y = config.GlobalConfig.ScreenHeight - p.H
+		p.aiY = float64(p.Y)
+		p.aiVelocityY = 0
 	}
+}
+
+// Apply min and max limits to a int value
+func clamp(value, min, max int) int {
+	if value < min {
+		return min
+	}
+	if value > max {
+		return max
+	}
+	return value
+}
+
+// Apply min and max limits to a float value
+func clampFloat(value, min, max float64) float64 {
+	if value < min {
+		return min
+	}
+	if value > max {
+		return max
+	}
+	return value
+}
+
+// If the paddle is abot to reach the target it will slow down to avoid overshooting and make the movement more human-like
+func approachFloat(current, target, step float64) float64 {
+	if current < target {
+		current += step
+		if current > target {
+			return target
+		}
+		return current
+	}
+	if current > target {
+		current -= step
+		if current < target {
+			return target
+		}
+		return current
+	}
+	return current
+}
+
+// Initializes the AI state to avoid random behavior at the start of the game or after a pause
+func (p *Paddle) InitAIStateFromCurrentY() {
+	p.aiY = float64(p.Y)
+	p.aiTargetY = float64(p.Y)
+	p.aiVelocityY = 0
+	p.aiApproaching = false
 }
 
 func abs(x int) int {
@@ -93,13 +213,4 @@ func abs(x int) int {
 
 func randomInRange(min, max int) int {
 	return rand.Intn(max-min+1) + min
-}
-
-func clamp(value, min, max int) int {
-	if value < min {
-		return min
-	} else if value > max {
-		return max
-	}
-	return value
 }
