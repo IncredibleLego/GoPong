@@ -47,7 +47,6 @@ func (g *Game) Update() error {
 	nextSceneId := g.sceneMap[g.activeSceneId].Update()
 	// If the next scene is the exit scene, the game is terminated
 	if nextSceneId == scenes.ExitSceneId {
-		g.sceneMap[g.activeSceneId].OnExit()
 		return ebiten.Termination
 	}
 	// Instead, if the scene has changed:
@@ -107,9 +106,7 @@ func (g *Game) Update() error {
 			nextScene.FirstLoad()
 			g.loadedScenes[nextSceneId] = true
 		}
-		// The current scene is exited
-		g.sceneMap[g.activeSceneId].OnExit()
-		// If the current scene is not the pause scene or the options scene, the last scene id is saved
+		// The current scene is exited. If the current scene is not the pause scene or the options scene, the last scene id is saved
 		if g.activeSceneId == scenes.GameSceneId || g.activeSceneId == scenes.ComputerSceneId || g.activeSceneId == scenes.MultiplayerSceneId {
 			g.lastSceneId = g.activeSceneId
 		}

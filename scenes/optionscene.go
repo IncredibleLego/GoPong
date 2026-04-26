@@ -136,8 +136,6 @@ func (o *OptionScene) FirstLoad() {
 
 func (o *OptionScene) OnEnter() {}
 
-func (o *OptionScene) OnExit() {}
-
 func (o *OptionScene) ShouldPreserveState(reason SceneChangeReason) bool {
 	return false
 }

@@ -23,7 +23,6 @@ type Scene interface {
 	Draw(screen *ebiten.Image)
 	FirstLoad()
 	OnEnter()
-	OnExit()
 	ShouldPreserveState(reason SceneChangeReason) bool
 }
 

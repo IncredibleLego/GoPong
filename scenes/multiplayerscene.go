@@ -114,8 +114,6 @@ func (m *MultiplayerScene) FirstLoad() {
 
 func (m *MultiplayerScene) OnEnter() {}
 
-func (m *MultiplayerScene) OnExit() {}
-
 func (m *MultiplayerScene) updateDimensions() {
 	m.ball.W = config.GlobalConfig.BallSize
 	m.ball.H = config.GlobalConfig.BallSize

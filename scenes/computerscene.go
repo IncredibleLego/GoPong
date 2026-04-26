@@ -129,8 +129,6 @@ func (c *ComputerScene) FirstLoad() {
 
 func (c *ComputerScene) OnEnter() {}
 
-func (c *ComputerScene) OnExit() {}
-
 func (c *ComputerScene) updateDimensions() {
 	c.ball.W = config.GlobalConfig.BallSize
 	c.ball.H = config.GlobalConfig.BallSize

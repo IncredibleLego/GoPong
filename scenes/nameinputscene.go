@@ -97,13 +97,7 @@ func (n *NameInputScene) FirstLoad() {
 	n.lastEnterPressTime = time.Now()
 }
 
-func (n *NameInputScene) OnEnter() {
-
-}
-
-func (n *NameInputScene) OnExit() {
-
-}
+func (n *NameInputScene) OnEnter() {}
 
 func (n *NameInputScene) ShouldPreserveState(reason SceneChangeReason) bool {
 	return false

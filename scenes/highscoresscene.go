@@ -63,13 +63,9 @@ func (h *HighScoresScene) Draw(screen *ebiten.Image) {
 	}
 }
 
-func (h *HighScoresScene) FirstLoad() {
-
-}
+func (h *HighScoresScene) FirstLoad() {}
 
 func (h *HighScoresScene) OnEnter() {}
-
-func (h *HighScoresScene) OnExit() {}
 
 func (h *HighScoresScene) Update() SceneId {
 

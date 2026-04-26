@@ -103,8 +103,6 @@ func (g *GameScene) FirstLoad() {
 
 func (g *GameScene) OnEnter() {}
 
-func (g *GameScene) OnExit() {}
-
 func (g *GameScene) updateDimensions() {
 	g.ball.W = config.GlobalConfig.BallSize
 	g.ball.H = config.GlobalConfig.BallSize

@@ -79,18 +79,7 @@ func (s *StartScene) FirstLoad() {
 	s.actionExecuted = false
 }
 
-/*
-popupWidth := int(float64(config.GlobalConfig.ScreenWidth) * 0.4)  // 40% della larghezza
-popupHeight := int(float64(config.GlobalConfig.ScreenHeight) * 0.2) // 20% dell'altezza
-*/
-
-func (s *StartScene) OnEnter() {
-
-}
-
-func (s *StartScene) OnExit() {
-
-}
+func (s *StartScene) OnEnter() {}
 
 func (s *StartScene) Update() SceneId {
 	if s.exitPopup.Active {

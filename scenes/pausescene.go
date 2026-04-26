@@ -50,10 +50,6 @@ func (p *PauseScene) OnEnter() {
 	}
 }
 
-func (p *PauseScene) OnExit() {
-
-}
-
 func (p *PauseScene) Update() SceneId {
 
 	p.pauseMenu.Update()
