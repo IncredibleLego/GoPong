@@ -114,6 +114,11 @@ func HighscoresTableDraw(screen *ebiten.Image) {
 	}
 }
 
+// Prints the new highscore message
+func NewHighscore(screen *ebiten.Image) {
+	ScreenDraw(-3, float64(config.GlobalConfig.ScreenWidth/9*5), float64(config.GlobalConfig.ScreenHeight)-float64(config.GlobalConfig.ScreenHeight)*0.10, "yellow", screen, "NEW HIGHSCORE!")
+}
+
 // Who knows
 func Kubrick(name string) string {
 	if name == "COMPUTER" {

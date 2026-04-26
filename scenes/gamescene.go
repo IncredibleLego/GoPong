@@ -18,6 +18,9 @@ type GameScene struct {
 	ball       *objects.Ball
 	score      int
 	increase   int
+	bestScore  int
+	showRecord bool
+	recordTime time.Time
 }
 
 func (g *GameScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -59,6 +62,11 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 		float32(config.GlobalConfig.PaddleWidth), float32(config.GlobalConfig.ScreenHeight),
 		color.White, false,
 	)
+
+	// Print message once if a new record is set
+	if g.showRecord && time.Now().Before(g.recordTime) {
+		utils.NewHighscore(screen)
+	}
 }
 
 // FirstLoad implements Scene.
@@ -84,6 +92,12 @@ func (g *GameScene) FirstLoad() {
 	}
 	g.ball.GenerateRandomDirection()
 	g.score = 0
+	hs, _ := loadHighscores()
+	if len(hs.Solo) == 0 {
+		g.bestScore = 0
+	} else {
+		g.bestScore = hs.Solo[0].Score
+	}
 	g.ball.Reset(false)
 }
 
@@ -127,6 +141,10 @@ func (g *GameScene) Update() SceneId {
 
 	if g.ball.CollideWithPaddle(g.paddle, true, g.increase) {
 		g.score++
+		if g.score > g.bestScore && g.showRecord == false {
+			g.showRecord = true
+			g.recordTime = time.Now().Add(3 * time.Second)
+		}
 		if g.score%5 == 0 {
 			g.increase += 2
 		}

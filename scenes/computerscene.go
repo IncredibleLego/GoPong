@@ -18,6 +18,9 @@ type ComputerScene struct {
 	ball        *objects.Ball
 	score       int
 	scoreEnemy  int
+	bestScore   int
+	showRecord  bool
+	recordTime  time.Time
 }
 
 func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -61,6 +64,10 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	utils.ScreenDraw(-3, X1, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, c.enemyName)
 	utils.ScreenDraw(-3, X2, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, c.playerName)
 
+	// Print message once if new record is set
+	if c.showRecord && time.Now().Before(c.recordTime) {
+		utils.NewHighscore(screen)
+	}
 }
 
 // FirstLoad implements Scene.
@@ -97,6 +104,26 @@ func (c *ComputerScene) FirstLoad() {
 	c.ball.GenerateRandomDirection()
 	c.score = 0
 	c.scoreEnemy = 0
+	hs, _ := loadHighscores()
+	if config.GlobalConfig.Difficulty < 0.33 {
+		if len(hs.ComputerEasy) == 0 {
+			c.bestScore = 0
+		} else {
+			c.bestScore = hs.ComputerEasy[0].Score
+		}
+	} else if config.GlobalConfig.Difficulty < 0.66 {
+		if len(hs.ComputerDefault) == 0 {
+			c.bestScore = 0
+		} else {
+			c.bestScore = hs.ComputerDefault[0].Score
+		}
+	} else {
+		if len(hs.ComputerHard) == 0 {
+			c.bestScore = 0
+		} else {
+			c.bestScore = hs.ComputerHard[0].Score
+		}
+	}
 	c.ball.Reset(false)
 }
 
@@ -137,6 +164,11 @@ func (c *ComputerScene) Update() SceneId {
 		c.score++
 	} else if test == 2 {
 		c.scoreEnemy++
+	}
+
+	if c.score > c.bestScore && c.showRecord == false {
+		c.showRecord = true
+		c.recordTime = time.Now().Add(3 * time.Second)
 	}
 
 	c.ball.CollideWithPaddle(c.paddle, true, 0)
