@@ -104,10 +104,12 @@ func (b *Ball) CollideWithPaddle(p *Paddle, direction bool, increase int) bool {
 		// Update the ball's velocity
 		b.Dydt = -int(newDydt) + increase
 
-		if !direction {
-			b.Dxdt = int(newDxdt) + increase
+		if direction {
+			b.X = p.X - b.W
+			b.Dxdt = -(int(newDxdt) + increase)
 		} else {
-			b.Dxdt = -int(newDxdt) - increase
+			b.X = p.X + p.W
+			b.Dxdt = int(newDxdt) + increase
 		}
 
 		return true
