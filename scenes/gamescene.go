@@ -134,6 +134,22 @@ func (g *GameScene) Update() SceneId {
 	g.ball.Move()
 
 	if g.ball.X+g.ball.W >= config.GlobalConfig.ScreenWidth {
+		// If the score at the end of the game is higher than the best score, the best score is updated
+		if g.score > g.bestScore {
+			g.bestScore = g.score
+		}
+
+		// If the score is higher than the lowest score in the highscore list, the score is added to the highscore list
+		highScore, maxAdded := getTopSoloScore()
+		if maxAdded == false && g.score >= highScore.Score && g.score != 0 {
+			DirtySoloScore = SoloScore{
+				DateTime: time.Now().Format(time.RFC3339),
+				Player:   g.playerName,
+				Score:    g.score,
+			}
+			AddSoloScore(DirtySoloScore)
+			g.showRecord = false
+		}
 		g.score = 0
 		g.increase = 0
 	}
