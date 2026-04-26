@@ -64,6 +64,11 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	utils.ScreenDraw(-3, X1, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, c.enemyName)
 	utils.ScreenDraw(-3, X2, float64(config.GlobalConfig.ScreenHeight)/72, "white", screen, c.playerName)
 
+	X3 := float64(config.GlobalConfig.ScreenWidth/4) - ((config.GlobalConfig.TextDimension - 3) * float64(len(config.DifficultyString())/2))
+
+	// Prints the actual difficulty
+	utils.ScreenDraw(-3, X3, float64(config.GlobalConfig.ScreenHeight)-float64(config.GlobalConfig.ScreenHeight)*0.10, "white", screen, config.DifficultyString())
+
 	// Print message once if new record is set
 	if c.showRecord && time.Now().Before(c.recordTime) {
 		utils.NewHighscore(screen)
