@@ -59,7 +59,7 @@ func (g *GameScene) Draw(screen *ebiten.Image) {
 	// Draw Wall on left
 	vector.DrawFilledRect(screen,
 		0, 0,
-		float32(config.GlobalConfig.PaddleWidth), float32(config.GlobalConfig.ScreenHeight),
+		float32(config.DefaultConfig.PaddleWidth), float32(config.GlobalConfig.ScreenHeight),
 		color.White, false,
 	)
 
@@ -107,6 +107,8 @@ func (g *GameScene) updateDimensions() {
 	g.ball.W = config.GlobalConfig.BallSize
 	g.ball.H = config.GlobalConfig.BallSize
 	g.paddle.H = config.GlobalConfig.PaddleHeight
+	g.paddle.W = config.GlobalConfig.PaddleWidth
+	g.paddle.X = config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall
 }
 
 func (g *GameScene) Update() SceneId {

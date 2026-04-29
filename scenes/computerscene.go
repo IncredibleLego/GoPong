@@ -139,6 +139,10 @@ func (c *ComputerScene) updateDimensions() {
 	c.ball.H = config.GlobalConfig.BallSize
 	c.paddle.H = config.GlobalConfig.PaddleHeight
 	c.enemyPaddle.H = config.GlobalConfig.PaddleHeight
+	c.paddle.W = config.GlobalConfig.PaddleWidth
+	c.enemyPaddle.W = config.GlobalConfig.PaddleWidth
+	c.paddle.X = config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall
+	c.enemyPaddle.X = config.GlobalConfig.PaddleDistanceFromWall
 }
 
 func (c *ComputerScene) Update() SceneId {

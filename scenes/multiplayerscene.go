@@ -119,6 +119,10 @@ func (m *MultiplayerScene) updateDimensions() {
 	m.ball.H = config.GlobalConfig.BallSize
 	m.paddle1.H = config.GlobalConfig.PaddleHeight
 	m.paddle2.H = config.GlobalConfig.PaddleHeight
+	m.paddle1.W = config.GlobalConfig.PaddleWidth
+	m.paddle2.W = config.GlobalConfig.PaddleWidth
+	m.paddle1.X = config.GlobalConfig.ScreenWidth - config.GlobalConfig.PaddleDistanceFromWall
+	m.paddle2.X = config.GlobalConfig.PaddleDistanceFromWall
 }
 
 func (m *MultiplayerScene) Update() SceneId {
