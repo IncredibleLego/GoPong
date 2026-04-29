@@ -69,6 +69,22 @@ func (p *Popup) Draw(screen *ebiten.Image) {
 }
 
 func (p *Popup) Update() {
+	if len(p.Options) == 0 {
+		return
+	}
+
+	mouseX, mouseY := ebiten.CursorPosition()
+	mousePressed := inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)
+	for i := range p.Options {
+		left, top, right, bottom := p.optionBounds(i)
+		if float64(mouseX) >= left && float64(mouseX) <= right && float64(mouseY) >= top && float64(mouseY) <= bottom {
+			p.Selected = i
+			if mousePressed {
+				p.LastMoveTime = time.Now()
+			}
+		}
+	}
+
 	arrowLeft := inpututil.KeyPressDuration(ebiten.KeyArrowLeft)
 	keyA := inpututil.KeyPressDuration(ebiten.KeyA)
 
@@ -89,6 +105,25 @@ func (p *Popup) Update() {
 		}
 		p.LastMoveTime = time.Now()
 	}
+}
+
+// Function created by copilot to calculate the bounds of an option in the popup based on its index
+func (p *Popup) optionBounds(index int) (float64, float64, float64, float64) {
+	popupWidth := config.GlobalConfig.PopupWidth
+	popupHeight := config.GlobalConfig.PopupHeight
+	popupX := float64(config.GlobalConfig.ScreenWidth/2 - popupWidth/2)
+	popupY := float64(config.GlobalConfig.ScreenHeight/2 - popupHeight/2)
+	space := float64(popupHeight) * 0.137931034
+	spacing := space * 4
+	startX := popupX + float64(popupWidth)/2 - spacing*float64(len(p.Options)-1)/2
+	y := popupY + float64(popupHeight)*0.75
+
+	textWidth, _ := MeasureText(p.Options[index])
+	x := startX + float64(index)*spacing
+	paddingX := space * 0.35
+	paddingY := space * 0.6
+
+	return x - float64(textWidth)/2 - paddingX, y - paddingY, x + float64(textWidth)/2 + paddingX, y + paddingY
 }
 
 // Function creted by copilot

@@ -91,7 +91,7 @@ func (c *CreditsScene) OnEnter() {}
 
 func (c *CreditsScene) Update() SceneId {
 	if !c.secret {
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 			return StartSceneId
 		}
 		if inpututil.IsKeyJustPressed(ebiten.KeyI) {
