@@ -8,6 +8,7 @@ import (
 )
 
 var IsFullscreen bool
+var Secret bool
 
 type Config struct {
 	Scale                  float64

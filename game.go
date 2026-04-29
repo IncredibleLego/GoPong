@@ -25,6 +25,7 @@ func NewGame() *Game {
 		scenes.OptionsSceneId:     nil,
 		scenes.NameInputSceneId:   nil,
 		scenes.HighScoresSceneId:  nil,
+		scenes.CreditsSceneId:     scenes.NewCreditsScene(),
 	}
 	activeSceneId := scenes.StartSceneId
 	sceneMap[activeSceneId].FirstLoad()
@@ -98,7 +99,6 @@ func (g *Game) Update() error {
 			// If the next scene is not the pause scene, the name input scene, the highscoresscene or the exit scene, the reason is set to "exit"
 			reason = scenes.Exit
 		}
-
 		// nextScene is the new scene to be loaded
 		nextScene := g.sceneMap[nextSceneId]
 		// If the scene is not loaded or should not preserve state, it is initialized wirh FirstLoad

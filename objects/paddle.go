@@ -22,10 +22,17 @@ type Paddle struct {
 }
 
 func (p *Paddle) Draw(screen *ebiten.Image) {
+	var colore color.RGBA
+	if config.Secret {
+		colore = color.RGBA{253, 137, 0, 1}
+	} else {
+		colore = color.RGBA{255, 255, 255, 255}
+	}
+
 	vector.DrawFilledRect(screen,
 		float32(p.X), float32(p.Y),
 		float32(p.W), float32(p.H),
-		color.White, false,
+		colore, false,
 	)
 }
 

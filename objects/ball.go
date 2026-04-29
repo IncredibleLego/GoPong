@@ -19,10 +19,17 @@ type Ball struct {
 }
 
 func (b *Ball) Draw(screen *ebiten.Image) {
+	var colore color.RGBA
+	if config.Secret {
+		colore = color.RGBA{97, 0, 255, 1}
+	} else {
+		colore = color.RGBA{255, 255, 255, 255}
+	}
+
 	vector.DrawFilledRect(screen,
 		float32(b.X), float32(b.Y),
 		float32(b.W), float32(b.H),
-		color.White, false,
+		colore, false,
 	)
 }
 
