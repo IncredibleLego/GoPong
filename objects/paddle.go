@@ -28,7 +28,6 @@ func (p *Paddle) Draw(screen *ebiten.Image) {
 	} else {
 		colore = color.RGBA{255, 255, 255, 255}
 	}
-
 	vector.DrawFilledRect(screen,
 		float32(p.X), float32(p.Y),
 		float32(p.W), float32(p.H),
@@ -36,6 +35,7 @@ func (p *Paddle) Draw(screen *ebiten.Image) {
 	)
 }
 
+// MoveOnKeyPress moves the paddle based on the key pressed by the player. It returns true if the paddle moved, false otherwise
 func (p *Paddle) MoveOnKeyPress(keyUp, keyDown ebiten.Key) bool {
 	if ebiten.IsKeyPressed(keyDown) && p.Y+p.H < config.GlobalConfig.ScreenHeight {
 		p.Y += config.GlobalConfig.PaddleSpeed
@@ -148,7 +148,7 @@ func (p *Paddle) syncPosition() {
 	p.Y = int(math.Round(p.aiY))
 }
 
-// Mantein the paddle between the boundaries of the screen
+// Maintain the paddle between the boundaries of the screen
 func (p *Paddle) clampToScreen() {
 	if p.Y < 0 {
 		p.Y = 0
@@ -211,6 +211,7 @@ func (p *Paddle) InitAIStateFromCurrentY() {
 	p.aiApproaching = false
 }
 
+// Absolute value function for integers
 func abs(x int) int {
 	if x < 0 {
 		return -x
@@ -218,6 +219,7 @@ func abs(x int) int {
 	return x
 }
 
+// Generates a random integer between min and max (inclusive)
 func randomInRange(min, max int) int {
 	return rand.Intn(max-min+1) + min
 }

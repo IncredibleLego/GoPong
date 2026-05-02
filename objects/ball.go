@@ -25,7 +25,6 @@ func (b *Ball) Draw(screen *ebiten.Image) {
 	} else {
 		colore = color.RGBA{255, 255, 255, 255}
 	}
-
 	vector.DrawFilledRect(screen,
 		float32(b.X), float32(b.Y),
 		float32(b.W), float32(b.H),
@@ -33,13 +32,14 @@ func (b *Ball) Draw(screen *ebiten.Image) {
 	)
 }
 
-func (b *Ball) Move() { // Move the ball
+// Move updates the ball's position based on its velocity
+func (b *Ball) Move() {
 	b.X += b.Dxdt
 	b.Y += b.Dydt
 }
 
-// w1 and w2 are the horizontal walls options that the ball can collide with
-func (b *Ball) CollideWithWall(w1, w2 bool, wallDistance int) int { // Check if the ball collides with the wall
+// Checks if the ball collides with the walls and updates its velocity accordingly. w1 and w2 are the horizontal walls options that the ball can collide with
+func (b *Ball) CollideWithWall(w1, w2 bool, wallDistance int) int {
 	if b.X <= wallDistance {
 		if w1 {
 			audio.PlayScore()
@@ -69,7 +69,8 @@ func (b *Ball) CollideWithWall(w1, w2 bool, wallDistance int) int { // Check if 
 	return 0
 }
 
-func (b *Ball) CollideWithPaddle(p *Paddle, direction bool, increase int) bool { // Check if the ball collides with the paddle
+// CollideWithPaddle checks if the ball collides with the paddle and updates its velocity accordingly
+func (b *Ball) CollideWithPaddle(p *Paddle, direction bool, increase int) bool {
 	check := false
 
 	// direction is true if the ball is moving to the left, false otherwise
@@ -125,7 +126,8 @@ func (b *Ball) CollideWithPaddle(p *Paddle, direction bool, increase int) bool {
 	return false
 }
 
-func (b *Ball) Reset(p bool) { // Reset the ball to the center of the screen
+// Reset resets the ball to the center of the screen and gives it a random direction giving the player who scored
+func (b *Ball) Reset(p bool) {
 	go func() {
 		b.X = config.GlobalConfig.ScreenWidth/2 - b.W/2
 		b.Y = config.GlobalConfig.ScreenHeight/2 - b.H/2
@@ -135,19 +137,16 @@ func (b *Ball) Reset(p bool) { // Reset the ball to the center of the screen
 
 		b.GenerateRandomDirection()
 
-		// Ensure the ball moves in the correct direction based on the player who scored
 		if p {
 			b.Dxdt = -b.Dxdt
 		}
 	}()
 }
 
+// GenerateRandomDirection generates a random direction for the ball to move in, with a random angle between -45 and 45 degrees
 func (b *Ball) GenerateRandomDirection() {
-	// Generate a random angle between -45 and 45 degrees
 	angle := rand.Float64()*90 - 45
 	radians := angle * (math.Pi / 180)
-
-	// Calculate the new velocities based on the angle
 	b.Dxdt = int(float64(config.GlobalConfig.BallSpeed) * math.Cos(radians))
 	b.Dydt = int(float64(config.GlobalConfig.BallSpeed) * math.Sin(radians))
 }
