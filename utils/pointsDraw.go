@@ -8,8 +8,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+// Draw the points on the screen
 func PointsDraw(screen *ebiten.Image, X, Y float32, score int) {
-	// Draw the points
 	printPoint(screen, X+70*float32(config.GlobalConfig.Scale), Y, score%10)
 	if score/10 != 0 {
 		printPoint(screen, X, Y, score/10)

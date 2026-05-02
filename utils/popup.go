@@ -126,7 +126,7 @@ func (p *Popup) optionBounds(index int) (float64, float64, float64, float64) {
 	return x - float64(textWidth)/2 - paddingX, y - paddingY, x + float64(textWidth)/2 + paddingX, y + paddingY
 }
 
-// Function creted by copilot
+// Function created by copilot to wrap text into multiple lines based on a maximum number of characters per line
 func wrapText(text string, maxChars int) []string {
 	words := strings.Fields(text)
 	var lines []string

@@ -8,35 +8,15 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
+// Draw the title of the game on the screen using vector graphics and text
 func TitleDraw(screen *ebiten.Image) {
-	//Lettere 82 spazio 21 bordere 14
-
-	// Draw Options
-
-	//var X float32 = 21     // Starting X position
 	var Y float32 = float32(config.GlobalConfig.ScreenHeight / 8)       // Y of the letters
 	var border float32 = float32(config.GlobalConfig.ScreenHeight / 48) // Border size
 	var space float32 = float32(config.GlobalConfig.ScreenHeight / 12)  // Space between letters
 	var letterHeight float32 = float32(config.GlobalConfig.ScreenHeight / 6)
 	var letterWidth float32 = float32(config.GlobalConfig.ScreenHeight / 8)
-
-	//var titleColor1 = color.RGBA{240, 45, 60, 255}
-
 	var titleColor1 = color.RGBA{77, 153, 255, 255}
 	var titleColor2 = color.RGBA{0, 255, 255, 255}
-
-	/*
-		var Y float32 = 30     // Y of the letters
-		var border float32 = 9 // Border size
-		var space float32 = 21 // Space between letters
-		var letterHeight float32 = 100
-		var letterWidth float32 = 82
-	*/
-
-	// 82*6 (492) + 21*7 (147) = 639
-
-	// Change colors to the letters to make more cool
-	// Do the same thing but I need a new commit
 
 	// Draw "G"
 	vector.DrawFilledRect(screen,
