@@ -80,14 +80,6 @@ func (m *RegularMenu) Update() Menu {
 		m.Selected = mouseOverOption
 	}
 
-	/*
-		// If the left mouse button is pressed, select the option and return the submenu if it exists
-		if mouseOverOption != -1 && inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
-			if m.Options[mouseOverOption].SubMenu != nil {
-				return m.Options[mouseOverOption].SubMenu
-			}
-		} */
-
 	arrowUp := inpututil.KeyPressDuration(ebiten.KeyArrowUp)
 	keyW := inpututil.KeyPressDuration(ebiten.KeyW)
 
@@ -108,12 +100,6 @@ func (m *RegularMenu) Update() Menu {
 		}
 		m.LastMoveTime = time.Now()
 	}
-	/*
-		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-			if m.Options[m.Selected].SubMenu != nil {
-				return m.Options[m.Selected].SubMenu
-			}
-		} */
 
 	return nil
 }
