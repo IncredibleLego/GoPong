@@ -73,7 +73,7 @@ var DefaultConfig = &Config{
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
 }
 
-// Applica la scala ai valori di default e aggiorna la config
+// Applys the scale to the default values and updates the config
 func ApplyScaleToConfig(cfg *Config, scale float64) {
 	cfg.Scale = scale
 	cfg.BallSpeed = int(math.Round(float64(DefaultConfig.BallSpeed) * scale))
@@ -89,7 +89,7 @@ func ApplyScaleToConfig(cfg *Config, scale float64) {
 	cfg.TextDimension = math.Round(DefaultConfig.TextDimension * scale)
 }
 
-// Cambia la scala e aggiorna la configurazione globale
+// ChangeScale changes the scale and updates the global configuration
 func ChangeScale(newScale float64) error {
 	ApplyScaleToConfig(GlobalConfig, newScale)
 	return SaveConfig(GlobalConfig)

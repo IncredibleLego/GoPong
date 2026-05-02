@@ -38,6 +38,7 @@ var (
 	scorePlayer   *audio.Player
 )
 
+// Initialize the audio context and load the sound effects into players
 func Init() {
 	audioContext = audio.NewContext(44100)
 	rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -63,6 +64,7 @@ func Init() {
 	}
 }
 
+// Decode MP3 data to PCM format
 func decodeToPCM(mp3data []byte) []byte {
 	stream, err := mp3.DecodeWithSampleRate(44100, bytes.NewReader(mp3data))
 	if err != nil {
@@ -78,6 +80,7 @@ func decodeToPCM(mp3data []byte) []byte {
 	return buf.Bytes()
 }
 
+// Play a random paddle sound effect
 func PlayPaddle() {
 	if len(paddlePlayers) == 0 {
 		return
@@ -90,6 +93,7 @@ func PlayPaddle() {
 	player.Play()
 }
 
+// Play the score sound effect
 func PlayScore() {
 	if scorePlayer == nil {
 		return
