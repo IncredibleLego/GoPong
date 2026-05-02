@@ -34,8 +34,6 @@ func NewStartScene() *StartScene {
 }
 
 func (s *StartScene) Draw(screen *ebiten.Image) {
-	//Letter 82 space 21 dimension 14
-
 	utils.TitleDraw(screen)
 
 	s.currentMenu.Draw(screen)
@@ -83,7 +81,6 @@ func (s *StartScene) OnEnter() {}
 
 func (s *StartScene) Update() SceneId {
 	if s.exitPopup.Active {
-		//fmt.Println("ExitPopup Selected:", s.exitPopup.Selected)
 		s.exitPopup.Update()
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 			id := s.handleExitPopup()
@@ -97,15 +94,15 @@ func (s *StartScene) Update() SceneId {
 			} else {
 				fmt.Println("Error: nextMenu is not of type *menu.RegularMenu")
 			}
-			s.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
+			s.lastEnterPressTime = time.Now() // Resets the time to avoid immediate inputs
 			s.actionExecuted = false
 		} else {
-			// Evita l'esecuzione immediata dopo il cambio menu
+			// Avoid immediate execution after menu change
 			if time.Since(s.lastEnterPressTime) > 200*time.Millisecond {
-				// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
+				// Checks if Enter is pressed and we haven't already executed the action
 				if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !s.actionExecuted {
 					id := s.handleMenuSelection()
-					s.actionExecuted = true // Evita che venga eseguito più volte
+					s.actionExecuted = true
 					if id != StartSceneId {
 						s.currentMenu = s.mainMenu
 						return id
@@ -113,7 +110,6 @@ func (s *StartScene) Update() SceneId {
 				}
 			}
 		}
-		// Se Enter viene rilasciato, permetti nuove azioni
 		if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			s.actionExecuted = false
 		}
@@ -159,7 +155,6 @@ func (s *StartScene) handleMenuSelection() SceneId {
 }
 
 func (s *StartScene) handleExitPopup() SceneId {
-	//fmt.Println("ExitPopup Selected:", s.exitPopup.Selected)
 	if s.exitPopup.Selected == 0 {
 		return ExitSceneId
 	} else {

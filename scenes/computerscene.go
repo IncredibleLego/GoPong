@@ -75,7 +75,6 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	}
 }
 
-// FirstLoad implements Scene.
 func (c *ComputerScene) FirstLoad() {
 	c.playerName = config.GlobalConfig.Player1Name
 	c.paddle = &objects.Paddle{
@@ -134,6 +133,7 @@ func (c *ComputerScene) FirstLoad() {
 
 func (c *ComputerScene) OnEnter() {}
 
+// Upates the values of the scene every frame to reflect changes in the config
 func (c *ComputerScene) updateDimensions() {
 	c.ball.W = config.GlobalConfig.BallSize
 	c.ball.H = config.GlobalConfig.BallSize

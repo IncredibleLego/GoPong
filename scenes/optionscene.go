@@ -156,12 +156,12 @@ func (o *OptionScene) Update() SceneId {
 		nextMenu := o.currentMenu.Update()
 		if nextMenu != nil {
 			o.currentMenu = nextMenu
-			o.lastEnterPressTime = time.Now() // Resetta il tempo per evitare input immediati
+			o.lastEnterPressTime = time.Now() // Resets the timer to avoid immediate inputs
 			o.actionExecuted = false
 		} else {
-			// Evita l'esecuzione immediata dopo il cambio menu
+			// Avoid immediate execution after changing menu
 			if time.Since(o.lastEnterPressTime) > 200*time.Millisecond {
-				// Controlla se il menu corrente è un OptionMenu
+				// Check if the current menu is an OptionMenu
 				if _, ok := o.currentMenu.(*menu.OptionMenu); ok {
 
 					arrowRight := inpututil.KeyPressDuration(ebiten.KeyArrowRight)
@@ -170,11 +170,9 @@ func (o *OptionScene) Update() SceneId {
 					arrowLeft := inpututil.KeyPressDuration(ebiten.KeyArrowLeft)
 					keyA := inpututil.KeyPressDuration(ebiten.KeyA)
 
-					// Effettua un'asserzione di tipo per accedere a OptionMenu
-
 					optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
 					if !ok {
-						fmt.Println("Errore: currentMenu non è un OptionMenu")
+						fmt.Println("Error: currentMenu is not an OptionMenu")
 					}
 
 					// Make it print only if the menu is the gameMenu
@@ -191,14 +189,9 @@ func (o *OptionScene) Update() SceneId {
 						o.lastEnterPressTime = time.Now()
 					}
 
-					// Torna al menu principale
-
-					//If enter is pressed AND label = Back? universal
 					if inpututil.IsKeyJustPressed(ebiten.KeyEnter) && optionMenu.Selected == len(optionMenu.Options)-1 {
 						if optionMenu.MenuName == screenOptionsMenuName {
 							if o.savedScale != config.GlobalConfig.Scale {
-								// Ad esempio mostra un popup di conferma riavvio, oppure riavvia direttamente
-								// Esempio: mostra popup
 								o.scalePopup.Active = true
 								o.scalePopup.Selected = 0
 							}
@@ -207,14 +200,13 @@ func (o *OptionScene) Update() SceneId {
 						o.showOption = 0
 					}
 				} else {
-					// Controlla se Enter è stato premuto e non abbiamo già eseguito l'azione
+					// Check if Enter is pressed and the action has not been executed yet
 					if (inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft)) && !o.actionExecuted {
-						o.actionExecuted = true // Evita che venga eseguito più volte
+						o.actionExecuted = true
 
-						// Gestisci il passaggio dal mainMenu a un OptionMenu
 						if o.currentMenu == o.mainMenu {
 							switch o.mainMenu.Selected {
-							case 0: // Prima opzione del mainMenu
+							case 0:
 								o.currentMenu = o.gameMenu
 								o.gameMenu.Selected = 0
 							case 1:
@@ -230,7 +222,7 @@ func (o *OptionScene) Update() SceneId {
 			}
 		}
 
-		// Se Enter viene rilasciato, permetti nuove azioni
+		// If Enter is released, allow new actions
 		if inpututil.KeyPressDuration(ebiten.KeyEnter) == 0 && !ebiten.IsMouseButtonPressed(ebiten.MouseButtonLeft) {
 			o.actionExecuted = false
 		}
@@ -239,20 +231,17 @@ func (o *OptionScene) Update() SceneId {
 }
 
 func handleOptionSelection(o *OptionScene, mode bool) {
-
 	optionMenu, ok := o.currentMenu.(*menu.OptionMenu)
 	if !ok {
-		fmt.Println("Errore: currentMenu non è un OptionMenu")
+		fmt.Println("Error: currentMenu is not an OptionMenu")
 	}
-
-	// Gestisci le opzioni in base al menu corrente
 	switch optionMenu.MenuName {
 	case gameOptionsMenuName:
 		handleGameMenuOptions(o, optionMenu.Selected, mode)
 	case screenOptionsMenuName:
 		handleScreenMenuOptions(o, optionMenu.Selected, mode)
 	default:
-		fmt.Println("Menu non riconosciuto:", optionMenu.MenuName)
+		fmt.Println("Error: unrecognized menu:", optionMenu.MenuName)
 	}
 }
 

@@ -115,7 +115,6 @@ func saveHighscores(hs *Highscores) error {
 	defer file.Close()
 	encoder := json.NewEncoder(file)
 	encoder.SetIndent("", "  ")
-	//fmt.Println("Salvo i punteggi: ", hs)
 	return encoder.Encode(hs)
 }
 
