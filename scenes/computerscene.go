@@ -157,6 +157,7 @@ func (c *ComputerScene) Update() SceneId {
 				Player:   c.playerName,
 				AILevel:  config.DifficultyString(),
 				Score:    c.score,
+				AIScore:  c.scoreEnemy,
 			}
 		}
 		return PauseSceneId

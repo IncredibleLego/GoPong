@@ -132,22 +132,25 @@ func (m *MultiplayerScene) Update() SceneId {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 		highScore, maxAdded := getTopMultiplayerScore()
 		if maxAdded == false || (m.score1 >= highScore.Score || m.score2 >= highScore.Score) {
-			var score int
+			var score, enemyscore int
 			var player1, player2 string
 			if m.score1 >= m.score2 {
 				score = m.score1
+				enemyscore = m.score2
 				player1 = m.player1Name
 				player2 = m.player2Name
 			} else {
 				score = m.score2
+				enemyscore = m.score1
 				player1 = m.player2Name
 				player2 = m.player1Name
 			}
 			DirtyMultiplayerScore = MultiplayerScore{
-				DateTime: time.Now().Format(time.RFC3339),
-				Player1:  player1,
-				Player2:  player2,
-				Score:    score,
+				DateTime:   time.Now().Format(time.RFC3339),
+				Player1:    player1,
+				Player2:    player2,
+				Score:      score,
+				EnemyScore: enemyscore,
 			}
 		}
 		return PauseSceneId

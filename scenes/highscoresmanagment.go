@@ -27,13 +27,15 @@ type ComputerScore struct {
 	Player   string `json:"player"`
 	AILevel  string `json:"ai_level"`
 	Score    int    `json:"score"`
+	AIScore  int    `json:"ai_score"`
 }
 
 type MultiplayerScore struct {
-	DateTime string `json:"date_time"`
-	Player1  string `json:"player1"`
-	Player2  string `json:"player2"`
-	Score    int    `json:"score"`
+	DateTime   string `json:"date_time"`
+	Player1    string `json:"player1"`
+	Player2    string `json:"player2"`
+	Score      int    `json:"score"`
+	EnemyScore int    `json:"enemy_score"`
 }
 
 type Highscores struct {
@@ -145,7 +147,11 @@ func AddComputerScore(score ComputerScore) error {
 
 		hs.ComputerEasy = append(hs.ComputerEasy, score)
 		sort.Slice(hs.ComputerEasy, func(i, j int) bool {
-			return hs.ComputerEasy[i].Score > hs.ComputerEasy[j].Score
+			if hs.ComputerEasy[i].Score != hs.ComputerEasy[j].Score {
+				return hs.ComputerEasy[i].Score > hs.ComputerEasy[j].Score
+			}
+			// If scores are equal, prefer the one who conceded fewer goals (lower AIScore)
+			return hs.ComputerEasy[i].AIScore < hs.ComputerEasy[j].AIScore
 		})
 		if len(hs.ComputerEasy) > maxScores {
 			hs.ComputerEasy = hs.ComputerEasy[:maxScores]
@@ -155,7 +161,10 @@ func AddComputerScore(score ComputerScore) error {
 	} else if config.GlobalConfig.Difficulty >= 0.33 && config.GlobalConfig.Difficulty < 0.66 {
 		hs.ComputerDefault = append(hs.ComputerDefault, score)
 		sort.Slice(hs.ComputerDefault, func(i, j int) bool {
-			return hs.ComputerDefault[i].Score > hs.ComputerDefault[j].Score
+			if hs.ComputerDefault[i].Score != hs.ComputerDefault[j].Score {
+				return hs.ComputerDefault[i].Score > hs.ComputerDefault[j].Score
+			}
+			return hs.ComputerDefault[i].AIScore < hs.ComputerDefault[j].AIScore
 		})
 		if len(hs.ComputerDefault) > maxScores {
 			hs.ComputerDefault = hs.ComputerDefault[:maxScores]
@@ -164,7 +173,10 @@ func AddComputerScore(score ComputerScore) error {
 	} else {
 		hs.ComputerHard = append(hs.ComputerHard, score)
 		sort.Slice(hs.ComputerHard, func(i, j int) bool {
-			return hs.ComputerHard[i].Score > hs.ComputerHard[j].Score
+			if hs.ComputerHard[i].Score != hs.ComputerHard[j].Score {
+				return hs.ComputerHard[i].Score > hs.ComputerHard[j].Score
+			}
+			return hs.ComputerHard[i].AIScore < hs.ComputerHard[j].AIScore
 		})
 		if len(hs.ComputerHard) > maxScores {
 			hs.ComputerHard = hs.ComputerHard[:maxScores]
@@ -181,7 +193,11 @@ func AddMultiplayerScore(score MultiplayerScore) error {
 	}
 	hs.Multiplayer = append(hs.Multiplayer, score)
 	sort.Slice(hs.Multiplayer, func(i, j int) bool {
-		return hs.Multiplayer[i].Score > hs.Multiplayer[j].Score
+		if hs.Multiplayer[i].Score != hs.Multiplayer[j].Score {
+			return hs.Multiplayer[i].Score > hs.Multiplayer[j].Score
+		}
+		// If scores are equal, prefer the match with fewer goals conceded (lower EnemyScore)
+		return hs.Multiplayer[i].EnemyScore < hs.Multiplayer[j].EnemyScore
 	})
 	if len(hs.Multiplayer) > maxScores {
 		hs.Multiplayer = hs.Multiplayer[:maxScores]
@@ -255,10 +271,11 @@ func GetComputerHighscoresStrings(selected int) []string {
 			dateStr = t.Format("02/01/2006 15:04")
 		}
 		result = append(result, fmt.Sprintf(
-			"%2d. %-*s  Score %-4d  Difficulty: %-*s  %s",
+			"%2d. %-*s Score %-2d vs %-2d Mode: %-*s %s",
 			i+1,
 			maxPlayerLen, s.Player,
 			s.Score,
+			s.AIScore,
 			maxAILevelLen, s.AILevel,
 			dateStr,
 		))
@@ -293,10 +310,11 @@ func GetMultiplayerHighscoresStrings() []string {
 			dateStr = t.Format("02/01/2006 15:04")
 		}
 		result = append(result, fmt.Sprintf(
-			"%2d. %-*s  Score %-4d vs %-*s  %s",
+			"%2d. %-*s Score %d vs %d %-*s %s",
 			i+1,
 			maxPlayer1Len, s.Player1,
 			s.Score,
+			s.EnemyScore,
 			maxPlayer2Len, s.Player2,
 			dateStr,
 		))
