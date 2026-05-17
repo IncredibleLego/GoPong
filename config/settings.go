@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"math"
 	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -106,7 +107,8 @@ func DifficultyString() string {
 	return "HARD"
 }
 
-const configFilePath = "./config/settings.json" // Name of the configuration file
+// const configFilePath = "./config/settings.json" // Name of the configuration file
+var configFilePath string // Path to the configuration file, determined by the environment
 
 // SaveConfig saves the configuration to a JSON file.
 func SaveConfig(config *Config) error {
@@ -116,6 +118,7 @@ func SaveConfig(config *Config) error {
 		return err
 	}
 	// Create the file if it doesn't exist, or replace it if it does
+	_ = os.MkdirAll(filepath.Dir(configFilePath), 0755)
 	file, err := os.Create(configFilePath)
 	if err != nil {
 		return err
@@ -157,6 +160,8 @@ func UpdateConfig(updateFunc func(*Config)) error {
 
 // InitConfig initializes the configuration by loading it from a file or using the default configuration.
 func InitConfig() {
+	// Get the path to the configuration file based on the environment
+	configFilePath = GetSettingsPath()
 	// Check if the configuration file exists
 	config, err := LoadConfig(configFilePath)
 	// If the file doesn't exist or there's an error loading it, use the default configuration
@@ -167,4 +172,15 @@ func InitConfig() {
 	} else {
 		GlobalConfig = config
 	}
+}
+
+// GetSettingsPath returns the path to the settings file based on the environment (production or development)
+func GetSettingsPath() string {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return "./settings.json"
+	}
+	gameDir := filepath.Join(configDir, "goPong")
+	_ = os.MkdirAll(gameDir, 0755)
+	return filepath.Join(gameDir, "settings.json")
 }

@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"goPong/config"
 	"os"
+	"path/filepath"
 	"sort"
 	"time"
 )
 
-const highscoresFile = "./scenes/highscores.json"
+var highscoresFile string
+
 const maxScores = 10
 
 var DirtySoloScore SoloScore
@@ -48,6 +50,11 @@ type Highscores struct {
 
 // Load all highscores from the JSON file
 func loadHighscores() (*Highscores, error) {
+
+	if highscoresFile == "" {
+		highscoresFile = GetHighscoresPath()
+	}
+
 	file, err := os.Open(highscoresFile)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -110,6 +117,12 @@ func getTopMultiplayerScore() (MultiplayerScore, bool) {
 
 // Save highscores to the JSON file
 func saveHighscores(hs *Highscores) error {
+
+	if highscoresFile == "" {
+		highscoresFile = GetHighscoresPath()
+	}
+
+	_ = os.MkdirAll(filepath.Dir(highscoresFile), 0755)
 	file, err := os.Create(highscoresFile)
 	if err != nil {
 		return err
@@ -320,4 +333,15 @@ func GetMultiplayerHighscoresStrings() []string {
 		))
 	}
 	return result
+}
+
+// GetHighscoresPath returns the path to the highscores file based on the environment (production or development)
+func GetHighscoresPath() string {
+	configDir, err := os.UserConfigDir()
+	if err != nil {
+		return "./highscores.json"
+	}
+	gameDir := filepath.Join(configDir, "goPong")
+	_ = os.MkdirAll(gameDir, 0755)
+	return filepath.Join(gameDir, "highscores.json")
 }
