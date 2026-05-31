@@ -29,19 +29,16 @@ GoPong was made starting from [this youtube video](https://youtu.be/V_OGeYj6p00?
 
 There are currently three aviable gamemodes
 
+<details>
+<summary><strong>Solo Mode</strong></summary>
+
 ## Solo Mode
-
-<video width="600" controls>
-  <source src="./assets/readme/soloGameplay.mp4" type="video/mp4">
-  Il tuo browser non supporta il video.
-</video>
-
-
-
 
 https://github.com/user-attachments/assets/4bfc5dc8-a7f0-48d0-a7db-3c338d4159ba
 
+In solo mode you play against yourself with the ball bouncing on the wall. Every 5 points, the ball increases is speed
 
+</details>
 
 
 https://github.com/user-attachments/assets/6c1e5973-7686-4386-a9aa-7a7f5cc6d37b
