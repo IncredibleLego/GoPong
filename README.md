@@ -36,6 +36,25 @@ There are currently three aviable gamemodes
   Il tuo browser non supporta il video.
 </video>
 
+
+
+
+https://github.com/user-attachments/assets/4bfc5dc8-a7f0-48d0-a7db-3c338d4159ba
+
+
+
+
+https://github.com/user-attachments/assets/6c1e5973-7686-4386-a9aa-7a7f5cc6d37b
+
+
+
+
+
+
+https://github.com/user-attachments/assets/1de64e77-f6a2-4ff9-9b19-32accac5bd23
+
+
+
 Funzionalità
 
 Controlli
