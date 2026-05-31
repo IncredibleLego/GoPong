@@ -112,7 +112,9 @@ func (m *MultiplayerScene) FirstLoad() {
 	m.ball.Reset(false)
 }
 
-func (m *MultiplayerScene) OnEnter() {}
+func (m *MultiplayerScene) OnEnter() {
+	ebiten.SetCursorMode(ebiten.CursorModeHidden)
+}
 
 func (m *MultiplayerScene) updateDimensions() {
 	m.ball.W = config.GlobalConfig.BallSize

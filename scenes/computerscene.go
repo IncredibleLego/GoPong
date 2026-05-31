@@ -131,7 +131,9 @@ func (c *ComputerScene) FirstLoad() {
 	c.ball.Reset(false)
 }
 
-func (c *ComputerScene) OnEnter() {}
+func (c *ComputerScene) OnEnter() {
+	ebiten.SetCursorMode(ebiten.CursorModeHidden)
+}
 
 // Upates the values of the scene every frame to reflect changes in the config
 func (c *ComputerScene) updateDimensions() {

@@ -52,6 +52,10 @@ func (g *Game) Update() error {
 	}
 	// Instead, if the scene has changed:
 	if nextSceneId != g.activeSceneId {
+
+		// Show the cursor, as it is hidden in game scenes
+		ebiten.SetCursorMode(ebiten.CursorModeVisible)
+
 		// Saves Highscores if you're returing to menu after playing a game
 		if g.lastSceneId != 0 && nextSceneId == scenes.StartSceneId {
 			if g.lastSceneId == scenes.GameSceneId && scenes.DirtySoloScore.Score > 0 {

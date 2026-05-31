@@ -101,7 +101,9 @@ func (g *GameScene) FirstLoad() {
 	g.ball.Reset(false)
 }
 
-func (g *GameScene) OnEnter() {}
+func (g *GameScene) OnEnter() {
+	ebiten.SetCursorMode(ebiten.CursorModeHidden)
+}
 
 func (g *GameScene) updateDimensions() {
 	g.ball.W = config.GlobalConfig.BallSize
