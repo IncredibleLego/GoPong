@@ -86,7 +86,7 @@ func (h *HighScoresScene) Update() SceneId {
 	}
 	h.computerSelected = utils.Adjust(h.computerSelected)
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
 		return StartSceneId
 	}
 
