@@ -35,13 +35,13 @@ There are currently three aviable gamemodes
 
 https://github.com/user-attachments/assets/4bfc5dc8-a7f0-48d0-a7db-3c338d4159ba
 
-In Solo Mode you play against yourself with the ball bouncing on the wall. Every 5 points, the ball increases is speed
+In Solo Mode you play against yourself with the ball bouncing on the wall. Every 5 points, the ball increases its speed
 </details>
 
 <details>
 <summary><strong>Computer Mode</strong></summary>
 
-https://github.com/user-attachments/assets/6c1e5973-7686-4386-a9aa-7a7f5cc6d37b
+https://github.com/user-attachments/assets/1de64e77-f6a2-4ff9-9b19-32accac5bd23
 
 In Computer Mode you can play against the computer: you can choose between easy normal and hard difficulties. The difficulty can also be manually adjusted in settings: difficulty is a value between 0 and 1, where 0 is "you always score" and 1 is "scoring is extremely hard". The computer will try to catch your ball, and then return to the center of the game area to always try to be the nearest to the next impact point. The best way to beat the computer is by making shots with great angles as it is more difficult for it to predict them
 </details>
@@ -49,7 +49,7 @@ In Computer Mode you can play against the computer: you can choose between easy 
 <details>
 <summary><strong>Multiplayer Mode</strong></summary>
 
-https://github.com/user-attachments/assets/1de64e77-f6a2-4ff9-9b19-32accac5bd23
+https://github.com/user-attachments/assets/6c1e5973-7686-4386-a9aa-7a7f5cc6d37b
 
 In Multiplayer mode two players can play against each other: the right player will play with the arrows and the left one with W S
 </details>
