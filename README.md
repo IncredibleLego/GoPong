@@ -61,13 +61,13 @@ In Multiplayer mode two players can play against each other: the right player wi
 
 ### Highscores
 
-<img src="./assets/readme/highscores.png" style="width:742px;height:550px;">
+<img src="./assets/readme/highscores.png" style="width:640px;height:475px;">
 
 GoPong features a highscores section: here it is possible to view the top 10 scores divided by Gamemode (and difficulty: in Computer highscores there are three different leaderboards for the three difficulties). You can move through the tables with Left/Right arrow and between the difficulties with Up/Down arrows (when in the Computer mode tab). Tables report data like time, player name, points and mode of the record
 
 ### Options
 
-<img src="./assets/readme/settings.png" style="width:742px;height:550px;">
+<img src="./assets/readme/settings.png" style="width:640px;height:475px;">
 
 GoPong features many settings that can be adjusted to customize your game experience. The available settings are the following
 
