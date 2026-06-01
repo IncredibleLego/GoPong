@@ -145,10 +145,6 @@ There are some known limitations and future plans for the game. In particular th
 - [ ] Game Presets: ex. Fast Ball Small Paddle etc.
 - [ ] Different color themes to choose from
 
-## Contributing
-
-Pull requests and issue reports are appreciated to make the game better
-
 ## Credits
 
 - Inspired by Pong (Atari, 1972)
@@ -158,8 +154,12 @@ Pull requests and issue reports are appreciated to make the game better
 - Font used: [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P)
 - Sounds used: Free Pong Sounds
 
+## Contributing
+
+Pull requests and issue reports are appreciated to make the game better
+
 ## License
 
-This project is open source and distributed under the MIT License. Feel free to use it for learning, modification or personal projects.   Full license text available in the [LICENSE](LICENSE) file.
+This project is open source and distributed under the MIT License. Feel free to use it for learning, modification or personal projects. Full license text available in the [LICENSE](LICENSE) file.
 
 © 2026 Francesco Corrado
