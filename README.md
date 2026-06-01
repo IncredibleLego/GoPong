@@ -54,11 +54,54 @@ https://github.com/user-attachments/assets/6c1e5973-7686-4386-a9aa-7a7f5cc6d37b
 In Multiplayer mode two players can play against each other: the right player will play with the arrows and the left one with W S
 </details>
 
+## Features
+
+### Highscores
+
+![Highscores](./assets/readme/highscores.png)
+
+<img src="./assets/readme/highscores.png" style="width:607px;height:450px;">
+
+
+GoPong 
+
 
 ## Download and Install
 
+### 1) Installer
 
-## Functionalities
+Installers are aviable for Windows and Debian derivates (.deb)
+
+- [Download latest Windows Installer](https://github.com/IncredibleLego/GoPong/releases/latest/download/goPong_setup.exe)
+- [Download latest Deb Installer](https://github.com/IncredibleLego/GoPong/releases/latest/download/goPong_amd64.deb)
+
+### 2) Build from source
+
+If your platform is different from Windows or Deb, or you simply want to compile the code from source, you will needto install
+```bash
+go 1.25
+github.com/hajimehoshi/ebiten/v2
+```
+
+Once done so, you can clone the repository with
+
+```bash
+git clone https://github.com/IncredibleLego/GoPong.git
+```
+
+Once you enter the project folder, you can simply launch the game with
+
+```bash
+go run .
+```
+
+Or you can compile the project with
+
+```bash
+go build
+```
+
+And obtain a `goPong` executable that you can launch
 
 
 ## Controls
