@@ -27,7 +27,7 @@ GoPong is a [Pong](https://en.wikipedia.org/wiki/Pong)-inspired game made in [Go
 
 ## Description
 
-GoPong was made starting from [this youtube video](https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk) to start practicing with game programming, design and go development. The result is a modified version of Pong featuring Solo, Computer, and Multiplayer modes, along with high scores and various customization options, that was developed over the course of one year, with approximately five months of active development
+GoPong was made starting from [this youtube video](https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk) to start practicing with game programming, design and go development. The result is a modified version of Pong featuring Solo, Computer, and Multiplayer modes, along with high scores and various customization options, that was developed over the course of one year with approximately five months of active development
 
 ## Gameplay
 
@@ -46,7 +46,7 @@ In Solo Mode you play against yourself with the ball bouncing on the wall. Every
 
 https://github.com/user-attachments/assets/1de64e77-f6a2-4ff9-9b19-32accac5bd23
 
-In Computer Mode you can play against the computer: you can choose between easy normal and hard difficulties. The difficulty can also be manually adjusted in settings: difficulty is a value between 0 and 1, where 0 is "you always score" and 1 is "scoring is extremely hard". The computer will try to catch your ball, and then return to the center of the game area to always try to be the nearest to the next impact point. The best way to beat the computer is by making shots with great angles as it is more difficult for it to predict them
+In Computer Mode you can play against the computer: you can choose between easy normal and hard difficulties, or manually adjusted in settings. The computer will try to catch your ball, and then return to the center of the game area to always try to be the nearest to the next impact point. The best way to beat the computer is by making shots with great angles as it is more difficult for it to predict them
 </details>
 
 <details>
@@ -158,7 +158,6 @@ Pull requests and issue reports are appreciated to make the game better
 
 ## License
 
-This project is open source and distributed under the MIT License. Feel free to use it for learning, modification or personal projects.  
-Full license text available in the [LICENSE](LICENSE) file.
+This project is open source and distributed under the MIT License. Feel free to use it for learning, modification or personal projects.   Full license text available in the [LICENSE](LICENSE) file.
 
 © 2026 Francesco Corrado
