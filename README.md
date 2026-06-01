@@ -3,13 +3,13 @@
     <img src="./assets/icons/goPong.png" alt="Icona goPong" style="width:30px;height:30px;vertical-align:middle;">
 </h1>
 
-![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
+![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go&logoColor=white)
+![Engine](https://img.shields.io/badge/Engine-Ebitengine-ffcc00)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Release](https://img.shields.io/github/v/release/IncredibleLego/GoPong?label=version)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-orange)
-![GitHub release](https://img.shields.io/github/v/release/IncredibleLego/GoPong)
-![Issues](https://img.shields.io/github/issues/IncredibleLego/GoPong)
 
-GoPong is a [Pong](https://it.wikipedia.org/wiki/Pong)-insipired game made in [Go](https://go.dev/) using the graphical library [Ebitengine](https://ebitengine.org/)
+GoPong is a [Pong](https://en.wikipedia.org/wiki/Pong)-inspired game made in [Go](https://go.dev/) using the graphical library [Ebitengine](https://ebitengine.org/)
 
 ![start](./assets/readme/start.png)
 
@@ -17,14 +17,21 @@ GoPong is a [Pong](https://it.wikipedia.org/wiki/Pong)-insipired game made in [G
 
 - [Description](#description)
 - [Gameplay](#gameplay)
+- [Features](#features)
+- [Controls](#controls)
+- [Download & Installation](#download--installation)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [Credits](#credits)
+- [License](#license)
 
 ## Description
 
-GoPong was made starting from [this youtube video](https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk) to start practicing with game programming, design and go development. What came out is a modified Pong version that includes Solo, Computer and Multiplayer mode, highlights and various modification options, that was developed over the course of one year, with approximately five months of active development
+GoPong was made starting from [this youtube video](https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk) to start practicing with game programming, design and go development. The result is a modified version of Pong featuring Solo, Computer, and Multiplayer modes, along with high scores and various customization options, that was developed over the course of one year, with approximately five months of active development
 
 ## Gameplay
 
-There are currently three available gamemodes
+There are currently three available game modes
 
 <details>
 <summary><strong>Solo Mode</strong></summary>
@@ -56,13 +63,13 @@ In Multiplayer mode two players can play against each other: the right player wi
 
 <img src="./assets/readme/highscores.png" style="width:742px;height:550px;">
 
-GoPong features a highscores section: here it is possibile to look at the top 10 scores divided by Gamemode (and difficulty: in Computer highscores there are three different leaderboards for the three difficulties). You can move through the tables with Left/Right arrow and between the difficulties with Up/Down arrows (when in the Computer mode tab). Tables report data like time, player name, points and mode of the record
+GoPong features a highscores section: here it is possible to view the top 10 scores divided by Gamemode (and difficulty: in Computer highscores there are three different leaderboards for the three difficulties). You can move through the tables with Left/Right arrow and between the difficulties with Up/Down arrows (when in the Computer mode tab). Tables report data like time, player name, points and mode of the record
 
 ### Options
 
 <img src="./assets/readme/settings.png" style="width:742px;height:550px;">
 
-GoPong features many settings that can be adjusted to customize your game experience. The available settings are the followings
+GoPong features many settings that can be adjusted to customize your game experience. The available settings are the following
 
 **Game Options**
 
@@ -83,19 +90,18 @@ GoPong features many settings that can be adjusted to customize your game experi
 
 ## Controls
 
-| Action | Button |
+| Action | Key |
 |---------|---------|
 | Paddle Up | W/Up |
 | Paddle Down | S/Down |
 | Fullscreen/Window Mode | ESC |
 | Confirm/Select/Pause | ENTER |
 
-
-## Download and Install
+## Download & Installation
 
 ### 1) Installer
 
-Installers are available for Windows and Debian derivates (.deb)
+Installers are available for Windows and Debian-based distributions (.deb)
 
 - [Download latest Windows Installer](https://github.com/IncredibleLego/GoPong/releases/latest/download/goPong_setup.exe)
 - [Download latest Deb Installer](https://github.com/IncredibleLego/GoPong/releases/latest/download/goPong_amd64.deb)
@@ -106,8 +112,8 @@ Launch the installer on your Windows/Linux system to start the install process
 
 If your platform is different from Windows or Deb, or you simply want to compile the code from source, you will need to install
 ```bash
-go 1.25
-github.com/hajimehoshi/ebiten/v2
+Requirements:
+    go 1.25+
 ```
 
 Once done so, you can clone the repository with
@@ -122,7 +128,7 @@ Once you enter the project folder, you can simply launch the game with
 go run .
 ```
 
-Or you can compile the project with
+Go will download all the needed packages using the go.mod file. Alternatively, you can compile the project with
 
 ```bash
 go build
@@ -132,7 +138,7 @@ And obtain a `goPong` executable that you can launch
 
 ## Roadmap
 
-There are some know limitations and future plans for the game. In particular the mouse support is not very effective, it can be used the main menus but not in the option menus. Some features that might be added in the future include
+There are some known limitations and future plans for the game. In particular the mouse support is not very effective, it can be used in the main menus but not in the option menus. Some features that might be added in the future include
 
 - [ ] Multiplayer online
 - [ ] Change default buttons for controls
@@ -143,9 +149,16 @@ There are some know limitations and future plans for the game. In particular the
 
 Pull requests and issue reports are appreciated to make the game better
 
+## Credits
+
+- Inspired by Pong (Atari, 1972)
+- Built with Go using Ebitengine
+- Developed by Francesco Corrado/IncredibleLego
+- Tested and influenced by friends and family suggestions
+
 ## License
 
 This project is open source and distributed under the MIT License. Feel free to use it for learning, modification or personal projects.  
-Full license text aviabile in the [LICENSE](LICENSE) file.
+Full license text available in the [LICENSE](LICENSE) file.
 
-Francesco Corrado 2026
+© 2026 Francesco Corrado
