@@ -1,3 +1,4 @@
+// GoPong - A simple Pong game written in Go using the Ebiten library. Made by @IncredibleLego on GitHub. 2026
 package main
 
 import (
