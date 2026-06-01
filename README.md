@@ -155,6 +155,8 @@ Pull requests and issue reports are appreciated to make the game better
 - Built with Go using Ebitengine
 - Developed by Francesco Corrado/IncredibleLego
 - Tested and influenced by friends and family suggestions
+- Font used: [Press Start 2P](https://fonts.google.com/specimen/Press+Start+2P)
+- Sounds used: Free Pong Sounds
 
 ## License
 
