@@ -6,29 +6,25 @@
 ![Go](https://img.shields.io/badge/Go-1.25-00ADD8?logo=go&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-orange)
+![GitHub release](https://img.shields.io/github/v/release/IncredibleLego/GoPong)
+![Issues](https://img.shields.io/github/issues/IncredibleLego/GoPong)
 
-
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-
-QUESTI SONO PHYSIGO sistma
-
-![GitHub release](https://img.shields.io/github/v/release/IncredibleLego/PhysiGo)
-![License](https://img.shields.io/github/license/IncredibleLego/PhysiGo)
-![Last commit](https://img.shields.io/github/last-commit/IncredibleLego/PhysiGo)
-![Issues](https://img.shields.io/github/issues/IncredibleLego/PhysiGo)
-![Repo size](https://img.shields.io/github/repo-size/IncredibleLego/PhysiGo)
-
-GoPong is a [Pong](https://it.wikipedia.org/wiki/Pong) porting made in [Go](https://go.dev/) using the graphical library [Ebitengine](https://go.dev/)
+GoPong is a [Pong](https://it.wikipedia.org/wiki/Pong)-insipired game made in [Go](https://go.dev/) using the graphical library [Ebitengine](https://ebitengine.org/)
 
 ![start](./assets/readme/start.png)
 
-# Description
+## Table Of Contents
 
-GoPong was made starting from [this youtube video](https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk) to start practicing with game programming, design and go development. What came out is a modified Pong version that includes Solo, Computer and Multiplayer mode, hilights and various modification options
+- [Description](#description)
+- [Gameplay](#gameplay)
 
-# Gameplay
+## Description
 
-There are currently three aviable gamemodes
+GoPong was made starting from [this youtube video](https://youtu.be/V_OGeYj6p00?si=IWM1MB7iM3R7jqLk) to start practicing with game programming, design and go development. What came out is a modified Pong version that includes Solo, Computer and Multiplayer mode, highlights and various modification options, that was developed over the course of one year, with approximately five months of active development
+
+## Gameplay
+
+There are currently three available gamemodes
 
 <details>
 <summary><strong>Solo Mode</strong></summary>
@@ -58,26 +54,57 @@ In Multiplayer mode two players can play against each other: the right player wi
 
 ### Highscores
 
-![Highscores](./assets/readme/highscores.png)
+<img src="./assets/readme/highscores.png" style="width:742px;height:550px;">
 
-<img src="./assets/readme/highscores.png" style="width:607px;height:450px;">
+GoPong features a highscores section: here it is possibile to look at the top 10 scores divided by Gamemode (and difficulty: in Computer highscores there are three different leaderboards for the three difficulties). You can move through the tables with Left/Right arrow and between the difficulties with Up/Down arrows (when in the Computer mode tab). Tables report data like time, player name, points and mode of the record
 
+### Options
 
-GoPong 
+<img src="./assets/readme/settings.png" style="width:742px;height:550px;">
+
+GoPong features many settings that can be adjusted to customize your game experience. The available settings are the followings
+
+**Game Options**
+
+- Ball Speed
+- Ball Size
+- Paddle Height
+- Paddle Width
+- Paddle Distance: Distance of the paddle from the wall
+- Enemy Difficulty: Difficulty of the computer in computer mode, where Easy = 0.2, Normal = 0.5, Hard = 0.8. You can customize your difficulty with every value between 0 and 1
+- Reset to default: Sets all Game Options to default values
+
+**Screen Options**
+
+- Text Dimension: Dimension of Menu Text
+- Screen Size: Various Screen dimensions, if not fullscreen
+- Fullscreen: If set to true the game launches in fullscreen, else it launches in "Screen Size" option
+- Reset to default : Sets all Screen Options to default values
+
+## Controls
+
+| Action | Button |
+|---------|---------|
+| Paddle Up | W/Up |
+| Paddle Down | S/Down |
+| Fullscreen/Window Mode | ESC |
+| Confirm/Select/Pause | ENTER |
 
 
 ## Download and Install
 
 ### 1) Installer
 
-Installers are aviable for Windows and Debian derivates (.deb)
+Installers are available for Windows and Debian derivates (.deb)
 
 - [Download latest Windows Installer](https://github.com/IncredibleLego/GoPong/releases/latest/download/goPong_setup.exe)
 - [Download latest Deb Installer](https://github.com/IncredibleLego/GoPong/releases/latest/download/goPong_amd64.deb)
 
+Launch the installer on your Windows/Linux system to start the install process
+
 ### 2) Build from source
 
-If your platform is different from Windows or Deb, or you simply want to compile the code from source, you will needto install
+If your platform is different from Windows or Deb, or you simply want to compile the code from source, you will need to install
 ```bash
 go 1.25
 github.com/hajimehoshi/ebiten/v2
@@ -103,29 +130,22 @@ go build
 
 And obtain a `goPong` executable that you can launch
 
-
-## Controls
-
-| Action | Button |
-|---------|---------|
-| Paddle Up | W/Up |
-| Paddle Down | S/Down |
-| Pause/Options | ESC |
-| Confirm/Select | ENTER |
-
 ## Roadmap
 
-- [x] Modalità IA
-- [x] Multiplayer
+There are some know limitations and future plans for the game. In particular the mouse support is not very effective, it can be used the main menus but not in the option menus. Some features that might be added in the future include
+
 - [ ] Multiplayer online
-- [ ] Skin personalizzate
-- [ ] Supporto gamepad
+- [ ] Change default buttons for controls
+- [ ] Game Presets: ex. Fast Ball Small Paddle etc.
+- [ ] Different color themes to choose from
 
 ## Contributing
 
-Pull requests and issue reports are appreciated to make the game better! 
+Pull requests and issue reports are appreciated to make the game better
 
 ## License
 
 This project is open source and distributed under the MIT License. Feel free to use it for learning, modification or personal projects.  
 Full license text aviabile in the [LICENSE](LICENSE) file.
+
+Francesco Corrado 2026
