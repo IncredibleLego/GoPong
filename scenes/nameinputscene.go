@@ -24,11 +24,15 @@ type NameInputScene struct {
 	difficultyMenu     *menu.OptionMenu
 	lastEnterPressTime time.Time
 	timer              time.Time
+	winPoints          string
+	askPoints          bool
+	invalidInput       bool
 }
 
 func NewNameInputScene(mode int) *NameInputScene {
 	var numPlayers int
 	var difficulty bool
+	var askPoints bool
 	if mode == 2 {
 		numPlayers = 2
 	} else {
@@ -37,6 +41,10 @@ func NewNameInputScene(mode int) *NameInputScene {
 			difficulty = true
 		}
 	}
+	if mode == 2 || mode == 3 {
+		askPoints = true
+	}
+
 	return &NameInputScene{
 		mode:         mode,
 		numPlayers:   numPlayers,
@@ -45,6 +53,8 @@ func NewNameInputScene(mode int) *NameInputScene {
 		maxLetters:   14,
 		maxLenght:    false,
 		difficulty:   difficulty,
+		winPoints:    "10",
+		askPoints:    askPoints,
 	}
 }
 
@@ -55,6 +65,30 @@ func (n *NameInputScene) Draw(screen *ebiten.Image) {
 
 	if n.difficulty {
 		n.difficultyMenu.Draw(screen)
+	} else if n.askPoints {
+		message := "Insert the points to win:"
+		x1 := utils.XCentered(message, config.GlobalConfig.TextDimension)
+		utils.ScreenDraw(0, x1, float64(config.GlobalConfig.ScreenHeight)/3, "yellow", screen, message)
+
+		l := float64(len(n.winPoints))
+		height := float64(config.GlobalConfig.ScreenHeight)
+		d := config.GlobalConfig.TextDimension
+
+		message = n.winPoints
+		if time.Since(n.timer) < time.Second && !n.maxLenght {
+			message += "_"
+		}
+		utils.ScreenDraw(0, float64(config.GlobalConfig.ScreenWidth)/2-(l*d/2), height/2, "white", screen, message)
+
+		confirmMessage := "Press Enter to confirm"
+		x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
+		utils.ScreenDraw(0, x2+d, (height/3)*2, "yellow", screen, confirmMessage)
+
+		if n.invalidInput {
+			errorMessage := "Please insert a valid number"
+			x2 := utils.XCentered(confirmMessage, config.GlobalConfig.TextDimension)
+			utils.ScreenDraw(-(d / 4), x2, (height/10)*9, "red", screen, errorMessage)
+		}
 	} else {
 
 		if time.Since(n.timer) > time.Second*2 {
@@ -104,10 +138,6 @@ func (n *NameInputScene) ShouldPreserveState(reason SceneChangeReason) bool {
 }
 
 func (n *NameInputScene) Update() SceneId {
-	if n.finished {
-		return GameSceneId
-	}
-
 	if n.difficulty {
 		n.difficultyMenu.Update()
 
@@ -129,6 +159,25 @@ func (n *NameInputScene) Update() SceneId {
 			}
 			n.difficulty = false
 		}
+	} else if n.askPoints {
+
+		utils.Input(&n.winPoints, n.maxLetters)
+
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			if len(n.winPoints) > 0 {
+				value, err := strconv.Atoi(n.winPoints)
+				if err != nil || value <= 0 {
+					n.invalidInput = true
+					return NameInputSceneId
+				}
+				n.invalidInput = false
+				err = config.UpdateConfig(func(cfg *config.Config) {
+					cfg.PointsToWin = value
+				})
+				n.askPoints = false
+			}
+		}
+
 	} else {
 
 		utils.Input(&n.playerNames[n.activePlayer], n.maxLetters)
@@ -138,18 +187,17 @@ func (n *NameInputScene) Update() SceneId {
 
 		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
 			n.activePlayer++
-			if n.activePlayer >= n.numPlayers { // Se entrambi hanno inserito il nome
-				n.finished = true // Indica che l'input è terminato
+			if n.activePlayer >= n.numPlayers { // If both players have entered their names, finish the input
 				config.GlobalConfig.Player1Name = n.playerNames[0]
 				if n.numPlayers == 2 {
 					config.GlobalConfig.Player2Name = n.playerNames[1]
 				}
 				if n.mode == 1 {
-					return GameSceneId // Passa direttamente alla scena di gioco
+					return GameSceneId // Go directly to the game scene for solo mode
 				} else if n.mode == 2 {
-					return MultiplayerSceneId // Passa alla scena multiplayer
+					return MultiplayerSceneId // Go to the multiplayer scene
 				} else if n.mode == 3 {
-					return ComputerSceneId // Passa alla scena computer
+					return ComputerSceneId // Go to the computer scene
 				}
 			}
 		}
