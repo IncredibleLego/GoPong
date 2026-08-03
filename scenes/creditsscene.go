@@ -44,7 +44,7 @@ func (c *CreditsScene) Draw(screen *ebiten.Image) {
 			"Friends and Family who",
 			"beta-tested the game",
 			"",
-			"Version 1.0.0 2026",
+			"Version 1.1.0 2026",
 		}
 		for i, message := range messages {
 			X = utils.XCentered(message, config.GlobalConfig.TextDimension-3)
