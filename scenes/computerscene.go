@@ -21,6 +21,7 @@ type ComputerScene struct {
 	bestScore   int
 	showRecord  bool
 	recordTime  time.Time
+	winPopup    *utils.Popup
 }
 
 func (c *ComputerScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -36,6 +37,7 @@ func NewComputerScene() *ComputerScene {
 		ball:        nil,
 		score:       0,
 		scoreEnemy:  0,
+		winPopup:    nil,
 	}
 }
 
@@ -72,6 +74,10 @@ func (c *ComputerScene) Draw(screen *ebiten.Image) {
 	// Print message once if new record is set
 	if c.showRecord && time.Now().Before(c.recordTime) {
 		utils.NewHighscore(screen)
+	}
+
+	if c.winPopup.Active {
+		c.winPopup.Draw(screen)
 	}
 }
 
@@ -129,6 +135,11 @@ func (c *ComputerScene) FirstLoad() {
 		}
 	}
 	c.ball.Reset(false)
+	c.winPopup = &utils.Popup{
+		Active:  false,
+		Text:    "",
+		Options: []string{"QUIT", "PLAY AGAIN"},
+	}
 }
 
 func (c *ComputerScene) OnEnter() {
@@ -149,45 +160,72 @@ func (c *ComputerScene) updateDimensions() {
 
 func (c *ComputerScene) Update() SceneId {
 
-	c.updateDimensions()
+	if c.winPopup != nil && c.winPopup.Active {
+		c.winPopup.Update()
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		highScore, maxAdded := getTopComputerScore()
-		if maxAdded == false || c.score >= highScore.Score {
-			DirtyComputerScore = ComputerScore{
-				DateTime: time.Now().Format(time.RFC3339),
-				Player:   c.playerName,
-				AILevel:  config.DifficultyString(),
-				Score:    c.score,
-				AIScore:  c.scoreEnemy,
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+
+			// If the player won, check if the score is higher than the highest score in the highscore list and save it if it is
+			if c.score > c.scoreEnemy {
+				highScore, maxAdded := getTopComputerScore()
+				if !maxAdded || c.score >= highScore.Score {
+					computerScore := ComputerScore{
+						DateTime: time.Now().Format(time.RFC3339),
+						Player:   c.playerName,
+						AILevel:  config.DifficultyString(),
+						Score:    c.score,
+						AIScore:  c.scoreEnemy,
+					}
+					AddComputerScore(computerScore)
+				}
+			}
+			if c.winPopup.Selected == 0 {
+				return StartSceneId
+			} else if c.winPopup.Selected == 1 {
+				c.FirstLoad()
+				return ComputerSceneId
 			}
 		}
-		return PauseSceneId
+	} else {
+		c.updateDimensions()
+
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			return PauseSceneId
+		}
+
+		c.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
+		c.enemyPaddle.AiMovement(c.ball)
+		c.ball.Move()
+
+		test := c.ball.CollideWithWall(true, true, 0)
+		if test == 1 {
+			c.score++
+		} else if test == 2 {
+			c.scoreEnemy++
+		}
+
+		if c.score > c.bestScore && c.showRecord == false {
+			c.showRecord = true
+			c.recordTime = time.Now().Add(3 * time.Second)
+		}
+
+		c.ball.CollideWithPaddle(c.paddle, true, 0)
+		c.ball.CollideWithPaddle(c.enemyPaddle, false, 0)
+
+		if inpututil.IsKeyJustPressed(ebiten.KeyH) {
+			c.enemyName = utils.Kubrick(c.enemyName)
+		}
+
+		if c.score >= config.GlobalConfig.PointsToWin || c.scoreEnemy >= config.GlobalConfig.PointsToWin {
+			c.winPopup.Active = true
+			if c.score >= config.GlobalConfig.PointsToWin {
+				c.winPopup.Text = c.playerName + " WINS!"
+			} else if c.scoreEnemy >= config.GlobalConfig.PointsToWin {
+				c.winPopup.Text = c.enemyName + " WINS!"
+			}
+			c.winPopup.Selected = 0
+		}
 	}
-
-	c.paddle.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
-	c.enemyPaddle.AiMovement(c.ball)
-	c.ball.Move()
-
-	test := c.ball.CollideWithWall(true, true, 0)
-	if test == 1 {
-		c.score++
-	} else if test == 2 {
-		c.scoreEnemy++
-	}
-
-	if c.score > c.bestScore && c.showRecord == false {
-		c.showRecord = true
-		c.recordTime = time.Now().Add(3 * time.Second)
-	}
-
-	c.ball.CollideWithPaddle(c.paddle, true, 0)
-	c.ball.CollideWithPaddle(c.enemyPaddle, false, 0)
-
-	if inpututil.IsKeyJustPressed(ebiten.KeyH) {
-		c.enemyName = utils.Kubrick(c.enemyName)
-	}
-
 	return ComputerSceneId
 }
 

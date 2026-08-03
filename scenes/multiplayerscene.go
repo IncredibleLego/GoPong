@@ -21,6 +21,7 @@ type MultiplayerScene struct {
 	bestScore   int
 	showRecord  bool
 	recordTime  time.Time
+	winPopup    *utils.Popup
 }
 
 func (m *MultiplayerScene) ShouldPreserveState(reason SceneChangeReason) bool {
@@ -36,6 +37,7 @@ func NewMultiplayerScene() *MultiplayerScene {
 		ball:        nil,
 		score1:      0,
 		score2:      0,
+		winPopup:    nil,
 	}
 }
 
@@ -67,6 +69,10 @@ func (m *MultiplayerScene) Draw(screen *ebiten.Image) {
 	//Print message once if new record is set
 	if m.showRecord && time.Now().Before(m.recordTime) {
 		utils.NewHighscore(screen)
+	}
+
+	if m.winPopup.Active {
+		m.winPopup.Draw(screen)
 	}
 }
 
@@ -110,6 +116,11 @@ func (m *MultiplayerScene) FirstLoad() {
 		m.bestScore = hs.Multiplayer[0].Score
 	}
 	m.ball.Reset(false)
+	m.winPopup = &utils.Popup{
+		Active:  false,
+		Text:    "",
+		Options: []string{"QUIT", "PLAY AGAIN"},
+	}
 }
 
 func (m *MultiplayerScene) OnEnter() {
@@ -129,54 +140,79 @@ func (m *MultiplayerScene) updateDimensions() {
 
 func (m *MultiplayerScene) Update() SceneId {
 
-	m.updateDimensions()
+	if m.winPopup != nil && m.winPopup.Active {
+		m.winPopup.Update()
 
-	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		highScore, maxAdded := getTopMultiplayerScore()
-		if maxAdded == false || (m.score1 >= highScore.Score || m.score2 >= highScore.Score) {
-			var score, enemyscore int
-			var player1, player2 string
-			if m.score1 >= m.score2 {
-				score = m.score1
-				enemyscore = m.score2
-				player1 = m.player1Name
-				player2 = m.player2Name
-			} else {
-				score = m.score2
-				enemyscore = m.score1
-				player1 = m.player2Name
-				player2 = m.player1Name
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+
+			highScore, maxAdded := getTopMultiplayerScore()
+			if !maxAdded || (m.score1 >= highScore.Score || m.score2 >= highScore.Score) {
+				var score, enemyscore int
+				var player1, player2 string
+				if m.score1 >= m.score2 {
+					score = m.score1
+					enemyscore = m.score2
+					player1 = m.player1Name
+					player2 = m.player2Name
+				} else {
+					score = m.score2
+					enemyscore = m.score1
+					player1 = m.player2Name
+					player2 = m.player1Name
+				}
+				multiplayerScore := MultiplayerScore{
+					DateTime:   time.Now().Format(time.RFC3339),
+					Player1:    player1,
+					Player2:    player2,
+					Score:      score,
+					EnemyScore: enemyscore,
+				}
+				AddMultiplayerScore(multiplayerScore)
 			}
-			DirtyMultiplayerScore = MultiplayerScore{
-				DateTime:   time.Now().Format(time.RFC3339),
-				Player1:    player1,
-				Player2:    player2,
-				Score:      score,
-				EnemyScore: enemyscore,
+
+			if m.winPopup.Selected == 0 {
+				return StartSceneId
+			} else if m.winPopup.Selected == 1 {
+				m.FirstLoad()
+				return MultiplayerSceneId
 			}
 		}
-		return PauseSceneId
+	} else {
+		m.updateDimensions()
+
+		if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
+			return PauseSceneId
+		}
+
+		m.paddle1.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
+		m.paddle2.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
+		m.ball.Move()
+
+		test := m.ball.CollideWithWall(true, true, 0)
+		if test == 1 {
+			m.score2++
+		} else if test == 2 {
+			m.score1++
+		}
+
+		if (m.score1 > m.bestScore || m.score2 > m.bestScore) && m.showRecord == false {
+			m.showRecord = true
+			m.recordTime = time.Now().Add(3 * time.Second)
+		}
+
+		m.ball.CollideWithPaddle(m.paddle1, true, 0)
+		m.ball.CollideWithPaddle(m.paddle2, false, 0)
+
+		if m.score1 >= config.GlobalConfig.PointsToWin || m.score2 >= config.GlobalConfig.PointsToWin {
+			m.winPopup.Active = true
+			if m.score1 >= config.GlobalConfig.PointsToWin {
+				m.winPopup.Text = m.player1Name + " WINS!"
+			} else {
+				m.winPopup.Text = m.player2Name + " WINS!"
+			}
+			m.winPopup.Selected = 0
+		}
 	}
-
-	m.paddle1.MoveOnKeyPress(ebiten.KeyArrowUp, ebiten.KeyArrowDown)
-	m.paddle2.MoveOnKeyPress(ebiten.KeyW, ebiten.KeyS)
-	m.ball.Move()
-
-	test := m.ball.CollideWithWall(true, true, 0)
-	if test == 1 {
-		m.score2++
-	} else if test == 2 {
-		m.score1++
-	}
-
-	if (m.score1 > m.bestScore || m.score2 > m.bestScore) && m.showRecord == false {
-		m.showRecord = true
-		m.recordTime = time.Now().Add(3 * time.Second)
-	}
-
-	m.ball.CollideWithPaddle(m.paddle1, true, 0)
-	m.ball.CollideWithPaddle(m.paddle2, false, 0)
-
 	return MultiplayerSceneId
 }
 

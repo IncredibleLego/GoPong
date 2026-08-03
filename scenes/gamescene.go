@@ -118,14 +118,6 @@ func (g *GameScene) Update() SceneId {
 	g.updateDimensions()
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEnter) {
-		highScore, maxAdded := getTopSoloScore()
-		if maxAdded == false || g.score >= highScore.Score {
-			DirtySoloScore = SoloScore{
-				DateTime: time.Now().Format(time.RFC3339),
-				Player:   g.playerName,
-				Score:    g.score,
-			}
-		}
 		return PauseSceneId
 	}
 
@@ -143,17 +135,23 @@ func (g *GameScene) Update() SceneId {
 
 		// If the score is higher than the lowest score in the highscore list, the score is added to the highscore list
 		highScore, maxAdded := getTopSoloScore()
-		if maxAdded == false && g.score >= highScore.Score && g.score != 0 {
-			DirtySoloScore = SoloScore{
+		if !maxAdded || g.score >= highScore.Score && g.score != 0 {
+			soloScore := SoloScore{
 				DateTime: time.Now().Format(time.RFC3339),
 				Player:   g.playerName,
 				Score:    g.score,
 			}
-			AddSoloScore(DirtySoloScore)
+			AddSoloScore(soloScore)
 			g.showRecord = false
 		}
 		g.score = 0
 		g.increase = 0
+		hs, _ := loadHighscores()
+		if len(hs.Solo) == 0 {
+			g.bestScore = 0
+		} else {
+			g.bestScore = hs.Solo[0].Score
+		}
 	}
 	g.ball.CollideWithWall(false, true, config.GlobalConfig.PaddleWidth)
 
