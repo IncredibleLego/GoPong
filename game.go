@@ -56,20 +56,6 @@ func (g *Game) Update() error {
 		// Show the cursor, as it is hidden in game scenes
 		ebiten.SetCursorMode(ebiten.CursorModeVisible)
 
-		// Saves Highscores if you're returing to menu after playing a game
-		if g.lastSceneId != 0 && nextSceneId == scenes.StartSceneId {
-			if g.lastSceneId == scenes.GameSceneId && scenes.DirtySoloScore.Score > 0 {
-				scenes.AddSoloScore(scenes.DirtySoloScore)
-				scenes.DirtySoloScore = scenes.SoloScore{}
-			} else if g.lastSceneId == scenes.ComputerSceneId && scenes.DirtyComputerScore.Score > 0 {
-				scenes.AddComputerScore(scenes.DirtyComputerScore)
-				scenes.DirtyComputerScore = scenes.ComputerScore{}
-			} else if g.lastSceneId == scenes.MultiplayerSceneId && scenes.DirtyMultiplayerScore.Score > 0 {
-				scenes.AddMultiplayerScore(scenes.DirtyMultiplayerScore)
-				scenes.DirtyMultiplayerScore = scenes.MultiplayerScore{}
-			}
-			g.lastSceneId = 0
-		}
 		var reason scenes.SceneChangeReason
 		if nextSceneId == scenes.PauseSceneId {
 			// If the next scene is the pause scene, it is created and the reason is set to "other"
