@@ -30,6 +30,7 @@ type Config struct {
 	PopupHeight            int
 	OptionsPerSecond       time.Duration
 	MaxBounceAngle         float64
+	PointsToWin            int
 }
 
 var GlobalConfig = &Config{
@@ -51,6 +52,7 @@ var GlobalConfig = &Config{
 	PopupHeight:            216, // 30% of height
 	OptionsPerSecond:       time.Duration(time.Second / 4),
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
+	PointsToWin:            10,
 }
 
 var DefaultConfig = &Config{
@@ -72,6 +74,7 @@ var DefaultConfig = &Config{
 	PopupHeight:            216, // 30% of height
 	OptionsPerSecond:       time.Duration(time.Second / 4),
 	MaxBounceAngle:         0.7853975, //45.0 * (3.14159 / 180.0)
+	PointsToWin:            10,
 }
 
 // Applys the scale to the default values and updates the config
