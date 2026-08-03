@@ -14,10 +14,6 @@ var highscoresFile string
 
 const maxScores = 10
 
-var DirtySoloScore SoloScore
-var DirtyComputerScore ComputerScore
-var DirtyMultiplayerScore MultiplayerScore
-
 type SoloScore struct {
 	DateTime string `json:"date_time"`
 	Player   string `json:"player"`
